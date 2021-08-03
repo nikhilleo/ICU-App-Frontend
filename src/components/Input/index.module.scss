@@ -1,0 +1,40 @@
+.inputContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  border-radius: 10px;
+}
+
+.mainInput {
+  padding: 29px 10px 29px 50px;
+  outline: 0;
+  display: block;
+  width: 75%;
+  border: none;
+}
+
+.inputIcon {
+  position: absolute;
+  left: 27px;
+  top: 0;
+  font-size: 25px;
+  color: #4b00ff;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.input_error_msg {
+  font-size: 21px !important;
+  padding: 6px;
+}
+
+.inputContainer .input_error_msg {
+  padding-left: 10px;
+  position: absolute;
+  bottom: 0;
+  transform: translateY(90%);
+}

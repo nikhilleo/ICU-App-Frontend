@@ -1,0 +1,38 @@
+@import './Roboto/styles.css';
+
+body {
+  font-family: 'Roboto Regular', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  scroll-behavior: smooth;
+  margin: 0px;
+  padding: 0px;
+}
+
+.default-container {
+  background-color: #ECF1FA;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  max-width: 768px;
+  height: auto;
+  min-height: 1024px;
+  margin: auto;
+  overflow: auto;
+  scrollbar-width: none !important;
+}
+
+.default-container::-webkit-scrollbar {
+  width: 0 !important 
+}
+
+.text-1-liner {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1; /* number of lines to show */
+  -webkit-box-orient: vertical;
+}
+
+.text-center {
+  text-align: center;
+}

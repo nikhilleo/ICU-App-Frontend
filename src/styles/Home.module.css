@@ -1,0 +1,15 @@
+.container {
+  min-height: 1024px;
+  background: linear-gradient(180deg, #2A2AC0 0%, #181461 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  position: relative;
+  padding: 30px;
+}
+
+.heart_container svg {
+  max-width: 100%;
+}

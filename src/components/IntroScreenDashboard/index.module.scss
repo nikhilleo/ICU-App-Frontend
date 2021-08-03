@@ -1,0 +1,27 @@
+.img_container  {
+  display: flex;
+  width: 100%;
+}
+
+.intro_footer{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  position: absolute;
+  bottom: 60px;
+}
+
+.skip_content{
+  position: absolute;
+  left: 0px;
+  margin-left: 39px;
+  cursor: pointer;
+}
+
+.next_content{
+  position: absolute;
+  right: 0px;
+  margin-right: 39px;
+  cursor: pointer;
+}

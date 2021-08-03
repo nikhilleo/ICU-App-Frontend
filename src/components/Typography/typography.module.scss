@@ -1,0 +1,64 @@
+@mixin defaultValues ($property, $value: null, $default: null) {
+  @if ($value) {
+    #{$property}: #{$value};
+  }   @else {
+      @if ($default) {
+      #{$property}: #{$default};
+    }
+  }
+}
+
+@mixin addFont($family: null, $font-weight: null,  $font-size: null, $letter-spacing: null, $line-height: null) {
+  @include defaultValues('font-family', $family, 'Roboto');
+  @include defaultValues('font-weight', $font-weight);
+  @include defaultValues('font-size', $font-size);
+  @include defaultValues('letter-spacing', $letter-spacing);
+}
+
+.default_styles {
+  color: #ffffff;
+  @include addFont();
+}
+
+//Color Styles
+.default_styles :global(.blue) {
+  color: #2A2AC0;
+}
+
+.default_styles :global(.dark-blue) {
+  color: #181461;
+}
+
+.default_styles :global(.dark-black) {
+  color: #1C1C1C;
+}
+
+//Line Height Styles
+.default_styles :global(.lh-20) {
+  line-height: 20px;
+}
+
+.default_styles :global(.lh-30) {
+  line-height: 30px;
+}
+
+.default_styles :global(.lh-40) {
+  line-height: 40px;
+}
+
+//Font OverAll Styles
+.default_styles :global(.head-text) {
+  @include addFont('Roboto Regular', null, 60px, null);
+}
+
+.default_styles :global(.small-text) {
+  @include addFont('Roboto Regular', null, 24px, null);
+}
+
+.default_styles :global(.extra-small-text) {
+  @include addFont('Roboto Regular', null, 18px, null);
+}
+
+.default_styles :global(.normal-text) {
+  @include addFont('Roboto Regular', null, 35px, null);
+}
