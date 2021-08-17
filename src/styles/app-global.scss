@@ -33,6 +33,14 @@ body {
   -webkit-box-orient: vertical;
 }
 
+.hide-scroll {
+  scrollbar-width: none !important;
+}
+
+.hide-scroll::-webkit-scrollbar {
+  width: 0 !important 
+}
+
 .text-center {
   text-align: center;
 }

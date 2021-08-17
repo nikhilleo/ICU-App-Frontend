@@ -1,0 +1,26 @@
+.container {
+  background-color: #ffffff;
+  width: 100%;
+  display: flex;
+  padding: 16px;
+  align-items: center;
+  position: relative;
+  min-width: 498px;
+}
+
+.btn {
+  position: absolute;
+  right: 3%;
+  width: 221px;
+  max-width: 221px;
+  height: 46px;
+  border: none;
+  background-color: #232EAF;
+  color: #ffffff;
+  border-radius: 16px;
+  svg {
+    position: absolute;
+    right: 7px;
+    top: 20%;
+  }
+}

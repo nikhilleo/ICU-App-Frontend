@@ -1,3 +1,4 @@
+import { SearchIcon } from 'components/Icons';
 import React, { CSSProperties, useEffect } from 'react'
 import styles from './index.module.scss'
 
@@ -39,6 +40,26 @@ export const ErrorWrap = ({ error, id, children }: any) => {
     </div>
   )
 }
+
+export const SearchBar = () => (
+  <div className="input-group mb-3 w-100">
+    <input
+      type="text"
+      className={`${styles.search_input} small-text form-control`}
+      placeholder="Search..."
+      aria-label="Recipient's username"
+      aria-describedby="basic-addon2"
+    />
+    <div className="input-group-append">
+      <span
+        className={`${styles.search_icon} input-group-text p-3`}
+        id="basic-addon2"
+      >
+        <SearchIcon />
+      </span>
+    </div>
+  </div>
+)
 
 const Input = ({ Icon, style, inputProps, onChange, error, id, value }: InputProps) => {
   return (

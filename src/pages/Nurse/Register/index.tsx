@@ -8,6 +8,7 @@ import { validateSignUpUserData, setSignUpUserData, setSignUpError, signUpProces
 
 interface LoginProps {
   router: any;
+  setPreLoader: any;
   data: any;
   setSignUpUserData: any;
   setSignUpError: any;
@@ -28,7 +29,9 @@ class Register extends Component<LoginProps, LoginState> {
   onSubmit = async () => {
     if (!this.props.validateSignUpUserData()) return;
     this.props.setSignUpError("", "")
+    this.props.setPreLoader(true);
     this.props.signUpProcess(() => {
+      this.props.setPreLoader(false);
       this.props.router.replace("/Patient")
     });
   }

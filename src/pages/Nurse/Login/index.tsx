@@ -8,6 +8,7 @@ import { validateLoginUserData, loginProcess, setLoginError, setLoginUserData } 
 
 interface LoginProps {
   router: any;
+  setPreLoader: any;
   validateLoginUserData: any;
   setLoginUserData: any;
   setLoginError: any;
@@ -24,7 +25,9 @@ class Login extends Component<LoginProps, LoginState> {
   onSubmit = async () => {
     if (!this.props.validateLoginUserData()) return;
     this.props.setLoginError("", "")
+    this.props.setPreLoader(true);
     this.props.loginProcess(() => {
+      this.props.setPreLoader(false);
       this.props.router.replace("/Patient")
     });
   }

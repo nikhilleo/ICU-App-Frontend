@@ -8,9 +8,8 @@
   }
 }
 
-@mixin addFont($family: null, $font-weight: null,  $font-size: null, $letter-spacing: null, $line-height: null) {
+@mixin addFont($family: null,  $font-size: null, $letter-spacing: null) {
   @include defaultValues('font-family', $family, 'Roboto');
-  @include defaultValues('font-weight', $font-weight);
   @include defaultValues('font-size', $font-size);
   @include defaultValues('letter-spacing', $letter-spacing);
 }
@@ -33,6 +32,10 @@
   color: #1C1C1C;
 }
 
+.default_styles :global(.normal-black) {
+  color: #363636;
+}
+
 //Line Height Styles
 .default_styles :global(.lh-20) {
   line-height: 20px;
@@ -46,19 +49,32 @@
   line-height: 40px;
 }
 
+//font size styles
+.default_styles :global(.fs-10) {
+  font-size: 10px;
+}
+
+.default_styles :global(.fs-16) {
+  font-size: 16px;
+}
+
+.default_styles :global(.fs-20) {
+  font-size: 20px;
+}
+
 //Font OverAll Styles
 .default_styles :global(.head-text) {
-  @include addFont('Roboto Regular', null, 60px, null);
+  @include addFont('Roboto Regular', 60px, null);
 }
 
 .default_styles :global(.small-text) {
-  @include addFont('Roboto Regular', null, 24px, null);
+  @include addFont('Roboto Regular', 24px, null);
 }
 
 .default_styles :global(.extra-small-text) {
-  @include addFont('Roboto Regular', null, 18px, null);
+  @include addFont('Roboto Regular', 18px, null);
 }
 
 .default_styles :global(.normal-text) {
-  @include addFont('Roboto Regular', null, 35px, null);
+  @include addFont('Roboto Regular', 35px, null);
 }
