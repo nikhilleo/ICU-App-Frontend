@@ -1,6 +1,7 @@
 import Typography from "components/Typography";
 import { Component } from "react";
 import { connect } from "react-redux";
+import PatientDetail from "components/PatientDetails";
 
 interface PatientProps {
   router: any;
@@ -17,9 +18,10 @@ class Patient extends Component<PatientProps, PatientState> {
   render() {
     return (
       <Typography>
-        <div className={`default-container p-4`}>
-          <div className="p-2 align-self-start w-100">
-            <p className="text-left small-text normal-black">April 2020</p>
+        
+        <div className={`default-container `}>
+          <div className=" align-self-start w-100">
+          <PatientDetail/>
           </div>
         </div>
       </Typography>
