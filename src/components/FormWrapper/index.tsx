@@ -6,17 +6,20 @@ import Typography from "components/Typography"
 const FormWrapper = ({ children, method, onSubmit }: any) => {
   return(
     <Typography>
-      <div className={`px-md-5 default-container`}>
+      <form onSubmit={onSubmit} className={`px-md-5 default-container`}>
         <div className="px-5 my-5 py-md-5 d-flex flex-column align-items-center w-100">
           <div className="mb-4">
             <HeartBlueIcon />
           </div>
           <p className="normal-text blue lh-40 mb-5 pb-4">ICU APP</p>
-          <p className="head-text dark-blue lh-40">{method}</p>
-          <p className="Roboto-medium dark-blue small-text mt-4 pt-1 mb-5 pb-3 text-center">The code will be sent to the Gmail </p>
+          <p className="head-text mb-5 pb-3 dark-blue lh-40">{method}</p>
           {children}
           <div className="w-100 my-5 pb-4">
-            <Button onClick={onSubmit}>
+            <Button
+              props={{
+                type: "submit"
+              }}
+            >
               Continue
             </Button>
           </div>
@@ -29,7 +32,7 @@ const FormWrapper = ({ children, method, onSubmit }: any) => {
             </p>
           </LogoWrapper>
         </div>
-      </div>
+      </form>
     </Typography>
   )
 }

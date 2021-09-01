@@ -5,9 +5,12 @@ import { SearchBar } from "components/Input";
 import Typography from "components/Typography";
 import { Component } from "react";
 import { connect } from "react-redux";
+import { getLocalStorageItem } from "utils/helper";
+import axios from "../../axios";
 
 interface PatientProps {
   router: any;
+  isLoggedIn: boolean;
 }
 
 interface PatientState {
@@ -18,11 +21,24 @@ class Patient extends Component<PatientProps, PatientState> {
     data: {}
   }
 
+  componentDidMount() {
+    console.log(this.props.isLoggedIn)
+    if (!this.props.isLoggedIn) this.props.router.replace("/")
+    else {
+      const token = localStorage.getItem("token")
+      axios.get("/patient/getAllPatient", {
+        headers: { Authorization: token, role: "admin" },
+      })
+        .then((res: any) => console.log(res))
+        .catch((err: any) => console.log(err.response))
+    }
+  }
+
   render() {
     return (
       <Typography>
-        <div style={{ backgroundClip: "red", height:"20%" }} className="w-100"></div>
         <div className={`default-container p-4`}>
+        <div style={{ backgroundColor: "blue" }} className="w-100"></div>
           <div className="p-2 align-self-start w-100">
             <p className="normal-text normal-black lh-40 pb-5">Hi, Olivia Welcome Back</p>
             <div className="mt-5">
@@ -97,7 +113,10 @@ class Patient extends Component<PatientProps, PatientState> {
 }
 
 const mapStateToProps = (state: any, ownProps: any) => {
+  const currentUserDetails = JSON.parse(getLocalStorageItem('user-details') || "{}");
+  console.log(currentUserDetails)
   return {
+    isLoggedIn: currentUserDetails && currentUserDetails.mobile
   }
 }
 

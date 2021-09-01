@@ -56,10 +56,11 @@ export const setSignUpUserData = (e: any) => (dispatch: any, getState: any) => {
   })
 }
 
-export const signUpProcess = (callback: any) => async (dispatch: any, getState: any) => {
+export const signUpProcess = (url: any, setPreLoader: any, callback: any) => async (dispatch: any, getState: any) => {
   try {
     const { userData } = getState().signUp;
-    const response = await axios.post("nurse/signup", userData)
+    const response = await axios.post(url, userData)
+    setPreLoader(false)
     if(response?.data?.message) {
       Swal.fire({
         title: 'Success',
@@ -71,13 +72,14 @@ export const signUpProcess = (callback: any) => async (dispatch: any, getState: 
       callback();
     }
   } catch (error) {
-    if (error.response.data) {
+    setPreLoader(false)
+    if (error.response.data.message) {
       Swal.fire({
         title: 'Error',
         icon: 'error',
         showCloseButton: true,
         cancelButtonText: 'Ok',
-        html: `<p>${error.response.data}</p>`,
+        html: `<p>${error.response.data.message}</p>`,
       })
     }
   }

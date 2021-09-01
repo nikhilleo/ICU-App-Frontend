@@ -1,5 +1,5 @@
 import { Component } from "react";
-import { PhoneIcon } from "components/Icons";
+import { PhoneIcon, ProfileIcon } from "components/Icons";
 import Input from "components/Input";
 import { PasswordIcon } from "components/Icons"
 import FormWrapper from "components/FormWrapper";
@@ -26,13 +26,13 @@ class Register extends Component<LoginProps, LoginState> {
     data: {}
   }
 
-  onSubmit = async () => {
+  onSubmit = async (e: any) => {
+    e.preventDefault();
     if (!this.props.validateSignUpUserData()) return;
     this.props.setSignUpError("", "")
     this.props.setPreLoader(true);
-    this.props.signUpProcess(() => {
-      this.props.setPreLoader(false);
-      this.props.router.replace("/Patient")
+    this.props.signUpProcess("admin/signup", this.props.setPreLoader, () => {
+      this.props.router.replace("/admin/dashboard")
     });
   }
 
@@ -42,7 +42,7 @@ class Register extends Component<LoginProps, LoginState> {
       <FormWrapper onSubmit={this.onSubmit} method="Register">
         <div className="w-100 mb-4 pb-2">
           <Input
-            Icon={PhoneIcon}
+            Icon={ProfileIcon}
             value={fName}
             inputProps={{
               placeholder: "FIRST NAME",
@@ -56,7 +56,7 @@ class Register extends Component<LoginProps, LoginState> {
         </div>
         <div className="w-100 mb-4 pb-2">
           <Input
-            Icon={PhoneIcon}
+            Icon={ProfileIcon}
             value={lName}
             inputProps={{
               placeholder: "LAST NAME",
@@ -74,7 +74,7 @@ class Register extends Component<LoginProps, LoginState> {
             value={mobile}
             inputProps={{
               placeholder: "MOBILE",
-              type: "number",
+              type: "tel",
               "data-state-key": "mobile"
             }}
             onChange={this.props.setSignUpUserData}

@@ -2,6 +2,7 @@ import axios from "../axios";
 import Swal from "sweetalert2";
 
 const initialState = {
+  isLoggedIn: false,
   userData: {
     mobile: "",
     password: ""
@@ -46,28 +47,43 @@ export const setLoginUserData = (e: any) => (dispatch: any, getState: any) => {
   })
 }
 
-export const loginProcess = (callback: any) => async (dispatch: any, getState: any) => {
+export const loginProcess = (url: any, setPreLoader: any, callback: any) => async (dispatch: any, getState: any) => {
   try {
     const { userData } = getState().login;
-    const response = await axios.post("nurse/login", userData)
-    if(response?.data?.message) {
-      Swal.fire({
-        title: 'Success',
-        icon: 'success',
-        showCloseButton: true,
-        cancelButtonText: 'Ok',
-        html: `<p>${response.data.message}</p>`,
+    const response = await axios.post(url, userData);
+    setPreLoader(false);
+    console.log(response)
+    if (response.data?.success) {
+      let user = Object.assign({}, response.data.user, {
+        role: response.data.role,
+      });
+      console.log(user)
+      localStorage.setItem("user-details", JSON.stringify(user));
+      localStorage.setItem("token", response.data.token);
+      dispatch({
+        type: actions.SET_USER,
+        userData: response.data.user
       })
+      if (response?.data?.message) {
+        Swal.fire({
+          title: 'Success',
+          icon: 'success',
+          showCloseButton: true,
+          cancelButtonText: 'Ok',
+          html: `<p>${response.data.message}</p>`,
+        })
+      }
       callback();
     }
   } catch (error) {
-    if (error.response.data) {
+    setPreLoader(false);
+    if (error.response.data?.message) {
       Swal.fire({
         title: 'Error',
         icon: 'error',
         showCloseButton: true,
         cancelButtonText: 'Ok',
-        html: `<p>${error.response.data}</p>`,
+        html: `<p>${error.response.data.message}</p>`,
       })
     }
   }
@@ -88,6 +104,7 @@ const loginReducer = (state = initialState, action: any) => {
     case actions.SET_USER: {
       return {
         ...state,
+        isLoggedIn: true,
         userData: {
           ...state.userData,
           [action.key]: action.value

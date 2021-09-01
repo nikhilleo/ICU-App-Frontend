@@ -13,7 +13,7 @@ class Intro extends Component<IntroProps, IntroState> {
     return (
       <IntroScreenDashboard
         title="Nurse Details"
-        src="/Images/Intro2.png"
+        src="/Images/intro2.png"
         introScreen={2}
         router={this.props.router}
         imgStyles={{ maxHeight: "402px", width: "100%"}}

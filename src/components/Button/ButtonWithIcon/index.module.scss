@@ -1,0 +1,15 @@
+.btnContainer {
+  width: 221px;
+  border: none;
+  background-color: #232EAF;
+  color: #ffffff;
+  border-radius: 36px;
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  justify-content: space-between;
+  box-shadow: 0px 5px 10px 1px rgba(77, 112, 248, 0.396);
+  span {
+    margin-left: 19px;
+  }
+}

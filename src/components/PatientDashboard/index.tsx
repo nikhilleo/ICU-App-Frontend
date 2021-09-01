@@ -15,7 +15,7 @@ function index() {
               <div className={`${styles.Doctor} `}>
                 <div>
                   <p
-                    className=" d-flex fs-20 lh-9 Roboto"
+                    className="d-flex fs-20 lh-9 Roboto"
                     style={{
                       color: "#8288AC",
                       fontSize: "25px",
@@ -36,7 +36,7 @@ function index() {
                     64
                   </p>
                 </div>
-                <div>
+                <div style={{marginTop:"9px", marginLeft:"14px"}}>
                   <TelescopeIcon />
                 </div>
               </div>
@@ -64,7 +64,7 @@ function index() {
                     64
                   </p>
                 </div>
-                <div>
+                <div style={{marginTop:"7px", marginLeft:"14px"}}>
                   <SyringeIcon />
                 </div>
               </div>
@@ -92,8 +92,8 @@ function index() {
                     64
                   </p>
                 </div>
-                <div>
-                  <HeartIcon1 />
+                <div style={{marginTop:"15px", marginLeft:"14px"}}>
+                 <HeartIcon1 />
                 </div>
               </div>
             </div>

@@ -19,11 +19,11 @@ function Index({title, src, introScreen, router, imgStyles} : DashboardProps) {
       goToLoginPage();
       return;
     }
-    router.replace(`/Intro/${introScreen + 1}`)
+    router.replace(`/intro/${introScreen + 1}`)
   }
 
   const goToLoginPage = () => {
-    router.replace(`/Nurse/Login`)
+    router.replace(`/nurse/login`)
   }
 
   return (

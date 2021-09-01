@@ -22,13 +22,13 @@ interface LoginState { }
 class Login extends Component<LoginProps, LoginState> {
   state = {};
 
-  onSubmit = async () => {
+  onSubmit = async (e: any) => {
+    e.preventDefault();
     if (!this.props.validateLoginUserData()) return;
     this.props.setLoginError("", "")
     this.props.setPreLoader(true);
-    this.props.loginProcess(() => {
-      this.props.setPreLoader(false);
-      this.props.router.replace("/Patient")
+    this.props.loginProcess("nurse/login", this.props.setPreLoader, () => {
+      this.props.router.replace("/nurse/dashboard")
     });
   }
 
@@ -42,7 +42,7 @@ class Login extends Component<LoginProps, LoginState> {
             value={mobile}
             inputProps={{
               placeholder: "MOBILE NO ",
-              type: "number",
+              type: "tel",
               "data-state-key": "mobile"
             }}
             onChange={this.props.setLoginUserData}
