@@ -13,6 +13,7 @@ const initialState = {
 
 const actions = {
   SET_USER: "signup/SET_USER",
+  CLEAR_USER: "signup/CLEAR_USER",
   SET_ERROR: "signup/SET_ERROR",
   CLEAR_ERROR: "signup/CLEAR_ERROR",
 }
@@ -55,23 +56,28 @@ export const setSignUpUserData = (e: any) => (dispatch: any, getState: any) => {
   })
 }
 
-
 export const signUpProcess = (url: any, setPreLoader: any, callback: any) => async (dispatch: any, getState: any) => {
   try {
     const { userData } = getState().signUp;
-    const response = await axios.post(url, userData)
-    setPreLoader(false)
-    if (response?.data?.message) {
-      Swal.fire({
-        title: 'Success',
-        icon: 'success',
-        showCloseButton: true,
-        cancelButtonText: 'Ok',
-        html: `<p>${response.data.message}</p>`,
+    const response = await axios.post(url, userData);
+    setPreLoader(false);
+    console.log(response)
+    if (response.data?.success) {
+      dispatch({
+        type: actions.CLEAR_USER
       })
-      callback();
+      if (response.data.message) {
+        Swal.fire({
+          title: 'Success',
+          icon: 'success',
+          showCloseButton: true,
+          cancelButtonText: 'Ok',
+          html: `<p>${response.data.message}</p>`,
+        })
+        callback();
+      }
     }
-  } catch (error) {
+  } catch (error: any) {
     setPreLoader(false)
     if (error.response.data.message) {
       Swal.fire({
@@ -99,6 +105,17 @@ const signUpReducer = (state = initialState, action: any) => {
         userData: {
           ...state.userData,
           [action.key]: action.value
+        }
+      }
+    }
+    case actions.CLEAR_USER: {
+      return {
+        ...state,
+        userData: {
+          fName: "",
+          lName: "",
+          mobile: "",
+          password: ""
         }
       }
     }

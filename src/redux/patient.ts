@@ -17,6 +17,7 @@ const initialState = {
 
 const actions = {
   SET_PATIENT: "patient/SET_PATIENT",
+  CLEAR_PATIENT_DATA: "patient/CLEAR_PATIENT_DATA",
   SET_PATIENT_DIAGONASTIC_LIST: "patient/SET_PATIENT_DIAGONASTIC_LIST",
   CLEAR_PATIENT_DIAGONASTIC_LIST: "patient/CLEAR_PATIENT_DIAGONASTIC_LIST",
   SET_ERROR: "patient/SET_ERROR",
@@ -49,7 +50,6 @@ export const clearDiagonasticList = (key: any) => (dispatch: any, getState: any)
   dispatch({
     type: actions.CLEAR_PATIENT_DIAGONASTIC_LIST,
     key,
-    
   })
 }
 
@@ -62,7 +62,7 @@ export const validatePatientData = () => (dispatch: any, getState: any) => {
     gender,
     diagnosisList
   } = getState().patient.patientData;
-  
+
   if (!fName) {
     dispatch(setPatientFormError('add-patient-firstname', 'This is a required * field'));
     return false;
@@ -104,15 +104,14 @@ export const PatientAddProcess = (url: any, setPreLoader: any, callback: any) =>
   try {
     setPreLoader(true)
     const token = getLocalStorageItem("token")
-    console.log(token)
     let userDetails = JSON.parse(getLocalStorageItem('user-details') || "{}");
     const state = getState();
     const { patientData } = state.patient;
-    const patientDetailsRequest = {...patientData};
+    const patientDetailsRequest = { ...patientData };
     delete patientDetailsRequest.patient_image;
     const response = await axios.post(url, patientDetailsRequest, { headers: { Authorization: token, role: userDetails.role } });
     console.log(response)
-    if(response.data.success && patientData.patient_image) {
+    if (response.data.success && patientData.patient_image) {
       console.log(patientData.patient_image)
       const data = new FormData();
       await data.append("image", patientData.patient_image);
@@ -126,8 +125,10 @@ export const PatientAddProcess = (url: any, setPreLoader: any, callback: any) =>
       );
       console.log(img_response)
       setPreLoader(false)
-    }
-      if (response?.data?.message) {
+      dispatch({
+        type: actions.CLEAR_PATIENT_DATA,
+      })
+      if (img_response?.data?.message) {
         Swal.fire({
           title: 'Success',
           icon: 'success',
@@ -135,12 +136,11 @@ export const PatientAddProcess = (url: any, setPreLoader: any, callback: any) =>
           cancelButtonText: 'Ok',
           html: `<p>${response.data.message}</p>`,
         })
-        // callback();
+        callback();
       }
-  } catch (error) {
+    }
+  } catch (error: any) {
     setPreLoader(false)
-    console.log(error)
-    console.log(error.response)
     if (error.response?.data?.message) {
       Swal.fire({
         title: 'Error',
@@ -154,14 +154,29 @@ export const PatientAddProcess = (url: any, setPreLoader: any, callback: any) =>
 }
 
 const PatientReducer = (state = initialState, action: any) => {
-  console.log(action)
+  console.log(state)
   switch (action.type) {
     case actions.SET_PATIENT: {
       return {
         ...state,
         patientData: {
           ...state.patientData,
-          [action.key]: Array.isArray(action.value) ? [...action.value] : action.value 
+          [action.key]: Array.isArray(action.value) ? [...action.value] : action.value
+        }
+      }
+    }
+    case actions.CLEAR_PATIENT_DATA: {
+      console.log("object")
+      return {
+        ...state,
+        patientData: {
+          fName: "",
+          lName: "",
+          mobile: "",
+          age: "",
+          gender: "",
+          patient_image: "",
+          diagnosisList: []
         }
       }
     }

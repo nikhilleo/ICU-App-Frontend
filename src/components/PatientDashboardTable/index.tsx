@@ -1,12 +1,17 @@
 import Typography from 'components/Typography'
-import {MoreIcon} from 'components/Icons'
-import styles from './index.module.scss'
-function index() {
+import { MoreIcon } from 'components/Icons'
+
+interface Iprops {
+  data: object[];
+}
+
+function index({ data = [] }: Iprops) {
+
   return (
     <Typography>
       <div className="row mt-5 " style={{ minHeight: "540px" }}>
         <div className="col-sm-12">
-          <div className=" card-plain table-plain-bg">
+          <div className="card-plain table-plain-bg">
             <div className="card-body table-full-width table-responsive">
               <table className="text-center table table-hover align-items-center">
                 <thead>
@@ -17,55 +22,15 @@ function index() {
                     <th >Actions</th>
                   </tr></thead>
                 <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td>Dakota Rice</td>
-                    <td>01/12/2021</td>
-                    <td>01/12/2021</td>
-                    <td ><MoreIcon/></td>
-                  </tr>
-                  <tr>
-                    <td>2</td>
-                    <td>Minerva Hooper</td>
-                    <td>01/12/2021</td>
-                    <td>01/12/2021</td>
-                    <td ><MoreIcon/></td>
-                  </tr>
-                  <tr>
-                    <td>3</td>
-                    <td>Sage Rodriguez</td>
-                    <td>01/12/2021</td>
-                    <td>01/12/2021</td>
-                    <td ><MoreIcon/></td>
-                  </tr>
-                  <tr>
-                    <td>4</td>
-                    <td>Philip Chaney</td>
-                    <td>01/12/2021</td>
-                    <td>01/12/2021</td>
-                    <td ><MoreIcon/></td>
-                  </tr>
-                  <tr>
-                    <td>5</td>
-                    <td>Doris Greene</td>
-                    <td>01/12/2021</td>
-                    <td>01/12/2021</td>
-                    <td ><MoreIcon/></td>
-                  </tr>
-                  <tr>
-                    <td>6</td>
-                    <td>Mason Porter</td>
-                    <td>01/12/2021</td>
-                    <td>01/12/2021</td>
-                    <td ><MoreIcon/></td>
-                  </tr>
-                  <tr>
-                    <td>6</td>
-                    <td>Mason Porter</td>
-                    <td>01/12/2021</td>
-                    <td>01/12/2021</td>
-                    <td ><MoreIcon/></td>
-                  </tr>
+                  {data.map((item: any) => (
+                    <tr>
+                      <td>1</td>
+                      <td>{`${item.fName} ${item.lName}`}</td>
+                      <td>{item.dayIn}</td>
+                      <td>{item.dayOut || `-`}</td>
+                      <td ><MoreIcon /></td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>

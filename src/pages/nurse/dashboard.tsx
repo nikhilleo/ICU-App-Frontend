@@ -11,36 +11,50 @@ import axios from "../../axios";
 interface PatientProps {
   router: any;
   isLoggedIn: boolean;
+  currentUserDetails: any;
+  setPreLoader: any;
 }
 
 interface PatientState {
+  data: object[]
 }
 
 class Patient extends Component<PatientProps, PatientState> {
   state = {
-    data: {}
+    data: []
   }
 
   componentDidMount() {
-    console.log(this.props.isLoggedIn)
     if (!this.props.isLoggedIn) this.props.router.replace("/")
     else {
       const token = localStorage.getItem("token")
       axios.get("/patient/getAllPatient", {
         headers: { Authorization: token, role: "admin" },
       })
-        .then((res: any) => console.log(res))
-        .catch((err: any) => console.log(err.response))
+        .then((res: any) => {
+          this.setState({
+            data: res.data?.allPatient
+          })
+        })
+        .catch((err: any) => {
+          console.log(err.response)
+        })
     }
   }
 
+  handleClick = (e: any, item: any) => {
+    e.preventDefault();
+    this.props.router.push(`/patient/patient-details/${item._id}`)
+  }
+
   render() {
+    const {currentUserDetails} = this.props
     return (
       <Typography>
         <div className={`default-container p-4`}>
         <div style={{ backgroundColor: "blue" }} className="w-100"></div>
           <div className="p-2 align-self-start w-100">
-            <p className="normal-text normal-black lh-40 pb-5">Hi, Olivia Welcome Back</p>
+            <p className="normal-text normal-black lh-40 pb-5">Hi, {currentUserDetails.fName} Welcome Back</p>
             <div className="mt-5">
               <SearchBar />
             </div>
@@ -90,20 +104,9 @@ class Patient extends Component<PatientProps, PatientState> {
               <span>See all</span>
             </div>
             <div>
-              <PatientCard name="Dr. Fred Mask" />
-              <PatientCard name="Dr. Fred Mask" />
-              <PatientCard name="Dr. Fred Mask" />
-              <PatientCard name="Dr. Fred Mask" />
-              <PatientCard name="Dr. Fred Mask" />
-              <PatientCard name="Dr. Fred Mask" />
-              <PatientCard name="Dr. Fred Mask" />
-              <PatientCard name="Dr. Fred Mask" />
-              <PatientCard name="Dr. Fred Mask" />
-              <PatientCard name="Dr. Fred Mask" />
-              <PatientCard name="Dr. Fred Mask" />
-              <PatientCard name="Dr. Fred Mask" />
-              <PatientCard name="Dr. Fred Mask" />
-              <PatientCard name="Dr. Fred Mask" />
+              {this.state.data.map((item: any) => (
+                <PatientCard onClick={(e: any) => this.handleClick(e, item)} name={`${item.fName} ${item.lName}`} src={item.patinet_image} />
+              ))}
             </div>
           </div>
         </div>
@@ -115,7 +118,8 @@ class Patient extends Component<PatientProps, PatientState> {
 const mapStateToProps = (state: any, ownProps: any) => {
   const currentUserDetails = JSON.parse(getLocalStorageItem('user-details') || "{}");
   return {
-    isLoggedIn: currentUserDetails && currentUserDetails.mobile
+    isLoggedIn: currentUserDetails && currentUserDetails.mobile,
+    currentUserDetails
   }
 }
 

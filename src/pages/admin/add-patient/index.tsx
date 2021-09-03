@@ -10,7 +10,15 @@ import { connect } from "react-redux";
 import Modal from 'components/Modal'
 import styles from './index.module.scss'
 import {DiagnosticIcon} from "components/Icons"
-import { setPatientData, clearDiagonasticList, setPatientFormError, validatePatientData, PatientAddProcess, setPatientDataHelper, setDiagonasticList} from "redux/patient";
+import {
+  setPatientData,
+  clearDiagonasticList,
+  setPatientFormError,
+  validatePatientData,
+  PatientAddProcess,
+  setPatientDataHelper,
+  setDiagonasticList
+} from "redux/patient";
  
 interface LoginProps {
   router: any;
@@ -42,7 +50,7 @@ class Register extends Component<LoginProps, LoginState> {
     if (!this.props.validatePatientData()) return;
     this.props.setPatientFormError("", "")
     this.props.PatientAddProcess("/patient/addPatient",this.props.setPreLoader, () => {
-      // this.props.router.replace("/Patient")
+      this.props.router.replace("/admin/dashboard")
     });
   }
 
@@ -74,8 +82,8 @@ class Register extends Component<LoginProps, LoginState> {
       patient_image,
       diagnosisList
      } = this.props.data;
-     console.log(this.props.data)
-    return (
+     console.log(this.props )
+     return (
       <FormWrapper onSubmit={this.onSubmit} method="Add Patient" >
         <div className="w-100 mb-4 pb-2">
           <Input
