@@ -102,7 +102,7 @@ function index() {
               <h1>Patient Details</h1>
             </div>
           </div>
-          <img className={`${styles.Img}`} src="../images/Doctor2.svg" alt="" />
+          <img className={`${styles.Img}`} src="../Images/Doctor2.svg" alt="" />
         </div>
        
       </div>
