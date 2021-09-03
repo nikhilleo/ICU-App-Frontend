@@ -37,7 +37,7 @@ class Home extends Component<HomeProps, HomeState> {
           localStorage.removeItem("token");
           localStorage.removeItem("user-details");
         } 
-        this.props.router.replace("/intro/1")
+        this.props.router.replace("/Intro/1")
       })
   }
 
