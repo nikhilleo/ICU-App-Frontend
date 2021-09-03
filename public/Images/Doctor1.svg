@@ -63,9 +63,9 @@
 <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
 </filter>
 <linearGradient id="paint0_linear" x1="39.966" y1="204.991" x2="39.966" y2="-2.44369e-05" gradientUnits="userSpaceOnUse">
-<stop stop-color="#808080" stop-opacity="0.251"/>
-<stop offset="0.54" stop-color="#808080" stop-opacity="0.122"/>
-<stop offset="1" stop-color="#808080" stop-opacity="0.102"/>
+<stop stopColor="#808080" stop-opacity="0.251"/>
+<stop offset="0.54" stopColor="#808080" stop-opacity="0.122"/>
+<stop offset="1" stopColor="#808080" stop-opacity="0.102"/>
 </linearGradient>
 </defs>
 </svg>

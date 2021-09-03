@@ -9,7 +9,7 @@ import axios from '../../../axios'
 import { getLocalStorageItem } from 'utils/helper'
 import Loader from 'components/Loader'
 
-function index(props: any) {
+function Index(props: any) {
   const [data, setData]: any = useState();
   useEffect(()=>{
     const token = getLocalStorageItem("token")
@@ -119,4 +119,4 @@ function index(props: any) {
   )
 }
 
-export default index
+export default Index

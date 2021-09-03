@@ -50,9 +50,9 @@
 <path d="M14.6846 67.1411C14.6846 67.1411 21.2344 67.1038 19.6939 69.8911C19.3067 70.6713 18.7513 71.3561 18.0681 71.8967C17.3841 72.4364 16.5898 72.8186 15.7409 73.0143L14.6846 67.1411Z" fill="#FFB0B1"/>
 <defs>
 <linearGradient id="paint0_linear" x1="44.7112" y1="212" x2="44.7112" y2="2.52723e-05" gradientUnits="userSpaceOnUse">
-<stop stop-color="#808080" stop-opacity="0.251"/>
-<stop offset="0.54" stop-color="#808080" stop-opacity="0.122"/>
-<stop offset="1" stop-color="#808080" stop-opacity="0.102"/>
+<stop stopColor="#808080" stop-opacity="0.251"/>
+<stop offset="0.54" stopColor="#808080" stop-opacity="0.122"/>
+<stop offset="1" stopColor="#808080" stop-opacity="0.102"/>
 </linearGradient>
 </defs>
 </svg>
