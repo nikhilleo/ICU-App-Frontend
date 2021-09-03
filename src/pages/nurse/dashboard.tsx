@@ -27,9 +27,11 @@ class Patient extends Component<PatientProps, PatientState> {
   componentDidMount() {
     if (!this.props.isLoggedIn) this.props.router.replace("/")
     else {
-      const token = localStorage.getItem("token")
+      const token = getLocalStorageItem("token")
+      const userDetails = JSON.parse(getLocalStorageItem("user-details") || "");
+      console.log(userDetails)
       axios.get("/patient/getAllPatient", {
-        headers: { Authorization: token, role: "admin" },
+        headers: { Authorization: token, role: userDetails.role },
       })
         .then((res: any) => {
           this.setState({
