@@ -12,7 +12,7 @@ const Category = ({ name, src, onClick }: CategoryProps) => {
   return (
     <div style={{ minWidth: "100%" }} className="mb-3 overflow-auto">
       <div className={`${styles.container} d-flex overflow-auto`}>
-        <img className={styles.patient_profile} src={src ? src : "../images/profile.png"} alt="profile" />
+        <img className={styles.patient_profile} src={src ? src : "Images/profile.png"} alt="profile" />
         <p className="ml-4 normal-black fs-20 lh-20">{name}</p>
         <div className={styles.btn}>
           <ButtonWithIcon onClick={onClick} Icon={RightArrow}>

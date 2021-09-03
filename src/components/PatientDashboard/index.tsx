@@ -9,7 +9,7 @@ function index() {
     <Typography>
       <div className={`${styles.main}   `}>
         <div className=" col d-flex hide-scroll overflow-auto">
-          <img className={`${styles.Img}`} src="../images/Doctor1.svg" alt="" />
+          <img className={`${styles.Img}`} src="../Images/Doctor1.svg" alt="" />
           <div>
             <div className={`${styles.container}  `}>
               <div className={`${styles.Doctor} `}>
