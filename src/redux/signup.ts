@@ -17,7 +17,6 @@ const actions = {
   CLEAR_ERROR: "signup/CLEAR_ERROR",
 }
 
-
 export const validateSignUpUserData = () => (dispatch: any, getState: any) => {
   const { fName, lName, mobile, password } = getState().signUp.userData;
   if (!fName) {
@@ -34,7 +33,7 @@ export const validateSignUpUserData = () => (dispatch: any, getState: any) => {
   } else if (mobile.length !== 10) {
     dispatch(setSignUpError('signup-mobile', 'mobile length must be at least 10 characters long'));
     return false;
-  } 
+  }
   if (!password) {
     dispatch(setSignUpError('password', 'This is a required * field'));
     return false;
@@ -56,12 +55,13 @@ export const setSignUpUserData = (e: any) => (dispatch: any, getState: any) => {
   })
 }
 
+
 export const signUpProcess = (url: any, setPreLoader: any, callback: any) => async (dispatch: any, getState: any) => {
   try {
     const { userData } = getState().signUp;
     const response = await axios.post(url, userData)
     setPreLoader(false)
-    if(response?.data?.message) {
+    if (response?.data?.message) {
       Swal.fire({
         title: 'Success',
         icon: 'success',
@@ -89,10 +89,6 @@ export const setSignUpError = (key: any, message: any) => ({
   type: actions.SET_ERROR,
   key,
   message
-})
-
-export const clearSignUpError = () => ({
-  type: actions.CLEAR_ERROR
 })
 
 const signUpReducer = (state = initialState, action: any) => {

@@ -48,7 +48,7 @@ class Dashboard extends Component<DashboardProps, DashboardState> {
 const mapStateToProps = (state: any, ownProps: any) => {
   const currentUserDetails = JSON.parse(getLocalStorageItem('user-details') || "{}");
   return {
-    isLoggedIn: currentUserDetails && currentUserDetails.fName
+    isLoggedIn: Boolean(currentUserDetails && currentUserDetails.role == "admin")
   }
 }
 

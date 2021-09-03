@@ -114,7 +114,6 @@ class Patient extends Component<PatientProps, PatientState> {
 
 const mapStateToProps = (state: any, ownProps: any) => {
   const currentUserDetails = JSON.parse(getLocalStorageItem('user-details') || "{}");
-  console.log(currentUserDetails)
   return {
     isLoggedIn: currentUserDetails && currentUserDetails.mobile
   }

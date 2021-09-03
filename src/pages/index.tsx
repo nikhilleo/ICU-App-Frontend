@@ -33,6 +33,10 @@ class Home extends Component<HomeProps, HomeState> {
         }
       }).catch((err: any) => {
         console.log(err.response)
+        if(err.response.data?.message == "jwt expired") {
+          localStorage.removeItem("token");
+          localStorage.removeItem("user-details");
+        } 
         this.props.router.replace("/intro/1")
       })
   }

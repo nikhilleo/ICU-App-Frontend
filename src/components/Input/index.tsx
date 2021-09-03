@@ -3,7 +3,7 @@ import React, { CSSProperties, useEffect } from 'react'
 import styles from './index.module.scss'
 
 interface InputProps {
-  Icon: any;
+  Icon?: any;
 	inputProps?: any,
 	onChange?: Function,
   style?: CSSProperties;
@@ -65,7 +65,9 @@ const Input = ({ Icon, style, inputProps, onChange, error, id, value }: InputPro
   return (
     <ErrorWrap id={id} error={error}>
       <div className={styles.inputContainer} style={style}>
-        <span className={styles.inputIcon}><Icon /></span>
+        {Icon ? (
+          <span className={styles.inputIcon}><Icon /></span>
+        ) : null}
         <input
           className={`${styles.mainInput} extra-small-text lh-20`}
           {...(inputProps || {})}

@@ -5,6 +5,7 @@ import { PasswordIcon } from "components/Icons"
 import FormWrapper from "components/FormWrapper";
 import { connect } from "react-redux";
 import { validateLoginUserData, loginProcess, setLoginError, setLoginUserData } from "redux/login"
+import { getLocalStorageItem } from "utils/helper";
 
 interface LoginProps {
   router: any;
@@ -14,6 +15,7 @@ interface LoginProps {
   setLoginError: any;
   loginProcess: any;
   data: any;
+  isLoggedIn: boolean;
   error: object;
 }
 
@@ -21,6 +23,10 @@ interface LoginState { }
 
 class Login extends Component<LoginProps, LoginState> {
   state = {};
+
+  componentDidMount() {
+    if(this.props.isLoggedIn) this.props.router.replace("/admin/dashboard")
+  }
 
   onSubmit = async (e: any) => {
     e.preventDefault();
@@ -35,7 +41,7 @@ class Login extends Component<LoginProps, LoginState> {
   render() {
     const { mobile, password } = this.props.data;
     return (
-      <FormWrapper onSubmit={this.onSubmit} method="Login">
+      <FormWrapper onSubmit={this.onSubmit} method="Admin Login">
         <div className="w-100 mb-4 pb-2">
           <Input
             Icon={PhoneIcon}
@@ -70,9 +76,12 @@ class Login extends Component<LoginProps, LoginState> {
 }
 
 const mapStateToProps = (state: any, ownProps: any) => {
+  const currentUserDetails = JSON.parse(getLocalStorageItem('user-details') || "{}");
+  const  isLoggedIn = Boolean(currentUserDetails && currentUserDetails.mobile)
   return {
     data: state.login.userData,
-    error: state.login.error
+    error: state.login.error,
+    isLoggedIn
   }
 }
 
