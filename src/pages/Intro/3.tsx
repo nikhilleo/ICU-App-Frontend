@@ -24,14 +24,14 @@ class Intro extends Component<IntroProps, IntroState> {
           else this.props.router.replace("/admin/dashboard")
         }
         else {
-          this.props.router.replace("/intro/1")
+          this.props.router.replace("/intro/3")
         }
       }).catch((err: any) => {
         if(err.response.data?.message == "jwt expired") {
           localStorage.removeItem("token");
           localStorage.removeItem("user-details");
         } 
-        this.props.router.replace("/Intro/1")
+        this.props.router.replace("/Intro/3")
       })
   }
 

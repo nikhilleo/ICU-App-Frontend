@@ -106,7 +106,7 @@ class Patient extends Component<PatientProps, PatientState> {
               <div className="mr-3 pr-1">
                 <Category
                   Icon={BoneIcon}
-                  title="Feddback Form"
+                  title="Feedback Form"
                   totalDoctors="21 Doctors"
                 />
               </div>
