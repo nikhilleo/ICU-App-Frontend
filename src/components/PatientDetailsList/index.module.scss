@@ -14,7 +14,7 @@
 
 .List2 {
   margin: 0px !important	;
-  padding: 2px !important;
+  padding: 9px !important;
   width: 203.69px;
   max-height: 72px;
   background: #ffffff;
@@ -22,4 +22,14 @@
   display: flex;
   justify-content: center;
   
+}
+
+.icon_container {
+  //  style={{ marginTop: "9px", marginLeft: "14px" }}
+  margin-top: 9px;
+  margin-left: 14px;
+  svg {
+    width: 100%;
+    height: 100%;
+  }
 }

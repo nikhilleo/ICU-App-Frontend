@@ -7,10 +7,13 @@ import { Component } from "react";
 import { connect } from "react-redux";
 import { getLocalStorageItem } from "utils/helper";
 import axios from "../../axios";
+import Loader from "components/Loader";
+import { BackArrow, LogoutIcon } from 'components/Icons'
+import NurseHeader from "components/NurseHeader"
 
 interface PatientProps {
   router: any;
-  isLoggedIn: boolean;
+  role: string;
   currentUserDetails: any;
   setPreLoader: any;
 }
@@ -25,11 +28,10 @@ class Patient extends Component<PatientProps, PatientState> {
   }
 
   componentDidMount() {
-    if (!this.props.isLoggedIn) this.props.router.replace("/")
+    if (!this.props.role || this.props.role == "admin") this.props.router.replace("/")
     else {
       const token = getLocalStorageItem("token")
       const userDetails = JSON.parse(getLocalStorageItem("user-details") || "");
-      console.log(userDetails)
       axios.get("/patient/getAllPatient", {
         headers: { Authorization: token, role: userDetails.role },
       })
@@ -39,7 +41,6 @@ class Patient extends Component<PatientProps, PatientState> {
           })
         })
         .catch((err: any) => {
-          console.log(err.response)
         })
     }
   }
@@ -50,13 +51,29 @@ class Patient extends Component<PatientProps, PatientState> {
   }
 
   render() {
-    const {currentUserDetails} = this.props
+    const { currentUserDetails } = this.props
+    if (this.state.data.length < 1) {
+      return (
+        <Loader />
+      )
+    }
+
     return (
       <Typography>
-        <div className={`default-container p-4`}>
-        <div style={{ backgroundColor: "blue" }} className="w-100"></div>
+       <NurseHeader router={this.props.router} />
+        <div
+          className={`default-container p-4`}
+          style={{
+            marginTop: "-21vh",
+            borderTopLeftRadius: "42px",
+            borderTopRightRadius: "42px"
+          }}
+        >
+          <div style={{ backgroundColor: "blue" }} className="w-100"></div>
           <div className="p-2 align-self-start w-100">
-            <p className="normal-text normal-black lh-40 pb-5">Hi, {currentUserDetails.fName} Welcome Back</p>
+            <p className="normal-text normal-black lh-40 pb-5">
+              Hi, {currentUserDetails.fName} Welcome Back
+            </p>
             <div className="mt-5">
               <SearchBar />
             </div>
@@ -68,35 +85,35 @@ class Patient extends Component<PatientProps, PatientState> {
               <div className="mx-3 px-1">
                 <Category
                   Icon={DentalIcon}
-                  title="Dental"
+                  title="Infection Control Management"
                   totalDoctors="26 Doctors"
                 />
               </div>
               <div className="mr-3 pr-1">
                 <Category
                   Icon={HeartIcon}
-                  title="Heart"
+                  title="Inventory Management"
                   totalDoctors="18 Doctors"
                 />
               </div>
               <div className="mr-3 pr-1">
                 <Category
                   Icon={BrainIcon}
-                  title="Brain"
+                  title="Maintenance Management"
                   totalDoctors="32 Doctors"
                 />
               </div>
               <div className="mr-3 pr-1">
                 <Category
                   Icon={BoneIcon}
-                  title="Bone"
+                  title="Feddback Form"
                   totalDoctors="21 Doctors"
                 />
               </div>
               <div className="mr-3 pr-1">
                 <Category
                   Icon={DentalIcon}
-                  title="Dental"
+                  title="Incident Management"
                   totalDoctors="26 Doctors"
                 />
               </div>
@@ -107,11 +124,16 @@ class Patient extends Component<PatientProps, PatientState> {
             </div>
             <div>
               {this.state.data.map((item: any) => (
-                <PatientCard onClick={(e: any) => this.handleClick(e, item)} name={`${item.fName} ${item.lName}`} src={item.patinet_image} />
+                <PatientCard
+                  onClick={(e: any) => this.handleClick(e, item)}
+                  name={`${item.fName} ${item.lName}`}
+                  src={item.patinet_image}
+                />
               ))}
             </div>
           </div>
         </div>
+
       </Typography>
     )
   }
@@ -120,7 +142,7 @@ class Patient extends Component<PatientProps, PatientState> {
 const mapStateToProps = (state: any, ownProps: any) => {
   const currentUserDetails = JSON.parse(getLocalStorageItem('user-details') || "{}");
   return {
-    isLoggedIn: currentUserDetails && currentUserDetails.mobile,
+    role: currentUserDetails && currentUserDetails.role,
     currentUserDetails
   }
 }

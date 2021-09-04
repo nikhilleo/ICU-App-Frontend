@@ -5,6 +5,7 @@ import { PasswordIcon } from "components/Icons"
 import FormWrapper from "components/FormWrapper";
 import { connect } from "react-redux";
 import { validateSignUpUserData, setSignUpUserData, setSignUpError, signUpProcess } from "redux/signup";
+import { getLocalStorageItem } from "utils/helper";
 
 interface LoginProps {
   router: any;
@@ -15,6 +16,7 @@ interface LoginProps {
   validateSignUpUserData: any;
   signUpProcess: any;
   error: object;
+  role: string;
 }
 
 interface LoginState {
@@ -24,6 +26,10 @@ interface LoginState {
 class Register extends Component<LoginProps, LoginState> {
   state = {
     data: {}
+  }
+
+  componentDidMount() {
+    if(!this.props.role || this.props.role != "admin") this.props.router.replace(`/`)
   }
 
   onSubmit = async (e: any) => {
@@ -39,7 +45,7 @@ class Register extends Component<LoginProps, LoginState> {
   render() {
     const { fName, lName, mobile, password } = this.props.data;
     return (
-      <FormWrapper onSubmit={this.onSubmit} method="Register">
+      <FormWrapper onSubmit={this.onSubmit} method="Nurse Register">
         <div className="w-100 mb-4 pb-2">
           <Input
             Icon={ProfileIcon}
@@ -102,9 +108,13 @@ class Register extends Component<LoginProps, LoginState> {
 }
 
 const mapStateToProps = (state: any, ownProps: any) => {
+  const currentUserDetails = JSON.parse(getLocalStorageItem('user-details') || "{}");
+  const  isLoggedIn = Boolean(currentUserDetails && currentUserDetails.mobile)
   return {
     data: state.signUp.userData,
-    error: state.signUp.error
+    error: state.signUp.error,
+    isLoggedIn,
+    role: (isLoggedIn && currentUserDetails.role) || null 
   }
 }
 

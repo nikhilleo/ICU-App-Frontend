@@ -8,6 +8,7 @@ import { Component } from 'react'
 import { connect } from 'react-redux'
 import { getLocalStorageItem } from 'utils/helper'
 import axios from "../../axios"
+import Loader from 'components/Loader'
 
 interface DashboardProps {
   router: any;
@@ -32,23 +33,26 @@ class Dashboard extends Component<DashboardProps, DashboardState> {
         headers: { Authorization: token, role: "admin" },
       })
         .then((res: any) => {
-          console.log(res)
           this.setState({
             data: res.data?.allPatient
           })
         })
         .catch((err: any) => {
-          console.log(err.response)
         })
     }
   }
 
   render() {
+    if (this.state.data.length < 1) {
+      return (
+        <Loader />
+      )
+    }
     return(
     <Typography>
       <div className="default-container">
         <div className="mb-3 w-100">
-          <PatientDashboard />
+          <PatientDashboard loader={this.props.setPreLoader} router={this.props.router} />
         </div>
         <div className="d-flex justify-content-between mt-4 w-100">
           <Link href="/admin/add-nurse">
@@ -63,7 +67,7 @@ class Dashboard extends Component<DashboardProps, DashboardState> {
           </Link>
         </div>
         <div className="mt-4 align-self-start w-100 overflow-hidden ">
-          <PatientDashboardTable data={this.state.data} />
+          <PatientDashboardTable router={this.props.router} data={this.state.data} />
         </div>
       </div>
     </Typography>

@@ -9,11 +9,10 @@ interface CategoryProps {
 const Category = ({ Icon, title, totalDoctors }: CategoryProps) => {
   return (
     <div className={`${styles.container} extra-small-text`}>
-      <div className="mt-3">
+      <div className={styles.icon_container}>
       <Icon />
       </div>
-      <p className="Roboto mt-3 fs-16">{title}</p>
-      <p className="Roboto-light fs-10">{totalDoctors}</p>
+      <p className={`${styles.content} Roboto text-center mt-3 fs-16 mb-0`}>{title}</p>
     </div>
   )
 }

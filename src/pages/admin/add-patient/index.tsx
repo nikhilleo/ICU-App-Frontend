@@ -82,7 +82,6 @@ class Register extends Component<LoginProps, LoginState> {
       patient_image,
       diagnosisList
      } = this.props.data;
-     console.log(this.props )
      return (
       <FormWrapper onSubmit={this.onSubmit} method="Add Patient" >
         <div className="w-100 mb-4 pb-2">

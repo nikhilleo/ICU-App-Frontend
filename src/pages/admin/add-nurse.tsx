@@ -39,7 +39,7 @@ class Register extends Component<LoginProps, LoginState> {
   render() {
     const { fName, lName, mobile, password } = this.props.data;
     return (
-      <FormWrapper onSubmit={this.onSubmit} method="Register">
+      <FormWrapper onSubmit={this.onSubmit} method="Add Nurse">
         <div className="w-100 mb-4 pb-2">
           <Input
             Icon={ProfileIcon}

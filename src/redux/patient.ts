@@ -110,12 +110,9 @@ export const PatientAddProcess = (url: any, setPreLoader: any, callback: any) =>
     const patientDetailsRequest = { ...patientData };
     delete patientDetailsRequest.patient_image;
     const response = await axios.post(url, patientDetailsRequest, { headers: { Authorization: token, role: userDetails.role } });
-    console.log(response)
     if (response.data.success && patientData.patient_image) {
-      console.log(patientData.patient_image)
       const data = new FormData();
       await data.append("image", patientData.patient_image);
-      console.log(response.data.patient._id)
       const img_response = await axios.post(
         `patient/uploadPatientImage/${response.data.patient._id}`,
         data,
@@ -123,7 +120,6 @@ export const PatientAddProcess = (url: any, setPreLoader: any, callback: any) =>
           headers: { Authorization: token, role: userDetails.role, 'Content-Type': 'multipart/form-data' },
         },
       );
-      console.log(img_response)
       setPreLoader(false)
       dispatch({
         type: actions.CLEAR_PATIENT_DATA,
@@ -154,7 +150,6 @@ export const PatientAddProcess = (url: any, setPreLoader: any, callback: any) =>
 }
 
 const PatientReducer = (state = initialState, action: any) => {
-  console.log(state)
   switch (action.type) {
     case actions.SET_PATIENT: {
       return {
@@ -166,7 +161,6 @@ const PatientReducer = (state = initialState, action: any) => {
       }
     }
     case actions.CLEAR_PATIENT_DATA: {
-      console.log("object")
       return {
         ...state,
         patientData: {

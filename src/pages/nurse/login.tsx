@@ -42,7 +42,7 @@ class Login extends Component<LoginProps, LoginState> {
   render() {
     const { mobile, password } = this.props.data;
     return (
-      <FormWrapper onSubmit={this.onSubmit} method="Login">
+      <FormWrapper onSubmit={this.onSubmit} method="Nurse Login">
         <div className="w-100 mb-4 pb-2">
           <Input
             Icon={PhoneIcon}

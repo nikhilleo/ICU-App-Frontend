@@ -17,13 +17,10 @@ class Home extends Component<HomeProps, HomeState> {
   componentDidMount() {
     let token = localStorage.getItem("token");
     let userDetails = JSON.parse(getLocalStorageItem('user-details') || "{}");
-    console.log(userDetails)
-    
     axios.get(`/${userDetails.role}/auth`, {
       headers: { Authorization: token, role: userDetails.role },
     })
       .then((res: any) => {
-        console.log(res)
         if (res.data.success) {
           if (res.data.role == "nurse") this.props.router.replace("/nurse/dashboard")
           else this.props.router.replace("/admin/dashboard")
@@ -32,7 +29,6 @@ class Home extends Component<HomeProps, HomeState> {
           this.props.router.replace("/intro/1")
         }
       }).catch((err: any) => {
-        console.log(err.response)
         if(err.response.data?.message == "jwt expired") {
           localStorage.removeItem("token");
           localStorage.removeItem("user-details");

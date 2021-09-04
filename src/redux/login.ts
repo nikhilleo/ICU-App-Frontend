@@ -52,12 +52,10 @@ export const loginProcess = (url: any, setPreLoader: any, callback: any) => asyn
     const { userData } = getState().login;
     const response = await axios.post(url, userData);
     setPreLoader(false);
-    console.log(response)
     if (response.data?.success) {
       let user = Object.assign({}, response.data.user, {
         role: response.data.role,
       });
-      console.log(user)
       localStorage.setItem("user-details", JSON.stringify(user));
       localStorage.setItem("token", response.data.token);
       dispatch({

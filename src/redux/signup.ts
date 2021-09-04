@@ -61,7 +61,6 @@ export const signUpProcess = (url: any, setPreLoader: any, callback: any) => asy
     const { userData } = getState().signUp;
     const response = await axios.post(url, userData);
     setPreLoader(false);
-    console.log(response)
     if (response.data?.success) {
       dispatch({
         type: actions.CLEAR_USER

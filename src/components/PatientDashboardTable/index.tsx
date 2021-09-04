@@ -3,9 +3,15 @@ import { MoreIcon } from 'components/Icons'
 
 interface Iprops {
   data: object[];
+  router: any;
 }
 
-function index({ data = [] }: Iprops) {
+function index({ data = [], router }: Iprops) {
+
+  const handleClick = (e: any, item: any) => {
+    e.preventDefault();
+    router.push(`/patient/patient-details/${item._id}`)
+  }
 
   return (
     <Typography>
@@ -23,7 +29,7 @@ function index({ data = [] }: Iprops) {
                   </tr></thead>
                 <tbody>
                   {data.map((item: any) => (
-                    <tr>
+                    <tr style={{ cursor: "pointer" }} onClick={(e: any) => handleClick(e, item)}>
                       <td>1</td>
                       <td>{`${item.fName} ${item.lName}`}</td>
                       <td>{item.dayIn}</td>

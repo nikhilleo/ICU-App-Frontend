@@ -44,7 +44,6 @@ class Index extends React.Component<ModalProps, ModalState> {
 
   addDiagnosticLists = (e: any) => {
     e.preventDefault();
-    console.log("coming")
     if (!this.state.diagnostic) {
       Swal.fire({
         title: 'error',
