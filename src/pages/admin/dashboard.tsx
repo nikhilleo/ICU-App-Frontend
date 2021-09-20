@@ -15,6 +15,7 @@ interface DashboardProps {
   isLoggedIn: boolean;
   setPreLoader: any;
 }
+
 interface DashboardState {
   data: object[];
 }
@@ -52,7 +53,7 @@ class Dashboard extends Component<DashboardProps, DashboardState> {
     <Typography>
       <div className="default-container">
         <div className="mb-3 w-100">
-          <PatientDashboard loader={this.props.setPreLoader} router={this.props.router} />
+          <PatientDashboard router={this.props.router} />
         </div>
         <div className="d-flex justify-content-between mt-4 w-100">
           <Link href="/admin/add-nurse">

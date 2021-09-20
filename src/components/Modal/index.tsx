@@ -1,8 +1,6 @@
 import React from 'react'
 import { Button, Modal } from "react-bootstrap"
-
 import { AddIcon } from 'components/Icons'
-import { ErrorWrap } from 'components/Input'
 import Swal from 'sweetalert2'
 
 interface ModalProps {
@@ -134,7 +132,6 @@ class Index extends React.Component<ModalProps, ModalState> {
               Save
             </Button>
           </Modal.Footer>
-
         </Modal>
       </div>
     );

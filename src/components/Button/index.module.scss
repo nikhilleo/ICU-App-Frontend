@@ -6,3 +6,20 @@
   border: none;
   color: #ffffff;
 }
+
+.rounded_btn{
+  padding: 0px;
+  transition: all 250ms ease 0s;
+  border: none;
+  margin: 5px;
+  background-color: #d9ddf4;
+  font-size: 1.3em;
+  content: "";
+  width: 19px;
+  height: 18px;
+  border-radius: 50%;
+  outline: none;
+}
+.active {
+  background-color: #2A2AC0 !important;
+}

@@ -1,11 +1,12 @@
 import Typography from 'components/Typography'
 import styles from './index.module.scss'
-import { BackArrow, LogoutIcon, TelescopeIcon } from 'components/Icons'
+import { TelescopeIcon } from 'components/Icons'
 import { SyringeIcon } from 'components/Icons'
 import { HeartIcon1 } from 'components/Icons'
+import DashboardWrapper from 'components/DashboardWrapper'
 import Swal from 'sweetalert2'
 
-function index({ router, loader }: any) {
+const PatientDashboard = ({ router }: any) => {
   const goBack = () => {
     router.back();
   }
@@ -21,25 +22,17 @@ function index({ router, loader }: any) {
     }).then((result) => {
       if (result.isConfirmed) {
         localStorage.clear();
-        router.replace("/")
+        router.replace("/admin/login")
         Swal.fire(
           'Signed Out!',
         )
-      } 
+      }
     })
   }
 
   return (
     <Typography>
-      <div className={`${styles.main} `}>
-      <div className={styles.icon_container}>
-        <div onClick={goBack}>
-          <BackArrow />
-        </div>
-        <div onClick={logout}>
-          <LogoutIcon />
-        </div>
-      </div>
+      <DashboardWrapper goBack={goBack} logout={logout}>
         <div className="col d-flex hide-scroll overflow-auto">
           <img className={`${styles.Img}`} src="../Images/Doctor1.svg" alt="" />
           <div>
@@ -47,7 +40,7 @@ function index({ router, loader }: any) {
               <div className={`${styles.Doctor} `}>
                 <div>
                   <p
-                    className="d-flex fs-20 lh-9 Roboto"
+                    className="d-flex  fs-20 lh-9 Roboto"
                     style={{
                       color: "#8288AC",
                       fontSize: "25px",
@@ -136,9 +129,9 @@ function index({ router, loader }: any) {
           </div>
           <img className={`${styles.Img}`} src="../Images/Doctor2.svg" alt="" />
         </div>
-      </div>
+      </DashboardWrapper>
     </Typography>
   )
 }
 
-export default index
+export default PatientDashboard

@@ -29,7 +29,7 @@ function index({ data = [], router }: Iprops) {
                   </tr></thead>
                 <tbody>
                   {data.map((item: any) => (
-                    <tr style={{ cursor: "pointer" }} onClick={(e: any) => handleClick(e, item)}>
+                    <tr className="cursor-pointer" onClick={(e: any) => handleClick(e, item)}>
                       <td>1</td>
                       <td>{`${item.fName} ${item.lName}`}</td>
                       <td>{item.dayIn}</td>

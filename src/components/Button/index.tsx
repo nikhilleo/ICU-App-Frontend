@@ -6,6 +6,16 @@ interface ButtonProps {
   props?: any;
 }
 
+interface RoundedButtonProps {
+  active: boolean;
+}
+
+export const RoundedButton = ({active}: RoundedButtonProps) => {
+  return (
+    <button className={`${styles.rounded_btn} ${active && styles.active} `} type="button" />
+  )
+}
+
 const Button = ({ children, onClick, props }: ButtonProps) => {
   return (
     <button

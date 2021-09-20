@@ -1,6 +1,5 @@
 import Typography from 'components/Typography'
 import styles from './index.module.scss'
-import PatientDetails from 'components/PatientDetails'
 import { ListIcon, TubeIcon, TrachestomyIcon, CutIcon, BedIcon, VentilatorIcon, ManWithMaskIcon } from "components/Icons"
 import PatientDetailsList from 'components/PatientDetailsList'
 import Button from 'components/Button'
@@ -8,14 +7,16 @@ import { useEffect, useState } from 'react'
 import axios from '../../../axios'
 import { getLocalStorageItem } from 'utils/helper'
 import Loader from 'components/Loader'
+import DashboardWrapper from 'components/DashboardWrapper'
+import Swal from 'sweetalert2'
 
 
-function Index(props: any) {
+function Index({ router }: any) {
   const [data, setData]: any = useState();
   useEffect(() => {
     const token = getLocalStorageItem("token")
     const userDetails = JSON.parse(getLocalStorageItem("user-details") || "");
-    axios.get(`/patient/getPatient/${props.router.query.id}`, {
+    axios.get(`/patient/getPatient/${router.query.id}`, {
       headers: { Authorization: token, role: userDetails.role },
     })
       .then((res: any) => {
@@ -23,24 +24,56 @@ function Index(props: any) {
       })
       .catch((err: any) => {
       })
-  }, [props.router.query.id])
+  }, [router.query.id])
+  const goBack = () => {
+    router.back();
+  }
 
+  const logout = () => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `You're about to signed out!`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, sign out!',
+      cancelButtonText: 'Cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        localStorage.clear();
+        router.replace("/")
+        Swal.fire(
+          'Signed Out!',
+        )
+      }
+    })
+  }
+
+  const handleClick = (e: any) => {
+    e.preventDefault();
+    router.push(`/patient/patient-report-details/${router.query.id}`)
+  }
+  
   if (!data) return (
     <Loader />
   )
+
   return (
     <Typography>
       <div className="default-container  ">
         <div className="mb-3 w-100">
-          <PatientDetails
-            id={data._id}
-            name={`${data.fName} ${data.lName}`}
-            age={data.age}
-            gender={data.gender}
-            src={data.patinet_image}
-            router={props.router}
-            loader={props.setPreLoader}
-          />
+          <DashboardWrapper goBack={goBack} logout={logout}>
+            <div className="w-100 justify-content-center row no-gutters align-items-center mt-4">
+              <div style={{ maxWidth: "110px" }}>
+                <img className="card-img " src={data.patinet_image ? data.patinet_image : "/Images/doctor.png"} alt="Patient Image" />
+              </div>
+              <div className="mt-3 ml-5">
+                <p className="ml-4 d-flex   fs-20 lh-20">Patient Id :- {data._id}</p>
+                <p className="ml-4 d-flex  fs-20 lh-20">Patient Name :- {`${data.fName} ${data.lName}`}</p>
+                <p className="ml-4 d-flex  fs-20 lh-20">Age :- {data.age}</p>
+                <p className="ml-4 d-flex  fs-20 lh-20">Sex :- {data.gender}</p>
+              </div>
+            </div>
+          </DashboardWrapper>
         </div>
         <div className={`${styles.Main} mt-2 d-flex hide-scroll `}>
           <div>
@@ -51,7 +84,7 @@ function Index(props: any) {
           <div className="ml-5">
             <ListIcon />
           </div>
-          <div className={`${styles.nn} ml-5 hide-scroll`}>
+          <div className={`overflow-auto ml-5 hide-scroll`}>
             <ul className="ul blue">
               {data.diagnosisList.map((item: any) => (
                 <li>{item}</li>
@@ -112,6 +145,7 @@ function Index(props: any) {
             props={{
               type: "submit"
             }}
+            onClick={handleClick}
           >
             Open Report Details
           </Button>

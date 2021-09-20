@@ -1,6 +1,6 @@
 import Button from "components/Button"
 import { HeartBlueIcon } from "components/Icons"
-import LogoWrapper from "components/LogoWrapper"
+import LogoWrapper from "components/OwnerLogoWrapper"
 import Typography from "components/Typography"
 
 const FormWrapper = ({ children, method, onSubmit }: any) => {

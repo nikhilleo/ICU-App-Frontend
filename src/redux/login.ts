@@ -13,6 +13,7 @@ const initialState = {
 const actions = {
   SET_USER: "login/SET_USER",
   SET_ERROR: "login/SET_ERROR",
+  CLEAR_USER: "login/CLEAR_USER",
   CLEAR_ERROR: "login/CLEAR_ERROR",
 }
 
@@ -71,6 +72,7 @@ export const loginProcess = (url: any, setPreLoader: any, callback: any) => asyn
           html: `<p>${response.data.message}</p>`,
         })
       }
+      dispatch(clearUserData());
       callback();
     }
   } catch (error: any) {
@@ -85,6 +87,12 @@ export const loginProcess = (url: any, setPreLoader: any, callback: any) => asyn
       })
     }
   }
+}
+
+export const clearUserData = () => (dispatch: any, getState: any) => {
+  dispatch({
+    type: actions.CLEAR_USER
+  })
 }
 
 export const setLoginError = (key: any, message: any) => ({
@@ -106,6 +114,16 @@ const loginReducer = (state = initialState, action: any) => {
         userData: {
           ...state.userData,
           [action.key]: action.value
+        }
+      }
+    }
+    case actions.CLEAR_USER: {
+      return {
+        ...state,
+        isLoggedIn: false,
+        userData: {
+          mobile: "",
+          password: ""
         }
       }
     }

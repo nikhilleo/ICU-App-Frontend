@@ -1,6 +1,6 @@
-import Category from "components/Category";
+import CategoryCard from "components/CategoryCard";
 import PatientCard from "components/PatientCard";
-import { BoneIcon, BrainIcon, DentalIcon, HeartIcon } from "components/Icons";
+import { BackArrow, BoneIcon, BrainIcon, DentalIcon, HeartIcon, LogoutIcon } from "components/Icons";
 import { SearchBar } from "components/Input";
 import Typography from "components/Typography";
 import { Component } from "react";
@@ -8,14 +8,15 @@ import { connect } from "react-redux";
 import { getLocalStorageItem } from "utils/helper";
 import axios from "../../axios";
 import Loader from "components/Loader";
-import { BackArrow, LogoutIcon } from 'components/Icons'
-import NurseHeader from "components/NurseHeader"
+import Swal from "sweetalert2";
+import { clearUserData } from "redux/login"
 
 interface PatientProps {
   router: any;
   role: string;
   currentUserDetails: any;
   setPreLoader: any;
+  clearUserData: any;
 }
 
 interface PatientState {
@@ -50,6 +51,30 @@ class Patient extends Component<PatientProps, PatientState> {
     this.props.router.push(`/patient/patient-details/${item._id}`)
   }
 
+  goBack = () => {
+    this.props.router.back();
+  }
+
+  logout = () => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `You're about to signed out!`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, sign out!',
+      cancelButtonText: 'Cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        localStorage.clear();
+        this.props.clearUserData();
+        this.props.router.replace("/nurse/login")
+        Swal.fire(
+          'Signed Out!',
+        )
+      }
+    })
+  }
+
   render() {
     const { currentUserDetails } = this.props
     if (this.state.data.length < 1) {
@@ -60,7 +85,16 @@ class Patient extends Component<PatientProps, PatientState> {
 
     return (
       <Typography>
-       <NurseHeader router={this.props.router} />
+        <div className="w-100 m-auto" style={{ backgroundColor: "#232EAF", maxWidth: "768px", minHeight: "30vh" }}>
+          <div className="py-3 px-4 d-flex justify-content-between w-100">
+            <div className="cursor-pointer" style={{ width: "19px" }} onClick={this.goBack}>
+              <BackArrow />
+            </div>
+            <div className="cursor-pointer" style={{ width: "19px" }} onClick={this.logout}>
+              <LogoutIcon />
+            </div>
+          </div>
+        </div>
         <div
           className={`default-container p-4`}
           style={{
@@ -83,35 +117,35 @@ class Patient extends Component<PatientProps, PatientState> {
             </div>
             <div style={{ minWidth: "100%" }} className="d-flex hide-scroll overflow-auto">
               <div className="mx-3 px-1">
-                <Category
+                <CategoryCard
                   Icon={DentalIcon}
                   title="Infection Control Management"
                   totalDoctors="26 Doctors"
                 />
               </div>
               <div className="mr-3 pr-1">
-                <Category
+                <CategoryCard
                   Icon={HeartIcon}
                   title="Inventory Management"
                   totalDoctors="18 Doctors"
                 />
               </div>
               <div className="mr-3 pr-1">
-                <Category
+                <CategoryCard
                   Icon={BrainIcon}
                   title="Maintenance Management"
                   totalDoctors="32 Doctors"
                 />
               </div>
               <div className="mr-3 pr-1">
-                <Category
+                <CategoryCard
                   Icon={BoneIcon}
                   title="Feedback Form"
                   totalDoctors="21 Doctors"
                 />
               </div>
               <div className="mr-3 pr-1">
-                <Category
+                <CategoryCard
                   Icon={DentalIcon}
                   title="Incident Management"
                   totalDoctors="26 Doctors"
@@ -148,6 +182,7 @@ const mapStateToProps = (state: any, ownProps: any) => {
 }
 
 const mapDispatchToProps = {
+  clearUserData
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Patient);

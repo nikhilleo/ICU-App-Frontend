@@ -79,9 +79,9 @@ class Register extends Component<LoginProps, LoginState> {
       mobile,
       age,
       gender,
-      patient_image,
       diagnosisList
      } = this.props.data;
+     
      return (
       <FormWrapper onSubmit={this.onSubmit} method="Add Patient" >
         <div className="w-100 mb-4 pb-2">
@@ -175,7 +175,7 @@ class Register extends Component<LoginProps, LoginState> {
         {this.state.imagePreviewUrl ? (
           <div className="w-100 mb-4 pb-2 d-flex justify-content-center">
             <img style={{ maxWidth: "40%" }} src={this.state.imagePreviewUrl} alt="" />
-            <div style={{ cursor: "pointer" }} onClick={this.removeImage}>
+            <div className="cursor-pointer" onClick={this.removeImage}>
               <CloseIcon />
             </div>
           </div>

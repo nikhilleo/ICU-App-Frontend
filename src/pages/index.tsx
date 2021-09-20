@@ -1,5 +1,5 @@
 import { HeartWhiteIcon } from 'components/Icons'
-import LogoWrapper from 'components/LogoWrapper';
+import LogoWrapper from 'components/OwnerLogoWrapper';
 import Typography from 'components/Typography'
 import { Component } from 'react';
 import styles from 'styles/Home.module.css'

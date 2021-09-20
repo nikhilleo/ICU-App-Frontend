@@ -1,6 +1,6 @@
-import { RoundedButton } from 'components/common/Buttons'
+import { RoundedButton } from 'components/Button'
 import { HeartBlueIcon } from 'components/Icons'
-import LogoWrapper from 'components/LogoWrapper'
+import LogoWrapper from 'components/OwnerLogoWrapper'
 import Typography from 'components/Typography'
 import { CSSProperties } from 'react'
 import styles from './index.module.scss'

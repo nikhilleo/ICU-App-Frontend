@@ -12,7 +12,7 @@ const Typography = (props: TypographyInterface) => {
     return null;
   }
   return (
-    <div className={`${styles.default_styles} ${className || ''}`}>
+    <div className={`Roboto ${styles.default_styles} ${className || ''}`}>
      {children}
     </div>
   )
