@@ -50,7 +50,7 @@ function Index({ router }: any) {
 
   const handleClick = (e: any) => {
     e.preventDefault();
-    router.push(`/patient/patient-report-details/${router.query.id}`)
+    router.push(`/patient/select-date&time/${router.query.id}`)
   }
   
   if (!data) return (
