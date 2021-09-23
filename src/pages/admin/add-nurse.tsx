@@ -100,7 +100,6 @@ class Register extends Component<LoginProps, LoginState> {
     )
   }
 }
-
 const mapStateToProps = (state: any, ownProps: any) => {
   return {
     data: state.signUp.userData,

@@ -33,7 +33,7 @@ class Patient extends Component<PatientProps, PatientState> {
     else {
       const token = getLocalStorageItem("token")
       const userDetails = JSON.parse(getLocalStorageItem("user-details") || "");
-      axios.get("/patient/getAllPatient", {
+      axios.get("/patient/getAllPatient", { 
         headers: { Authorization: token, role: userDetails.role },
       })
         .then((res: any) => {
@@ -54,7 +54,7 @@ class Patient extends Component<PatientProps, PatientState> {
   goBack = () => {
     this.props.router.back();
   }
-
+  
   logout = () => {
     Swal.fire({
       title: 'Are you sure?',

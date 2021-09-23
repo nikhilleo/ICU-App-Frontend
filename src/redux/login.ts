@@ -77,6 +77,7 @@ export const loginProcess = (url: any, setPreLoader: any, callback: any) => asyn
     }
   } catch (error: any) {
     setPreLoader(false);
+    console.log(error.response)
     if (error.response.data?.message) {
       Swal.fire({
         title: 'Error',

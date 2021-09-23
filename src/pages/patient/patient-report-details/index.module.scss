@@ -1,0 +1,66 @@
+.scrollmenu {
+  
+    overflow-x: auto;
+    white-space: nowrap;
+    
+    
+  }
+ 
+  
+  .scrollmenu{
+    a {
+      display: inline-block;
+      color: #1f2fa3;
+      text-align: center;
+      padding: 19px 19px 10px 19px;
+      text-decoration: none;
+      font-weight: 1000;
+      font-size: 20px;
+  
+        
+      }
+  }
+  .Main{
+    height: 58.21px;
+   
+    display: flex;
+    align-items: center;
+   padding:40px;
+   
+   align-items: center;
+    flex-wrap: wrap;
+    flex-direction: column;
+    overflow-y: hidden;
+    justify-content: center;
+    overflow-x: scroll;
+  
+  }
+  
+
+.input{
+background-color: #ffffff;
+  border-radius: 6px 0px 0px 6px !important;
+
+}
+.Name{
+  color:#6c757dcf;
+  font-weight: 800;
+}
+.Maincontainer{
+  width: 85%;
+}
+.container1{
+  height:90%;
+  min-width: 100% ;
+}
+
+
+.Submit{
+  margin-top:30px;
+}
+.nnnn{
+  min-height:60vh;
+}
+.ActiveTab{
+  border-bottom: 2.5px solid #212ea8;
+}
