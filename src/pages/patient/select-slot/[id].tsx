@@ -1,26 +1,17 @@
 import Typography from 'components/Typography'
-import React, { Component, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Loader from 'components/Loader'
 import DashboardWrapper from 'components/DashboardWrapper'
 import MonthWiseDays, { DaysWiseTime } from 'components/MonthWiseDays'
 import Swal from 'sweetalert2'
 import Button from 'components/Button'
+import { connect } from 'react-redux'
+import { getLocalStorageItem } from 'utils/helper'
+import { GetPatientDetailsByTime, AddPatientDetailsByTime } from 'redux/patient'
+import axios from '../../../axios'
 
-// useEffect(() => {
-// const token = getLocalStorageItem("token")
-// const userDetails = JSON.parse(getLocalStorageItem("user-details") || "");
-// axios.get(`/patient/getPatient/${router.query.id}`, {
-//   headers: { Authorization: token, role: userDetails.role },
-// })
-//   .then((res: any) => {
-//     if (res.data.success) setData(res.data.patient)
-//   }) 
-//   .catch((err: any) => {
-//   })
-// }, [])
-
-function PatientReportDetails({ router }: any) {
-  const [data, setData]: any = useState({});
+function PatientReportDetails({ router, setPreLoader, GetPatientDetailsByTime, AddPatientDetailsByTime, isLoggedIn }: any) {
+  const [data, setData]: any = useState();
   const [days, setDays]: any[] = useState([]);
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
@@ -33,9 +24,23 @@ function PatientReportDetails({ router }: any) {
   const eveningBatch = ["12:00 AM", "1:00 AM", "2:00 AM", "3:00 AM", "4:00 AM", "5:00 AM", "6:00 AM", "7:00 AM", "8:00 AM", "9:00 AM", "10:00 AM", "11:00 AM"]
   var currentTime = currentDate.getHours();
 
-  if (!data) return (
-    <Loader />
-  )
+  useEffect(() => {
+    if (!isLoggedIn) {
+      router.replace("/");
+      return;
+    }
+    const token = getLocalStorageItem("token");
+    axios.get(`/patient/getPatient/${router.query.id}`, {
+      headers: { Authorization: token },
+    })
+      .then((res: any) => {
+        console.log(res.data)
+        if (res.data.success) setData(res.data.patient)
+      })
+      .catch((err: any) => {
+        console.log(err?.response || err)
+      })
+  }, [router.query.id])
 
   useEffect(() => {
     if (dateTest.getMonth() === month) {
@@ -45,6 +50,10 @@ function PatientReportDetails({ router }: any) {
       setDateTest(new Date(year, month, dateTest.getDate() + 1));
     }
   }, [dateTest])
+
+  if (!data) return (
+    <Loader />
+  )
 
   const goBack = () => {
     router.back();
@@ -71,22 +80,45 @@ function PatientReportDetails({ router }: any) {
 
   const convertTime12to24 = (time12h: any) => {
     const [time, modifier] = time12h.split(" ");
-   
     let [hours, minutes] = time.split(":");
-   
     if (hours === "12") {
       hours = "00";
     }
-   
     if (modifier === "PM") {
       hours = parseInt(hours, 10) + 12;
     }
-   
     return `${hours}:${minutes}`;
   };
-   
+
   const handleClick = () => {
-    router.push(`/patient/patient-report-details/${router.query.id}`)
+    if(!selectedTime || !selectedDate) {
+      Swal.fire({
+        title: 'Error',
+        icon: 'error',
+        showCloseButton: true,
+        cancelButtonText: 'Ok',
+        html: `<p>Please select date and time before moving forward</p>`,
+      })
+      return
+    }
+    let date: any = new Date(selectedDate)
+    var dd = String(date.getDate()).padStart(2, '0');
+    var mm = String(date.getMonth() + 1).padStart(2, '0');
+    var yyyy = date.getFullYear();
+    date = mm + '-' + dd + '-' + yyyy;
+    const [time, modifier] = selectedTime.split(" ");
+    let [hours, minutes] = time.split(":");
+    let formattedTime = `${hours}${modifier.toLowerCase()}`
+    if(parseInt(convertTime12to24(selectedTime).split(":")[0]) == currentTime && currentDate.getDate() == parseInt(selectedDate.split(" ")[2])) {
+      AddPatientDetailsByTime(router.query.id, date, formattedTime, setPreLoader, () => {
+        router.push(`/patient/patient-report-details/${router.query.id}`);
+      })
+    }
+    else {
+      GetPatientDetailsByTime(router.query.id, date, formattedTime, setPreLoader, () => {
+        router.push(`/patient/patient-report-details/${router.query.id}`);
+      });
+    }
   }
 
   return (
@@ -127,7 +159,12 @@ function PatientReportDetails({ router }: any) {
           <div className="row mt-3">
             {eveningBatch.map((item: any) => (
               <div className="col-md-3">
-                <DaysWiseTime disabled={parseInt(convertTime12to24(item).split(":")[0]) > currentTime} time={item} />
+                <DaysWiseTime
+                  onClick={() => { setSelectedTime(item) }}
+                  disabled={parseInt(convertTime12to24(item).split(":")[0]) > currentTime}
+                  time={item}
+                  isSelected={selectedTime == item}
+                />
               </div>
             ))}
           </div>
@@ -138,7 +175,12 @@ function PatientReportDetails({ router }: any) {
             {morningBatch.map((item: any) => {
               return (
                 <div className="col-md-3">
-                  <DaysWiseTime disabled={parseInt(convertTime12to24(item).split(":")[0]) > currentTime} onClick={() => { setSelectedTime(item) }} time={item} />
+                  <DaysWiseTime
+                    disabled={parseInt(convertTime12to24(item).split(":")[0]) > currentTime}
+                    onClick={() => { setSelectedTime(item) }}
+                    time={item}
+                    isSelected={selectedTime == item}
+                  />
                 </div>
               )
             })}
@@ -147,9 +189,9 @@ function PatientReportDetails({ router }: any) {
         <div className="w-75 my-5 pb-4">
           <Button
             props={{
-              type: "submit"
+              type: "submit",
             }}
-          onClick={handleClick}
+            onClick={handleClick}
           >
             Open Report Details
           </Button>
@@ -159,4 +201,17 @@ function PatientReportDetails({ router }: any) {
   )
 }
 
-export default PatientReportDetails
+const mapStateToProps = (state: any, ownProps: any) => {
+  const currentUserDetails = JSON.parse(getLocalStorageItem('user-details') || "{}");
+  const isLoggedIn = Boolean(currentUserDetails && currentUserDetails.mobile)
+  return {
+    isLoggedIn,
+  }
+}
+
+const mapDispatchToProps = {
+  GetPatientDetailsByTime,
+  AddPatientDetailsByTime
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(PatientReportDetails);

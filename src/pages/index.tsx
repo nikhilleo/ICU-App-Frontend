@@ -18,7 +18,7 @@ class Home extends Component<HomeProps, HomeState> {
     let token = localStorage.getItem("token");
     let userDetails = JSON.parse(getLocalStorageItem('user-details') || "{}");
     axios.get(`/${userDetails.role}/auth`, {
-      headers: { Authorization: token, role: userDetails.role },
+      headers: { Authorization: token },
     })
       .then((res: any) => {
         if (res.data.success) {
@@ -44,7 +44,7 @@ class Home extends Component<HomeProps, HomeState> {
           <div className={styles.heart_container}>
             <HeartWhiteIcon />
           </div>
-          <p className="text-center head-text mt-5 pt-4">ICU APP</p>
+          <p className="text-center head-text mt-5 pt-4">LIFELINE APP</p>
           <LogoWrapper style={{ position: "absolute", bottom: "0px" }}>
             <p className="text-center small-text lh-30">Powered By</p>
           </LogoWrapper>

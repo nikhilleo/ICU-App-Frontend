@@ -1,18 +1,28 @@
 import React from 'react'
 import ReportInput from 'components/ReportInput'
-function index() {
+
+function Vitals() {
   return (
     <div>
-       {/* Heart Rate */}
-
-       <ReportInput type="number"  head="Heart Rate" innervalues={[{ name: "HR", colSize: "12" }]} />
-
-{/* Blood Pressure */}
-
-       <ReportInput type="number"  head="Blood Pressure" innervalues={[{name:"SBP",colSize:"6"},{name:"DBP",colSize:"6"},{name:"MBP", colSize:"12"}] } />
-
+      <ReportInput
+        type="number"
+        head="Heart Rate"
+        innervalues={[{ name: "HR", colSize: "12", "data-redux-key": "heart_rate" }]} />
+      <ReportInput
+        type="number"
+        head="Blood Pressure"
+        innervalues={[
+          { name: "SBP", colSize: "6", "data-redux-key": "sbp" },
+          { name: "DBP", colSize: "6", "data-redux-key": "dbp" },
+          { name: "MBP", colSize: "12", "data-redux-key": "mbp" }
+        ]}
+      />
+      <ReportInput
+        type="number"
+        head="Central Venous Pressure"
+        innervalues={[{ name: "cvp", colSize: "12", "data-redux-key": "cvp" }]} />
     </div>
   )
 }
 
-export default index
+export default Vitals

@@ -202,7 +202,7 @@ class Register extends Component<LoginProps, LoginState> {
 
 const mapStateToProps = (state: any, ownProps: any) => {
   return {
-    data: state.patient.patientData,
+    data: state.patient.patientAddData,
     error: state.patient.error
   }
 }

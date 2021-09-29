@@ -31,7 +31,7 @@ class Dashboard extends Component<DashboardProps, DashboardState> {
     else {
       const token = localStorage.getItem("token")
       axios.get("/patient/getAllPatient", {
-        headers: { Authorization: token, role: "admin" },
+        headers: { Authorization: token },
       })
         .then((res: any) => {
           this.setState({

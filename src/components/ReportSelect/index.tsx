@@ -1,28 +1,54 @@
-
 import styles from "./index.module.scss";
+import { ErrorWrap } from "components/Input";
+import { connect } from "react-redux";
+import { setPatientReportDetails } from "redux/patient"
 
-function index({ head, innervalues }) {
-  console.log(innervalues);
+function ReportSelectInput({ head, innervalues, error, setPatientReportDetails, data }: any) {
   return (
     <div className={`${styles.Maincontainer} container py-2 `}>
-      <div> <label><span className="hidden-xs ">
-        <h6 className={`${styles.Name}  `} >{head}</h6>
-      </span></label>
-      </div>
-      <div className="row ">
-      {innervalues.map((item:{Modename:string,colSize:number}) => (
-        <div className={`col-md-${item.colSize} mt-4 `}>
-          <label  className={`${styles.Modeame} container `}>{item.Modename}
-          <input type="checkbox"  className={styles.checkbox} />
-          <span  className="checkmark " />
-        </label>
-       
+      <ErrorWrap id="mode" error={error}>
+        <div data-redux-key="mode"> <label><span className="hidden-xs ">
+          <h6 className={`${styles.Name}`} >{head}</h6>
+        </span></label>
         </div>
-      ))}
-      </div>
+      </ErrorWrap>
+        <div className="row ">
+          {innervalues.map((item: { Modename: string, colSize: number, "data-redux-key": string }) => {
+            console.log(item)
+            return (
+              <div className={`col-md-${item.colSize} mt-4 `}>
+                <label className={`${styles.Modeame} container `}>{item.Modename}
+                  <input
+                    value={item["data-redux-key"]}
+                    name={head}
+                    type="radio"
+                    className={styles.checkbox}
+                    id="mode"
+                    data-redux-key="mode"
+                    checked={item["data-redux-key"] == data?.mode}
+                    onChange={setPatientReportDetails}
+                  />
+                  <span className="checkmark " />
+                </label>
+              </div>
+            )
+          })}
+        </div>
     </div>
   )
 }
 
-export default index
+const mapStateToProps = (state: any, ownProps: any) => {
+  const { patientReportDetails, prdErrors } = state.patient;
+  console.log(patientReportDetails)
+  return {
+    data: patientReportDetails,
+    error: prdErrors
+  }
+}
 
+const mapDispatchToProps = {
+  setPatientReportDetails
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ReportSelectInput);

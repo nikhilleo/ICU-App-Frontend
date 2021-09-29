@@ -16,7 +16,7 @@ class Intro extends Component<IntroProps, IntroState> {
     let token = localStorage.getItem("token");
     let userDetails = JSON.parse(getLocalStorageItem('user-details') || "{}");
     axios.get(`/${userDetails.role}/auth`, {
-      headers: { Authorization: token, role: userDetails.role },
+      headers: { Authorization: token },
     })
       .then((res: any) => {
         if (res.data.success) {

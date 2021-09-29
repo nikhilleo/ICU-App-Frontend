@@ -10,14 +10,13 @@ import Loader from 'components/Loader'
 import DashboardWrapper from 'components/DashboardWrapper'
 import Swal from 'sweetalert2'
 
-
 function Index({ router }: any) {
   const [data, setData]: any = useState();
+
   useEffect(() => {
     const token = getLocalStorageItem("token")
-    const userDetails = JSON.parse(getLocalStorageItem("user-details") || "");
     axios.get(`/patient/getPatient/${router.query.id}`, {
-      headers: { Authorization: token, role: userDetails.role },
+      headers: { Authorization: token },
     })
       .then((res: any) => {
         if (res.data.success) setData(res.data.patient)
@@ -25,6 +24,7 @@ function Index({ router }: any) {
       .catch((err: any) => {
       })
   }, [router.query.id])
+
   const goBack = () => {
     router.back();
   }
@@ -50,7 +50,7 @@ function Index({ router }: any) {
 
   const handleClick = (e: any) => {
     e.preventDefault();
-    router.push(`/patient/select-date&time/${router.query.id}`)
+    router.push(`/patient/select-slot/${router.query.id}`)
   }
   
   if (!data) return (

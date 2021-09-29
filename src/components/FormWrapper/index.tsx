@@ -11,7 +11,7 @@ const FormWrapper = ({ children, method, onSubmit }: any) => {
           <div className="mb-4">
             <HeartBlueIcon />
           </div>
-          <p className="normal-text blue lh-40 mb-5 pb-4">ICU APP</p>
+          <p className="normal-text blue lh-40 mb-5 pb-4">LIFELINE APP</p>
           <p className="head-text mb-5 pb-3 dark-blue lh-40">{method}</p>
           {children}
           <div className="w-100 my-5 pb-4">
