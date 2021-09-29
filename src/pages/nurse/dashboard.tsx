@@ -48,6 +48,7 @@ class Patient extends Component<PatientProps, PatientState> {
   handleClick = (e: any, item: any) => {
     e.preventDefault();
     this.props.router.push(`/patient/patient-details/${item._id}`)
+    localStorage.setItem("patient-id", item._id)
   }
 
   goBack = () => {

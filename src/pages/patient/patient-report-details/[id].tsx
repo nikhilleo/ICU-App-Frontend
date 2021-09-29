@@ -48,9 +48,9 @@ function PatientReportDetails({
   const [data, setData]: any = useState();
 
   useEffect(() => {
-    if (router.query.id) {
+    const id = localStorage.getItem("patient-id")
       const token = getLocalStorageItem("token")
-      axios.get(`/patient/getPatient/${router.query.id}`, {
+      axios.get(`/patient/getPatient/${id}`, {
         headers: { Authorization: token },
       })
         .then((res: any) => {
@@ -62,15 +62,14 @@ function PatientReportDetails({
         .catch((err: any) => {
           console.log(err)
         })
-    }
-  }, [])
+  }, [router.query.id])
 
-  // if (!data) return (
-  //   <Loader />
-  // )
+  if (!data) return (
+    <Loader />
+  )
 
   const goBack = () => {
-    router.router.back();
+    router.back();
   }
 
   const logout = () => {
