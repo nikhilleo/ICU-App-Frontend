@@ -9,6 +9,8 @@ import { connect } from 'react-redux'
 import { getLocalStorageItem } from 'utils/helper'
 import { GetPatientDetailsByTime, AddPatientDetailsByTime } from 'redux/patient'
 import axios from '../../../axios'
+import SUMMARY from 'components/SUMMARY'
+import Average from 'components/Average'
 
 function PatientReportDetails({ router, setPreLoader, GetPatientDetailsByTime, AddPatientDetailsByTime, isLoggedIn }: any) {
   const [data, setData]: any = useState();
@@ -135,11 +137,12 @@ function PatientReportDetails({ router, setPreLoader, GetPatientDetailsByTime, A
               <p className="ml-4 d-flex  fs-20 lh-20">Age :- {data.age}</p>
               <p className="ml-4 d-flex  fs-20 lh-20">Sex :- {data.gender}</p>
             </div>
-          </div>
+          </div> 
         </DashboardWrapper>
         <div className="w-100 p-4">
-          <div className="d-flex py-1 small-text normal-black mb-3">
+          <div className="d-flex py-1 small-text normal-black mb-3 ">
             <span>{`${months[month]} ${year}`}</span>
+        
           </div>
           <div className="d-flex w-100 overflow-auto hide-scroll mt-3">
             {days?.length > 0 ? days.map((item: any) => (
@@ -153,12 +156,16 @@ function PatientReportDetails({ router, setPreLoader, GetPatientDetailsByTime, A
               />
             )) : null}
           </div>
-          <div className="d-flex py-1 small-text normal-black mb-3">
+          <div className="d-flex py-1 small-text normal-black mb-3 justify-content-between align-items-center overflow-auto hide-scroll ">
             <span>First Batch</span>
+              <div className="d-flex ">
+              <SUMMARY />
+              <Average/>
+            </div>
           </div>
-          <div className="row mt-3">
+          <div className="row mt-3 ">
             {eveningBatch.map((item: any) => (
-              <div className="col-md-3">
+              <div className="col-md-3 ">
                 <DaysWiseTime
                   onClick={() => { setSelectedTime(item) }}
                   disabled={parseInt(convertTime12to24(item).split(":")[0]) > currentTime}
@@ -168,8 +175,12 @@ function PatientReportDetails({ router, setPreLoader, GetPatientDetailsByTime, A
               </div>
             ))}
           </div>
-          <div className="d-flex py-1 small-text normal-black mb-3">
+          <div className="d-flex py-1 small-text normal-black mb-3 justify-content-between align-items-center hide-scroll overflow-auto">
             <span>Second Batch</span>
+              <div className="d-flex ">
+              <SUMMARY />
+              <Average/>
+            </div>
           </div>
           <div className="row mt-3">
             {morningBatch.map((item: any) => {

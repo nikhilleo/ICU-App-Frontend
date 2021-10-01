@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import DOSESMODAL from 'components/DOSESMODAL'
 import styles from './index.module.scss'
 import { DeleteIcon } from 'components/Icons'
+// import SUMMARY from 'components/SUMMARY'
 import {
 
   clearDiagonasticList,
@@ -33,7 +34,7 @@ class Register extends Component<LoginProps, LoginState> {
 
 
         <div className={`${styles.inputContainer} mt-4 `}  >
-          <div className={`${styles.Container} hide-scroll col-lg-11`}>
+          <div className={`${styles.Container} hide-scroll `}>
             <div className={styles.main}>
               <table className={`${styles.table} table mt-2`}  >
                 <thead className={styles.thead} >
@@ -78,6 +79,7 @@ class Register extends Component<LoginProps, LoginState> {
             </div>
           </div>
         </div>
+        
       </div>
     )
   }
