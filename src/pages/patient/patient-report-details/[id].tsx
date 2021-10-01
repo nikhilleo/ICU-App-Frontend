@@ -10,6 +10,7 @@ import ABG from 'components/ABG'
 import INTAKE from 'components/INTAKE'
 import OUTPUT from 'components/OUTPUT'
 import DIABETICFLOW from 'components/DIABETICFLOW'
+import DOSES from 'components/DOSES'
 import {
   submitVitalsDetails,
   validateVitalsData,
@@ -187,6 +188,13 @@ function PatientReportDetails({
               >
                 D I A B E T I C  F L O W
               </a>
+              <a
+                href="#"
+                className={currentReportTab === "ReportsDOSES" ? styles.ActiveTab : ""}
+                onClick={() => setReportTab("ReportsDOSES", 6)}
+              >
+                D O S E S 
+              </a>
             </div>
           </div>
           <div className={`${styles.nnnn}`} >
@@ -196,6 +204,7 @@ function PatientReportDetails({
             {currentReportTab === "ReportsINTAKE" && <INTAKE />}
             {currentReportTab === "ReportsOUTPUT" && <OUTPUT />}
             {currentReportTab === "ReportsDIABETICFLOW" && <DIABETICFLOW />}
+            {currentReportTab === "ReportsDOSES" && <DOSES />}
           </div>
         </div>
         <div className={`${styles.Submit} w-75 my-5   pb-4`}>

@@ -488,3 +488,49 @@ export const BlackClockIcon = () => (
     <path d="M9.14001 4.55701V9.80701H14.145" stroke="#200E32" stroke-linecap="round" />
   </svg>
 )
+export const AddColorIcon = () => (
+  
+<svg width="86" height="86" viewBox="0 0 84 84" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g filter="url(#filter0_d)">
+<path d="M42 61C56.9117 61 69 48.9117 69 34C69 19.0883 56.9117 7 42 7C27.0883 7 15 19.0883 15 34C15 48.9117 27.0883 61 42 61Z" fill="url(#paint0_linear)"/>
+</g>
+<path d="M30.8662 34.313L53.5922 34.412" stroke="#F7EEEE" stroke-width="6" stroke-miterlimit="10" stroke-linecap="square"/>
+<path d="M42.2782 23L42.1792 45.726" stroke="#F7EEEE" stroke-width="6" stroke-miterlimit="10" stroke-linecap="square"/>
+<defs>
+<filter id="filter0_d" x="0" y="0" width="84" height="84" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="8"/>
+<feGaussianBlur stdDeviation="7.5"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.478431 0 0 0 0 0.443137 0 0 0 0 0.909804 0 0 0 0.341 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+</filter>
+<linearGradient id="paint0_linear" x1="42" y1="61" x2="42" y2="7" gradientUnits="userSpaceOnUse">
+<stop stop-color="#77A5F8"/>
+<stop offset="1" stop-color="#D5A3FF"/>
+</linearGradient>
+</defs>
+</svg>
+)
+export const DeleteIcon = () => (
+<svg width="73" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle cx="11.5" cy="11.5" r="11" fill="url(#paint0_linear1)" stroke="url(#paint1_linear)"/>
+<path d="M16.0352 10.1143C16.0352 10.1143 15.7032 14.2385 15.5102 15.9761C15.5052 16.1591 15.4637 16.3393 15.3879 16.5061C15.3122 16.6728 15.2038 16.8226 15.0692 16.9467C14.9346 17.0709 14.7765 17.1667 14.6042 17.2287C14.4319 17.2906 14.249 17.3174 14.0662 17.3075C12.4662 17.3365 10.8662 17.3385 9.27317 17.3075C9.09406 17.3135 8.91553 17.2839 8.74794 17.2204C8.58034 17.1569 8.427 17.0608 8.2968 16.9376C8.16659 16.8144 8.0621 16.6666 7.98939 16.5028C7.91667 16.3389 7.87717 16.1623 7.87317 15.9831C7.67817 14.2275 7.34717 10.1143 7.34717 10.1143" stroke="#F0EEF2" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M16.882 8.13666H6.5" stroke="#F0EEF2" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M14.881 8.13666C14.6478 8.13657 14.4219 8.0557 14.2416 7.90781C14.0613 7.75991 13.9378 7.55412 13.892 7.32541L13.744 6.58118C13.6994 6.41424 13.6009 6.26672 13.4638 6.1616C13.3267 6.05649 13.1587 5.99967 12.986 6H10.395C10.2224 5.99989 10.0547 6.05681 9.91777 6.16191C9.78087 6.26701 9.68252 6.4144 9.638 6.58118L9.489 7.32541C9.44324 7.55412 9.31971 7.75991 9.13941 7.90781C8.95911 8.0557 8.73317 8.13657 8.5 8.13666" stroke="#F0EEF2" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<defs>
+<linearGradient id="paint0_linear1" x1="11.5" y1="0" x2="11.5" y2="23" gradientUnits="userSpaceOnUse">
+<stop stop-color="#858687"/>
+<stop offset="1" stop-color="#505862"/>
+</linearGradient>
+<linearGradient id="paint1_linear" x1="11.5" y1="0" x2="11.5" y2="23" gradientUnits="userSpaceOnUse">
+<stop stop-color="#858687"/>
+<stop offset="1" stop-color="#505862"/>
+</linearGradient>
+</defs>
+</svg>
+
+
+
+)

@@ -1,0 +1,26 @@
+.inputContainer {
+ 
+  margin: 0px 38px 0px 0px;
+  display: -moz-box;
+  display: flex;
+  -moz-box-align: center;
+  align-items: center;
+  justify-content: flex-end;
+
+}
+.button{
+ align-items: center;
+  border-radius: 30px;
+  width:45%;
+  background-color: #1C319C;
+
+}
+.modal{
+  display: flex !important;
+  justify-content: center !important;
+}
+.input{
+  align-items: center;
+  text-align: center;
+  border-radius: 30px;
+}
