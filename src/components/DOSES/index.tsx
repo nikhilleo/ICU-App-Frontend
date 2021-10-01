@@ -32,7 +32,7 @@ class Register extends Component<LoginProps, LoginState> {
 
 
 
-        <div className={`${styles.inputContainer}  `}  >
+        <div className={`${styles.inputContainer} mt-4 `}  >
           <div className={`${styles.Container} hide-scroll col-lg-11`}>
             <div className={styles.main}>
               <table className={`${styles.table} table mt-2`}  >

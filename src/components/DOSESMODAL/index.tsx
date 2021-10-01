@@ -76,11 +76,11 @@ class Index extends React.Component<ModalProps, ModalState> {
 
         <Modal className="mt-5" show={this.state.show} onHide={this.closeDiagonosticModal}>
         
-          <Modal.Body>
-            <div>
-            <div className="container contact-form">
+          <Modal.Body >
+            <div >
+            <div className= "container contact-form">
         
-        <form method="post">
+        <form method="post" >
          
           <div className="row d-flex justify-content-center">
             <div className="col-md-8">
