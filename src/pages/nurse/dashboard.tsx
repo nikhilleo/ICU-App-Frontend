@@ -32,15 +32,27 @@ class Patient extends Component<PatientProps, PatientState> {
     if (!this.props.role || this.props.role == "admin") this.props.router.replace("/")
     else {
       const token = getLocalStorageItem("token")
-      axios.get("/patient/getAllPatient", { 
+      this.props.setPreLoader(true);
+      axios.get("/patient/getAllPatient", {
         headers: { Authorization: token },
       })
         .then((res: any) => {
+          this.props.setPreLoader(false);
           this.setState({
             data: res.data?.allPatient
           })
         })
         .catch((err: any) => {
+          this.props.setPreLoader(false);
+          Swal.fire({
+            title: 'Error',
+            icon: 'error',
+            showCloseButton: true,
+            cancelButtonText: 'Ok',
+            html: `<p>Please Login again and Retry</p>`,
+          })
+          localStorage.clear();
+          this.props.router.replace("/");
         })
     }
   }
@@ -54,7 +66,7 @@ class Patient extends Component<PatientProps, PatientState> {
   goBack = () => {
     this.props.router.back();
   }
-  
+
   logout = () => {
     Swal.fire({
       title: 'Are you sure?',
@@ -77,12 +89,6 @@ class Patient extends Component<PatientProps, PatientState> {
 
   render() {
     const { currentUserDetails } = this.props
-    if (this.state.data.length < 1) {
-      return (
-        <Loader />
-      )
-    }
-
     return (
       <Typography>
         <div className="w-100 m-auto" style={{ backgroundColor: "#232EAF", maxWidth: "768px", minHeight: "30vh" }}>

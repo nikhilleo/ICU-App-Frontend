@@ -11,13 +11,12 @@ function MyApp({ Component, pageProps, router }: AppProps) {
 
   return (
     <>
-      {preloader ? (<Loader />) : (
-        <Component
-          {...pageProps}
-          router={router}
-          setPreLoader={setPreLoader}
-        />
-      )}
+      {preloader ? (<Loader />) : null}
+      <Component
+        {...pageProps}
+        router={router}
+        setPreLoader={setPreLoader}
+      />
     </>
   )
 }

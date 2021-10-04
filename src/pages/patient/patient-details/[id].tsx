@@ -12,18 +12,27 @@ import Swal from 'sweetalert2'
 
 function Index({ router }: any) {
   const [data, setData]: any = useState();
+  const id = getLocalStorageItem("patient-id");
 
   useEffect(() => {
-    const token = getLocalStorageItem("token")
-    axios.get(`/patient/getPatient/${router.query.id}`, {
+    const token = getLocalStorageItem("token");
+    axios.get(`/patient/getPatient/${id}`, {
       headers: { Authorization: token },
     })
       .then((res: any) => {
         if (res.data.success) setData(res.data.patient)
       })
       .catch((err: any) => {
+        router.replace("/")
+        Swal.fire({
+          title: 'Error',
+          icon: 'error',
+          showCloseButton: true,
+          cancelButtonText: 'Ok',
+          html: `<p>Something went wrong. Please try again</p>`,
+        })
       })
-  }, [router.query.id])
+  }, [])
 
   const goBack = () => {
     router.back();
@@ -50,7 +59,7 @@ function Index({ router }: any) {
 
   const handleClick = (e: any) => {
     e.preventDefault();
-    router.push(`/patient/select-slot/${router.query.id}`)
+    router.push(`/patient/select-slot/${id}`)
   }
   
   if (!data) return (
@@ -67,10 +76,10 @@ function Index({ router }: any) {
                 <img className="card-img " src={data.patinet_image ? data.patinet_image : "/Images/doctor.png"} alt="Patient Image" />
               </div>
               <div className="mt-3 ml-5">
-                <p className="ml-4 d-flex   fs-20 lh-20">Patient Id :- {data._id}</p>
-                <p className="ml-4 d-flex  fs-20 lh-20">Patient Name :- {`${data.fName} ${data.lName}`}</p>
-                <p className="ml-4 d-flex  fs-20 lh-20">Age :- {data.age}</p>
-                <p className="ml-4 d-flex  fs-20 lh-20">Sex :- {data.gender}</p>
+                <p className="ml-4 d-flex   fs-20 lh-20">Patient Id :- {data._id || ""}</p>
+                <p className="ml-4 d-flex  fs-20 lh-20">Patient Name :- {`${data.fName || ""} ${data.lName || ""}`}</p>
+                <p className="ml-4 d-flex  fs-20 lh-20">Age :- {data.age || ""}</p>
+                <p className="ml-4 d-flex  fs-20 lh-20">Sex :- {data.gender || ""}</p>
               </div>
             </div>
           </DashboardWrapper>

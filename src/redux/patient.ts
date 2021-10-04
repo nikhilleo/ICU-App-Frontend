@@ -12,13 +12,7 @@ const initialState = {
     patient_image: "",
     diagnosisList: []
   },
-  patientReportDetails: {
-    "heart_rate": '',
-    "sbp": '',
-    "dbp": '',
-    "mbp": '',
-    "cvp": ''
-  },
+  patientReportDetails: {},
   currentReportTab: "ReportsVitals",
   successedTabCount: 0,
   error: {},
@@ -176,7 +170,8 @@ export const GetPatientDetailsByTime = (patient_id: string, date: string, time: 
     );
     loader(false);
     if(res.data.success) {
-      callback();
+      console.log(res.data)
+      // callback();
     }
     else if(res.data?.message) {
       Swal.fire({
@@ -710,6 +705,65 @@ export const submitOutputDetails = (loader = (loader: any) => { }, callback = ()
       payload,
       { headers: { Authorization: token } }
     );
+    if(res.data.success) {
+      dispatch({
+        type: actions.SET_REPORT_SUCCESSED_TAB,
+        value: 5,
+      })
+      callback();
+    }
+    loader(false)
+  } catch (error: any) {
+    loader(false);
+    if (error.response?.data?.message) {
+      Swal.fire({
+        title: 'Error',
+        icon: 'error',
+        showCloseButton: true,
+        cancelButtonText: 'Ok',
+        html: `<p>${error.response.data.message}</p>`,
+      })
+    }
+  }
+}
+
+export const validateDiabeticFlowData = () => (dispatch: any, getState: any) => {
+  const {
+    insuline,
+    value
+  } = getState().patient.patientReportDetails;
+  if (!insuline) {
+    dispatch(setPRDError('insuline', 'This is a required * field'));
+    return false;
+  }
+  if (!value) {
+    dispatch(setPRDError('value', 'This is a required * field'));
+    return false;
+  }
+  dispatch(setPRDError('', ''));
+  return true;
+}
+
+export const submitDiabeticFlowDetails = (loader = (loader: any) => { }, callback = () => { }) => async (dispatch: any, getState: any) => {
+  try {
+    loader(true);
+    const {
+      insuline,
+      value
+    } = getState().patient.patientReportDetails;
+    const time_id = getLocalStorageItem("time_id");
+    const token = getLocalStorageItem("token");
+    const payload = {
+      time_id,
+      insuline,
+      value
+    };
+    const res = await axios.post(
+      "https://icu-application.herokuapp.com/diabeticFlow/addDiabeticFlow",
+      payload,
+      { headers: { Authorization: token } }
+    );
+    console.log(res)
     if(res.data.success) {
       dispatch({
         type: actions.SET_REPORT_SUCCESSED_TAB,

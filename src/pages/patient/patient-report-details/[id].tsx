@@ -22,6 +22,8 @@ import {
   validateIntakeData,
   submitIntakeDetails,
   validateOutputData,
+  validateDiabeticFlowData,
+  submitDiabeticFlowDetails,
   submitOutputDetails,
 } from 'redux/patient'
 import { connect } from 'react-redux'
@@ -42,6 +44,8 @@ function PatientReportDetails({
   submitIntakeDetails,
   validateOutputData,
   submitOutputDetails,
+  validateDiabeticFlowData,
+  submitDiabeticFlowDetails,
   isLoggedIn,
   currentReportTab,
   setReportTab,
@@ -49,25 +53,28 @@ function PatientReportDetails({
   const [data, setData]: any = useState();
 
   useEffect(() => {
-    const id = localStorage.getItem("patient-id")
-      const token = getLocalStorageItem("token")
-      axios.get(`/patient/getPatient/${id}`, {
-        headers: { Authorization: token },
+    const id = getLocalStorageItem("patient-id")
+    const token = getLocalStorageItem("token")
+    setPreLoader(true);
+    axios.get(`/patient/getPatient/${id}`, {
+      headers: { Authorization: token },
+    })
+      .then((res: any) => {
+        setPreLoader(false);
+        if (res.data.success) setData(res.data.patient)
       })
-        .then((res: any) => {
-          console.log(res)
-          if (res.data.success) {
-            setData(res.data.patient, "sds")
-          }
+      .catch((err: any) => {
+        setPreLoader(false);
+        router.replace("/")
+        Swal.fire({
+          title: 'Error',
+          icon: 'error',
+          showCloseButton: true,
+          cancelButtonText: 'Ok',
+          html: `<p>Something went wrong. Please try again</p>`,
         })
-        .catch((err: any) => {
-          console.log(err)
-        })
-  }, [router.query.id])
-
-  if (!data) return (
-    <Loader />
-  )
+      })
+  }, [])
 
   const goBack = () => {
     router.back();
@@ -120,9 +127,10 @@ function PatientReportDetails({
         }
         break;
       case "ReportsDIABETICFLOW":
-        //call add ReportsDIABETICFLOW api
+        if (validateDiabeticFlowData()) {
+          submitDiabeticFlowDetails(setPreLoader, () => setReportTab("ReportsDIABETICFLOW", 6));
+        }
         break;
-
       default:
         break;
     }
@@ -137,10 +145,10 @@ function PatientReportDetails({
               <img className="card-img " src={data?.patinet_image ? data.patinet_image : "/Images/doctor.png"} alt="Patient Image" />
             </div>
             <div className="mt-3 ml-5">
-              <p className="ml-4 d-flex   fs-20 lh-20">Patient Id :- {data?._id}</p>
-              <p className="ml-4 d-flex  fs-20 lh-20">Patient Name :- {`${data?.fName} ${data?.lName}`}</p>
-              <p className="ml-4 d-flex  fs-20 lh-20">Age :- {data?.age}</p>
-              <p className="ml-4 d-flex  fs-20 lh-20">Sex :- {data?.gender}</p>
+              <p className="ml-4 d-flex   fs-20 lh-20">Patient Id :- {data?._id || ""}</p>
+              <p className="ml-4 d-flex  fs-20 lh-20">Patient Name :- {`${data?.fName || ""} ${data?.lName || ""}`}</p>
+              <p className="ml-4 d-flex  fs-20 lh-20">Age :- {data?.age || ""}</p>
+              <p className="ml-4 d-flex  fs-20 lh-20">Sex :- {data?.gender || ""}</p>
             </div>
           </div>
         </DashboardWrapper>
@@ -243,6 +251,8 @@ const mapDispatchToProps = {
   submitIntakeDetails,
   validateOutputData,
   submitOutputDetails,
+  validateDiabeticFlowData,
+  submitDiabeticFlowDetails,
   setReportTab,
 }
 

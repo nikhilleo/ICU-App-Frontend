@@ -9,6 +9,7 @@ import { connect } from 'react-redux'
 import { getLocalStorageItem } from 'utils/helper'
 import axios from "../../axios"
 import Loader from 'components/Loader'
+import Swal from 'sweetalert2'
 
 interface DashboardProps {
   router: any;
@@ -30,26 +31,33 @@ class Dashboard extends Component<DashboardProps, DashboardState> {
     if (!this.props.isLoggedIn) this.props.router.replace("/")
     else {
       const token = localStorage.getItem("token")
+      this.props.setPreLoader(true);
       axios.get("/patient/getAllPatient", {
         headers: { Authorization: token },
       })
         .then((res: any) => {
+          this.props.setPreLoader(false);
           this.setState({
             data: res.data?.allPatient
           })
         })
         .catch((err: any) => {
+          this.props.setPreLoader(false);
+          Swal.fire({
+            title: 'Error',
+            icon: 'error',
+            showCloseButton: true,
+            cancelButtonText: 'Ok',
+            html: `<p>Please Login again and Retry</p>`,
+          })
+          localStorage.clear();
+          this.props.router.replace("/");
         })
     }
   }
 
   render() {
-    if (this.state.data.length < 1) {
-      return (
-        <Loader />
-      )
-    }
-    return(
+    return (
     <Typography>
       <div className="default-container">
         <div className="mb-3 w-100">

@@ -4,7 +4,6 @@ import styles from './index.module.scss'
 interface DashboardWrapperProps {
   day: string;
   date: string;
-  isActiveDate: boolean;
   isSelected: boolean;
   disabled: boolean;
   onClick: () => any;
@@ -28,10 +27,10 @@ export const DaysWiseTime = ({ time, onClick, disabled, isSelected }: DayWiseTim
   )
 }
 
-const MonthWiseDays = ({ date, day, isActiveDate, isSelected, disabled, onClick }: DashboardWrapperProps) => (
+const MonthWiseDays = ({ date, day, isSelected, disabled, onClick }: DashboardWrapperProps) => (
   <div
     onClick={!disabled ? onClick : () => { }}
-    className={`${styles.main} ${(isActiveDate || isSelected) ? styles.active : null} ${disabled ? styles.disabled : null} fs-18 lh-20`}
+    className={`${styles.main} ${(isSelected) ? styles.active : null} ${disabled ? styles.disabled : null} fs-18 lh-20`}
   >
     <span className="mb-3">{day}</span>
     <span className="mt-1">{date}</span>
