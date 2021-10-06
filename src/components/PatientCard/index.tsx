@@ -6,11 +6,12 @@ interface CategoryProps {
 	name: string;
   src: string;
   onClick: any;
+  key: string;
 }
 
-const Category = ({ name, src, onClick }: CategoryProps) => {
+const Category = ({ name, src, onClick, key }: CategoryProps) => {
   return (
-    <div style={{ minWidth: "100%" }} className="mb-3 overflow-auto">
+    <div key={key} style={{ minWidth: "100%" }} className="mb-3 overflow-auto">
       <div className={`${styles.container} d-flex overflow-auto`}>
         <img className={styles.patient_profile} src={src ? src : "../Images/profile.png"} alt="profile" />
         <p className="ml-4 normal-black fs-20 lh-20">{name}</p>

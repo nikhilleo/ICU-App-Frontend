@@ -1,19 +1,9 @@
 import React from 'react'
 import { Button, Modal } from "react-bootstrap"
-import { AddColorIcon } from 'components/Icons'
 import Swal from 'sweetalert2'
-import ButtonWithIcon from 'components/Button/ButtonWithIcon'
 import styles from './index.module.scss'
-interface ModalProps {
-  setDiagonasticList: any;
-  clearDiagonasticList: any;
-  diagnosisList: any;
-}
-interface ModalState {
-  show: boolean;
-  diagnostic: string;
-}
-class Index extends React.Component<ModalProps, ModalState> {
+
+class Index extends React.Component<any, any> {
   state = {
     show: false,
     diagnostic: "",
@@ -29,28 +19,13 @@ class Index extends React.Component<ModalProps, ModalState> {
     })
   }
   closeDiagonosticModal = () => {
-    this.props.clearDiagonasticList("diagnosisList");
     this.setState({
       show: false,
       diagnostic: "",
     });
   }
   saveDiagonosticModal = () => {
-    if (this.props.diagnosisList.length < 1) {
-      Swal.fire({
-        title: 'error',
-        icon: 'error',
-        showCloseButton: true,
-        cancelButtonText: 'Ok',
-        html: `<p>Add atleast one test to proceed</p>`,
-      })
-    }
-    else {
-      this.setState({
-        show: false,
-        diagnostic: "",
-      });
-    }
+    
   }
 
   render() {
@@ -79,7 +54,7 @@ class Index extends React.Component<ModalProps, ModalState> {
                       <div className="form-group">
                         <div>
                           <h6 className="ml-3">Summary:</h6>
-                          <textarea className={styles.textarea} id="story" name="story" rows={5} cols={33} defaultValue={"It was a dark and stormy night...\n"} />
+                          <textarea className={styles.textarea} id="story" name="story" rows={5} cols={33} />
                         </div>
                       </div>
 

@@ -1,56 +1,67 @@
+import { ErrorWrap } from 'components/Input'
 import React from 'react'
 import { Button, Modal } from "react-bootstrap"
-import { AddColorIcon } from 'components/Icons'
-import Swal from 'sweetalert2'
-import ButtonWithIcon from 'components/Button/ButtonWithIcon'
 import styles from './index.module.scss'
-interface ModalProps {
-  setDiagonasticList: any;
-  clearDiagonasticList: any;
-  diagnosisList: any;
-}
-interface ModalState {
-  show: boolean;
-  diagnostic: string;
-}
-class Index extends React.Component<ModalProps, ModalState> {
+
+class Index extends React.Component<any, any> {
   state = {
-    show: false,
-    diagnostic: "",
+    summaryDetails: {
+      doctor_name: "",
+      summary: "",
+    },
+    error: {}
   }
+
   handleChange = (e: any) => {
+    let key = e.target.attributes.getNamedItem("data-state-key").value;
+    let value = e.target.value;
+    this.setState((prevState: any) => ({
+      summaryDetails: {
+        ...prevState.summaryDetails,
+        [key]: value
+      }
+    }))
+  }
+
+  setError = (key: string, value: string) => {
     this.setState({
-      diagnostic: e.target.value
+      error: {
+        [key]: value
+      }
     })
   }
-  openDiagonosticModal = () => {
-    this.setState({
-      show: true
-    })
+
+  validateSummaryDetails = () => {
+    const {
+      doctor_name,
+      summary
+    } = this.state.summaryDetails
+    if (!doctor_name) {
+      this.setError("doctor_name", "This is a required * field")
+      return false
+    }
+    if (!summary) {
+      this.setError("summary", "This is a required * field")
+      return false
+    }
+    return true
   }
-  closeDiagonosticModal = () => {
-    this.props.clearDiagonasticList("diagnosisList");
-    this.setState({
-      show: false,
-      diagnostic: "",
-    });
-  }
+
   saveDiagonosticModal = () => {
-    if (this.props.diagnosisList.length < 1) {
-      Swal.fire({
-        title: 'error',
-        icon: 'error',
-        showCloseButton: true,
-        cancelButtonText: 'Ok',
-        html: `<p>Add atleast one test to proceed</p>`,
-      })
+    if (this.validateSummaryDetails()) {
+      this.props.onSave(this.state.summaryDetails)
     }
-    else {
-      this.setState({
-        show: false,
-        diagnostic: "",
-      });
-    }
+  }
+
+  onClose = () => {
+    this.setState({
+      summaryDetails: {
+        doctor_name: "",
+        summary: "",
+      },
+      error: {}
+    })
+    this.props.closeModal()
   }
 
   render() {
@@ -60,31 +71,48 @@ class Index extends React.Component<ModalProps, ModalState> {
           <button
             className={styles.inputContainer}
             type="button"
-            onClick={this.openDiagonosticModal}
-          ><h4 className={styles.name}>Summary</h4>
+            onClick={this.props.openModal}
+          >
+            <h4 className={styles.name}>Summary</h4>
           </button>
         </div>
-        <Modal className="mt-5" show={this.state.show} onHide={this.closeDiagonosticModal}>
+        <Modal className="mt-5" show={this.props.open} onHide={this.onClose}>
           <Modal.Body>
             <div >
               <div className="container contact-form">
-                <form method="post" >
-                  <div className="row d-flex justify-content-center">
-                    <div className="col-md-12">
-                      <div className="form-group">
-                        <h6 className="ml-3">NAME OF DOCTOR</h6>
-                        <input className={`${styles.input} form-control`} type="text" name="txtName" placeholder="NAME OF DOCTOR *" />
+                <div className="row d-flex justify-content-center">
+                  <div className="col-md-12">
+                    <div className="form-group">
+                      <h6 className="ml-3">NAME OF DOCTOR</h6>
+                      <ErrorWrap id="doctor_name" error={this.state.error}>
+                        <input
+                          className={`${styles.input} form-control`}
+                          type="text"
+                          name="txtName"
+                          placeholder="NAME OF DOCTOR *"
+                          data-state-key="doctor_name"
+                          onChange={this.handleChange}
+                        />
+                      </ErrorWrap>
+                    </div>
+                    <div className="form-group">
+                      <div>
+                        <h6 className="ml-3">Summary:</h6>
+                        <ErrorWrap id="summary" error={this.state.error}>
+                          <textarea
+                            className={styles.textarea}
+                            id="story"
+                            name="story"
+                            rows={5}
+                            cols={33}
+                            data-state-key="summary"
+                            onChange={this.handleChange}
+                          />
+                        </ErrorWrap>
                       </div>
-                      <div className="form-group">
-                        <div>
-                          <h6 className="ml-3">Summary:</h6>
-                          <textarea className={styles.textarea} id="story" name="story" rows={5} cols={33} defaultValue={"It was a dark and stormy night...\n"} />
-                        </div>
-                      </div>
-
                     </div>
                   </div>
-                </form>
+                </div>
               </div>
             </div>
           </Modal.Body>

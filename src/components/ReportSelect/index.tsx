@@ -3,7 +3,7 @@ import { ErrorWrap } from "components/Input";
 import { connect } from "react-redux";
 import { setPatientReportDetails } from "redux/patient"
 
-function ReportSelectInput({ head, innervalues, error, setPatientReportDetails, data }: any) {
+function ReportSelectInput({ head, innervalues, error, setPatientReportDetails, data, disabled }: any) {
   return (
     <div className={`${styles.Maincontainer} container py-2 `}>
       <ErrorWrap id="mode" error={error}>
@@ -13,10 +13,9 @@ function ReportSelectInput({ head, innervalues, error, setPatientReportDetails, 
         </div>
       </ErrorWrap>
         <div className="row ">
-          {innervalues.map((item: { Modename: string, colSize: number, "data-redux-key": string }) => {
-            console.log(item)
+          {innervalues.map((item: { Modename: string, colSize: number, "data-redux-key": string }, index: any) => {
             return (
-              <div className={`col-md-${item.colSize} mt-4 `}>
+              <div key={`report-select ${index}`} className={`col-md-${item.colSize} mt-4 `}>
                 <label className={`${styles.Modeame} container `}>{item.Modename}
                   <input
                     value={item["data-redux-key"]}
@@ -27,6 +26,7 @@ function ReportSelectInput({ head, innervalues, error, setPatientReportDetails, 
                     data-redux-key="mode"
                     checked={item["data-redux-key"] == data?.mode}
                     onChange={setPatientReportDetails}
+                    disabled={disabled}
                   />
                   <span className="checkmark " />
                 </label>
@@ -40,10 +40,10 @@ function ReportSelectInput({ head, innervalues, error, setPatientReportDetails, 
 
 const mapStateToProps = (state: any, ownProps: any) => {
   const { patientReportDetails, prdErrors } = state.patient;
-  console.log(patientReportDetails)
   return {
     data: patientReportDetails,
-    error: prdErrors
+    error: prdErrors,
+    disabled: patientReportDetails.disabled
   }
 }
 

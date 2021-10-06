@@ -12,11 +12,54 @@ const initialState = {
     patient_image: "",
     diagnosisList: []
   },
-  patientReportDetails: {},
+  patientReportDetails: {
+    IV_fluids: "",
+    core: "",
+    cvp: "",
+    dbp: "",
+    drain: "",
+    drug_blouses: "",
+    exp_mv: "",
+    exp_tv: "",
+    fio2: "",
+    hco3: "",
+    heart_rate: "",
+    i_e: "",
+    imv_set: "",
+    infusion: "",
+    inp_press_peak: "",
+    inp_press_plat: "",
+    insp: "",
+    insuline: "",
+    mbp: "",
+    miscellaneous: "",
+    mode: "",
+    ng_rt: "",
+    observed: "",
+    pco2: "",
+    peep_cpap: "",
+    ph: "",
+    po2: "",
+    press_support: "",
+    rr: "",
+    rt: "",
+    sat: "",
+    sbp: "",
+    set_mv: "",
+    simv: "",
+    skin: "",
+    spo2: "",
+    total: "",
+    trigger_sens: "",
+    uop: "",
+    value: "",
+  },
   currentReportTab: "ReportsVitals",
   successedTabCount: 0,
   error: {},
-  prdErrors: {}
+  prdErrors: {},
+  patientDosesData: [],
+  patientDosesError: {}
 }
 
 const actions = {
@@ -30,6 +73,10 @@ const actions = {
   SET_PRD_ERRORS: "patient/SET_PRD_ERRORS",
   SET_REPORT_TAB: "patient/SET_REPORT_TAB",
   SET_REPORT_SUCCESSED_TAB: "patient/SET_REPORT_SUCCESSED_TAB",
+  SET_DOSE: "patient/SET_DOSE",
+  DELETEADOSE: "patient/DELETEADOSE",
+  UPDATE_PRD_DATA: "patient/UPDATE_PRD_DATA",
+  UPDATE_DOSE: "patient/UPDATE_DOSE",
 }
 
 export const setPatientFormError = (key: any, message: any) => ({
@@ -158,22 +205,94 @@ export const PatientAddProcess = (url: any, setPreLoader: any, callback: any) =>
 
 export const GetPatientDetailsByTime = (patient_id: string, date: string, time: string, loader = (loader: any) => { }, callback = () => { }) => async (dispatch: any, getState: any) => {
   try {
-    if(!patient_id || !date || !time) {
+    if (!patient_id || !date || !time) {
       console.error("Invalid Parameters");
       return;
     }
     loader(true);
     const token = getLocalStorageItem("token")
     const res = await axios.get(
-      `https://icu-application.herokuapp.com/time/getTime/${patient_id}/${date}/${time}`,
+      `/time/getTime/${patient_id}/${date}/${time}`,
       { headers: { Authorization: token } }
     );
     loader(false);
-    if(res.data.success) {
-      console.log(res.data)
-      // callback();
+    if (res.data.success) {
+      const { data } = res.data;
+      let newObj: any = {
+        disabled: true,
+      };
+      if (data?.vitals_id) {
+        const { dbp, mbp, sbp } = data.vitals_id.blood_pressure;
+        const { cvp, heart_rate } = data.vitals_id;
+        newObj = {
+          ...newObj,
+          cvp,
+          heart_rate,
+          dbp,
+          mbp,
+          sbp
+        }
+      }
+      if (data?.ventilator_id) {
+        const { ...rest } = data.ventilator_id;
+        const { ...mv } = rest.mv;
+        const { ...rate } = rest.rate
+        const { ...temp } = rest.temp
+        const { ...tv } = rest.tv
+        delete rest["mv"];
+        delete rest["rate"];
+        delete rest["temp"];
+        delete rest["tv"];
+        newObj = {
+          ...newObj,
+          ...rest,
+          ...mv,
+          ...rate,
+          ...temp,
+          ...tv
+        }
+      }
+      if (data?.abg_id) {
+        const { ...rest } = data.abg_id;
+        newObj = {
+          ...newObj,
+          ...rest
+        }
+      }
+      if (data?.input_id) {
+        const { ...rest } = data.input_id;
+        newObj = {
+          ...newObj,
+          ...rest
+        }
+      }
+      if (data?.output_id) {
+        const { ...rest } = data.output_id;
+        newObj = {
+          ...newObj,
+          ...rest
+        }
+      }
+      if (data?.diabetic_flow_id) {
+        const { ...rest } = data.diabetic_flow_id;
+        newObj = {
+          ...newObj,
+          ...rest
+        }
+      }
+      if (data?.doses_id && data.doses_id?.dose.length > 0) {
+        dispatch({
+          type: actions.UPDATE_DOSE,
+          value: data.doses_id.dose
+        })
+      }
+      dispatch({
+        type: actions.UPDATE_PRD_DATA,
+        value: newObj
+      })
+      callback();
     }
-    else if(res.data?.message) {
+    else if (res.data?.message) {
       Swal.fire({
         title: 'Error',
         icon: 'error',
@@ -198,7 +317,7 @@ export const GetPatientDetailsByTime = (patient_id: string, date: string, time: 
 
 export const AddPatientDetailsByTime = (patient_id: string, date: string, time: string, loader = (loader: any) => { }, callback = () => { }) => async (dispatch: any, getState: any) => {
   try {
-    if(!patient_id || !date || !time) {
+    if (!patient_id || !date || !time) {
       console.error("Invalid Parameters");
       return;
     }
@@ -210,13 +329,108 @@ export const AddPatientDetailsByTime = (patient_id: string, date: string, time: 
       "time_now": time
     };
     const res = await axios.post(
-      `https://icu-application.herokuapp.com/time/addInput`,
+      `/time/addTime`,
       payload,
       { headers: { Authorization: token } }
     );
     loader(false);
-    if(res.data.success) {
-      localStorage.setItem("time_id", res.data.time_id)
+    if (res.data.success) {
+      if (res.data.message == "Time Already Exist") {
+        localStorage.setItem("time_id", res.data.time_id._id);
+        const { time_id: data } = res.data;
+        let newObj: any = {
+          successedTab: 0
+        };
+        if (data?.vitals_id) {
+          const { dbp, mbp, sbp } = data.vitals_id.blood_pressure;
+          const { cvp, heart_rate } = data.vitals_id;
+          newObj = {
+            ...newObj,
+            cvp,
+            heart_rate,
+            dbp,
+            mbp,
+            sbp,
+            successedTab: 1
+          }
+        }
+        if (data?.ventilator_id) {
+          const { ...rest } = data.ventilator_id;
+          const { ...mv } = rest.mv;
+          const { ...rate } = rest.rate
+          const { ...temp } = rest.temp
+          const { ...tv } = rest.tv
+          delete rest["mv"];
+          delete rest["rate"];
+          delete rest["temp"];
+          delete rest["tv"];
+          newObj = {
+            ...newObj,
+            ...rest,
+            ...mv,
+            ...rate,
+            ...temp,
+            ...tv,
+            successedTab: 2
+          }
+        }
+        if (data?.abg_id) {
+          const { ...rest } = data.abg_id;
+          newObj = {
+            ...newObj,
+            ...rest,
+            successedTab: 3
+          }
+        }
+        if (data?.input_id) {
+          const { ...rest } = data.input_id;
+          newObj = {
+            ...newObj,
+            ...rest,
+            successedTab: 4
+          }
+        }
+        if (data?.output_id) {
+          const { ...rest } = data.output_id;
+          newObj = {
+            ...newObj,
+            ...rest,
+            successedTab: 5
+          }
+        }
+        if (data?.diabetic_flow_id) {
+          const { ...rest } = data.diabetic_flow_id;
+          newObj = {
+            ...newObj,
+            ...rest,
+            successedTab: 6
+          }
+        }
+        if (data?.doses_id && data.doses_id?.dose.length > 0) {
+          newObj = {
+            ...newObj,
+            successedTab: 7
+          }
+          dispatch({
+            type: actions.UPDATE_DOSE,
+            value: data.doses_id.dose
+          })
+        }
+        dispatch({
+          type: actions.UPDATE_PRD_DATA,
+          value: newObj
+        })
+        dispatch({
+          type: actions.SET_REPORT_SUCCESSED_TAB,
+          value: newObj.successedTab,
+        })
+      }
+      else {
+        localStorage.setItem("time_id", res.data.time_id);
+        dispatch({
+          type: actions.CLEAR_PRD
+        })
+      }
       callback();
     }
   } catch (error: any) {
@@ -236,7 +450,7 @@ export const AddPatientDetailsByTime = (patient_id: string, date: string, time: 
 export const setPatientReportDetails = (e: any) => (dispatch: any, getState: any) => {
   let key = e.target.attributes.getNamedItem("data-redux-key").value;
   let value = e.target.value;
-  if(parseInt(value) < 0) return null;
+  if (parseInt(value) < 0) return null;
   dispatch({
     type: actions.SET_PRD,
     key,
@@ -255,23 +469,23 @@ export const validateVitalsData = () => (dispatch: any, getState: any) => {
   if (!heart_rate) {
     dispatch(setPRDError('heart_rate', 'This is a required * field'));
     return false;
-  } 
+  }
   if (!sbp) {
     dispatch(setPRDError('sbp', 'This is a required * field'));
     return false;
-  } 
+  }
   if (!dbp) {
     dispatch(setPRDError('dbp', 'This is a required * field'));
     return false;
-  } 
+  }
   if (!mbp) {
     dispatch(setPRDError('mbp', 'This is a required * field'));
     return false;
-  } 
+  }
   if (!cvp) {
     dispatch(setPRDError('cvp', 'This is a required * field'));
     return false;
-  } 
+  }
   dispatch(setPRDError('', ''));
   return true;
 }
@@ -293,11 +507,11 @@ export const submitVitalsDetails = (loader = (loader: any) => { }, callback = ()
       cvp
     };
     const res = await axios.post(
-      "https://icu-application.herokuapp.com/vitals/addVitals",
+      "/vitals/addVitals",
       payload,
       { headers: { Authorization: token } }
     );
-    if(res.data.success) {
+    if (res.data.success) {
       dispatch({
         type: actions.SET_REPORT_SUCCESSED_TAB,
         value: 1,
@@ -478,11 +692,11 @@ export const submitVentilatorDetails = (loader = (loader: any) => { }, callback 
       i_e
     };
     const res = await axios.post(
-      "https://icu-application.herokuapp.com/ventilator/addVentilatorValues",
+      "/ventilator/addVentilatorValues",
       payload,
       { headers: { Authorization: token } }
     );
-    if(res.data.success) {
+    if (res.data.success) {
       dispatch({
         type: actions.SET_REPORT_SUCCESSED_TAB,
         value: 2,
@@ -557,11 +771,11 @@ export const submitABGDetails = (loader = (loader: any) => { }, callback = () =>
       sat,
     };
     const res = await axios.post(
-      "https://icu-application.herokuapp.com/abg/addABG",
+      "/abg/addABG",
       payload,
       { headers: { Authorization: token } }
     );
-    if(res.data.success) {
+    if (res.data.success) {
       dispatch({
         type: actions.SET_REPORT_SUCCESSED_TAB,
         value: 3,
@@ -636,11 +850,11 @@ export const submitIntakeDetails = (loader = (loader: any) => { }, callback = ()
       miscellaneous,
     };
     const res = await axios.post(
-      "https://icu-application.herokuapp.com/input/addInput",
+      "/input/addInput",
       payload,
       { headers: { Authorization: token } }
     );
-    if(res.data.success) {
+    if (res.data.success) {
       dispatch({
         type: actions.SET_REPORT_SUCCESSED_TAB,
         value: 4,
@@ -701,11 +915,11 @@ export const submitOutputDetails = (loader = (loader: any) => { }, callback = ()
       drain,
     };
     const res = await axios.post(
-      "https://icu-application.herokuapp.com/output/addOutput",
+      "/output/addOutput",
       payload,
       { headers: { Authorization: token } }
     );
-    if(res.data.success) {
+    if (res.data.success) {
       dispatch({
         type: actions.SET_REPORT_SUCCESSED_TAB,
         value: 5,
@@ -759,15 +973,14 @@ export const submitDiabeticFlowDetails = (loader = (loader: any) => { }, callbac
       value
     };
     const res = await axios.post(
-      "https://icu-application.herokuapp.com/diabeticFlow/addDiabeticFlow",
+      "/diabeticFlow/addDiabeticFlow",
       payload,
       { headers: { Authorization: token } }
     );
-    console.log(res)
-    if(res.data.success) {
+    if (res.data.success) {
       dispatch({
         type: actions.SET_REPORT_SUCCESSED_TAB,
-        value: 5,
+        value: 6,
       })
       callback();
     }
@@ -786,9 +999,69 @@ export const submitDiabeticFlowDetails = (loader = (loader: any) => { }, callbac
   }
 }
 
+export const setDoses = (data: object) => (dispatch: any, getState: any) => {
+  if (!data) {
+    console.error("Invalid Parameters");
+  }
+  dispatch({
+    type: actions.SET_DOSE,
+    value: data
+  })
+}
+
+export const submitDosesDetails = (loader = (loader: any) => { }, callback = () => { }) => async (dispatch: any, getState: any) => {
+  try {
+    loader(true);
+    const data = getState().patient.patientDosesData;
+    const time_id = getLocalStorageItem("time_id");
+    const payload = {
+      time_id,
+      dose: data
+    }
+    const token = getLocalStorageItem("token");
+    const res = await axios.post(
+      "/doses/addDoses",
+      payload,
+      { headers: { Authorization: token } }
+    );
+    if (res.data.success) {
+      dispatch({
+        type: actions.CLEAR_PRD,
+      })
+      Swal.fire({
+        title: 'Success',
+        icon: 'success',
+        showCloseButton: true,
+        cancelButtonText: 'Ok',
+        html: `<p>Patient Report Updated!</p>`,
+      })
+      callback();
+    }
+    loader(false)
+  } catch (error: any) {
+    loader(false);
+    if (error.response?.data?.message) {
+      Swal.fire({
+        title: 'Error',
+        icon: 'error',
+        showCloseButton: true,
+        cancelButtonText: 'Ok',
+        html: `<p>${error.response.data.message}</p>`,
+      })
+    }
+  }
+}
+
+export const deleteADose = (id: any) => (dispatch: any, getState: any) => {
+  dispatch({
+    type: actions.DELETEADOSE,
+    value: id
+  })
+}
+
 export const setReportTab = (value: string, currentTabPosition: number) => (dispatch: any, getState: any) => {
-  const { successedTabCount } = getState().patient;
-  if (currentTabPosition - 1 == successedTabCount || currentTabPosition <= successedTabCount) {
+  const { successedTabCount, patientReportDetails } = getState().patient;
+  if (patientReportDetails.disabled || currentTabPosition - 1 == successedTabCount || currentTabPosition <= successedTabCount) {
     dispatch({
       type: actions.SET_REPORT_TAB,
       value,
@@ -803,6 +1076,62 @@ export const setReportTab = (value: string, currentTabPosition: number) => (disp
       html: `<p>Please submit current form details to proceed!</p>`,
     })
   }
+}
+
+export const submitSummaryDetails = async (
+  id: any,
+  currentDate: any,
+  data: any,
+  batch: any,
+  setPreLoader = (loader: any) => { },
+  callback = () => { }
+) => {
+  try {
+    let date: any = new Date(currentDate)
+    var dd = String(date.getDate()).padStart(2, '0');
+    var mm = String(date.getMonth() + 1).padStart(2, '0');
+    var yyyy = date.getFullYear();
+    date = mm + '-' + dd + '-' + yyyy;
+    const { doctor_name, summary } = data
+    const payload = {
+      patient_id: id,
+      todays_date: date,
+      shift: batch,
+      doctor_name,
+      summary
+    }
+    const token = getLocalStorageItem("token");
+    setPreLoader(true)
+    const res = await axios.post(
+      "/summary/addSummary",
+      payload,
+      { headers: { Authorization: token } }
+    );
+    setPreLoader(false)
+    if (res.data.success) {
+      if (res.data?.message) {
+        Swal.fire({
+          title: 'Success',
+          icon: 'success',
+          showCloseButton: true,
+          cancelButtonText: 'Ok',
+          html: `<p>${res.data.message}</p>`,
+        })
+      }
+      callback();
+    }
+  } catch (error: any) {
+    if (error.response?.data?.message) {
+      Swal.fire({
+        title: 'Error',
+        icon: 'error',
+        showCloseButton: true,
+        cancelButtonText: 'Ok',
+        html: `<p>${error.response?.data?.message}</p>`,
+      })
+    }
+  }
+  
 }
 
 const PatientReducer = (state = initialState, action: any) => {
@@ -868,16 +1197,65 @@ const PatientReducer = (state = initialState, action: any) => {
         }
       }
     }
+    case actions.UPDATE_PRD_DATA: {
+      return {
+        ...state,
+        patientReportDetails: {
+          ...action.value
+        },
+      }
+    }
     case actions.CLEAR_PRD: {
       return {
         ...state,
         patientReportDetails: {
-          "heart_rate": '',
-          "sbp": '',
-          "dbp": '',
-          "mbp": '',
-          "cvp": ''
-        }
+          IV_fluids: "",
+          core: "",
+          cvp: "",
+          dbp: "",
+          drain: "",
+          drug_blouses: "",
+          exp_mv: "",
+          exp_tv: "",
+          fio2: "",
+          hco3: "",
+          heart_rate: "",
+          i_e: "",
+          imv_set: "",
+          infusion: "",
+          inp_press_peak: "",
+          inp_press_plat: "",
+          insp: "",
+          insuline: "",
+          mbp: "",
+          miscellaneous: "",
+          mode: "",
+          ng_rt: "",
+          observed: "",
+          pco2: "",
+          peep_cpap: "",
+          ph: "",
+          po2: "",
+          press_support: "",
+          rr: "",
+          rt: "",
+          sat: "",
+          sbp: "",
+          set_mv: "",
+          simv: "",
+          skin: "",
+          spo2: "",
+          total: "",
+          trigger_sens: "",
+          uop: "",
+          value: "",
+        },
+        currentReportTab: "ReportsVitals",
+        successedTabCount: 0,
+        error: {},
+        prdErrors: {},
+        patientDosesData: [],
+        patientDosesError: {}
       }
     }
     case actions.SET_PRD_ERRORS: {
@@ -898,6 +1276,31 @@ const PatientReducer = (state = initialState, action: any) => {
       return {
         ...state,
         successedTabCount: action.value
+      }
+    }
+    case actions.SET_DOSE: {
+      return {
+        ...state,
+        patientDosesData: [
+          ...state.patientDosesData,
+          ...[action.value]
+        ]
+      }
+    }
+    case actions.UPDATE_DOSE: {
+      return {
+        ...state,
+        patientDosesData: [
+          ...action.value
+        ]
+      }
+    }
+    case actions.DELETEADOSE: {
+      let arr = [...state.patientDosesData]
+      arr.splice(action.value, 1);
+      return {
+        ...state,
+        patientDosesData: [...arr]
       }
     }
     default: return state;

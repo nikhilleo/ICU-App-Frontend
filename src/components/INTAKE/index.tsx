@@ -9,7 +9,6 @@ function Intake() {
       <ReportInput type="text" head="DRUGS/BLOUSES" innervalues={[{ name: "DRUGS/BLOUSES", colSize: "12", "data-redux-key": "drug_blouses" }]} />
       <ReportInput type="number" head="INFUSION" innervalues={[{ name: "INFUSION", colSize: "12", "data-redux-key": "infusion" }]} />
       <ReportInput type="Number" head="MISCELLANEOUS" innervalues={[{ name: "MISCELLANEOUS", colSize: "12", "data-redux-key": "miscellaneous" }]} />
-      <ReportInput type="number" head="Total" innervalues={[{ name: "Total", colSize: "12", "data-redux-key": "total" }]} />
     </div>
   )
 }

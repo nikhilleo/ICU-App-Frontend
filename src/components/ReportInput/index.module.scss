@@ -47,3 +47,8 @@
 .container1 {
   height: 90%;
 }
+
+.disabledInput:disabled {
+  background: #ffffff;
+  cursor: no-drop;
+}

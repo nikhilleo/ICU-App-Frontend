@@ -49,7 +49,7 @@ function Index({ router }: any) {
     }).then((result) => {
       if (result.isConfirmed) {
         localStorage.clear();
-        router.replace("/")
+        router.replace("/nurse/login")
         Swal.fire(
           'Signed Out!',
         )
@@ -95,8 +95,8 @@ function Index({ router }: any) {
           </div>
           <div className={`overflow-auto ml-5 hide-scroll`}>
             <ul className="ul blue">
-              {data.diagnosisList.map((item: any) => (
-                <li>{item}</li>
+              {data.diagnosisList.map((item: any, index: any) => (
+                <li key={`patient-details ${index}`}>{item}</li>
               ))}
             </ul>
           </div>

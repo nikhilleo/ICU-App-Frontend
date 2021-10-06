@@ -3,7 +3,7 @@ import { ErrorWrap } from "components/Input";
 import { connect } from "react-redux";
 import { setPatientReportDetails } from "redux/patient"
 
-function ReportInput({ head, innervalues, type, error, setPatientReportDetails, data }: any) {
+function ReportInput({ head, innervalues, type, error, setPatientReportDetails, data, disabled }: any) {
   return (
     <div className={`${styles.Maincontainer} container py-2 `}>
       <div> <label><span className="hidden-xs">
@@ -11,8 +11,8 @@ function ReportInput({ head, innervalues, type, error, setPatientReportDetails, 
       </span></label>
       </div>
       <div className="row ">
-        {innervalues.map((item: { name: string, colSize: number, "data-redux-key": string }) => (
-          <div className={`col-md-${item.colSize} mt-4`}>
+        {innervalues.map((item: { name: string, colSize: number, "data-redux-key": string }, index: any) => (
+          <div key={`report-input ${index}`} className={`col-md-${item.colSize} mt-4`}>
             <ErrorWrap id={item["data-redux-key"]} error={error}>
               <div className="input-group">
                 <span className="input-group-append">
@@ -20,11 +20,12 @@ function ReportInput({ head, innervalues, type, error, setPatientReportDetails, 
                 </span>
                 <input
                   value={data[item["data-redux-key"]]}
-                  className="form-control py-2 border-right-0 border text-center"
+                  className={`${styles.disabledInput} form-control py-2 border-right-0 border text-center`}
                   type={type}
                   id={`example-search-input ${item["data-redux-key"]}`}
                   data-redux-key={item["data-redux-key"]}
                   onChange={setPatientReportDetails}
+                  disabled={disabled}
                 />
               </div>
             </ErrorWrap>
@@ -39,7 +40,8 @@ const mapStateToProps = (state: any, ownProps: any) => {
   const { patientReportDetails, prdErrors } = state.patient;
   return {
     data: patientReportDetails,
-    error: prdErrors
+    error: prdErrors,
+    disabled: patientReportDetails.disabled
   }
 }
 

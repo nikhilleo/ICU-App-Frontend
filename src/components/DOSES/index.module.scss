@@ -44,6 +44,7 @@
 .td{
   text-align: center;
   padding-top: 6px;
+  cursor: pointer;
 }
 .name{
  
@@ -54,4 +55,8 @@
   min-width:8vw;
   
   text-align: center
+}
+
+.disabledActionBtn {
+  cursor: no-drop;
 }

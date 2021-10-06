@@ -163,8 +163,9 @@ class Patient extends Component<PatientProps, PatientState> {
               <span>See all</span>
             </div>
             <div>
-              {this.state.data.map((item: any) => (
+              {this.state.data.map((item: any, index: any) => (
                 <PatientCard
+                  key={`nurse-dashboard ${index}`}
                   onClick={(e: any) => this.handleClick(e, item)}
                   name={`${item.fName} ${item.lName}`}
                   src={item.patinet_image}

@@ -24,12 +24,12 @@ import {
   validateOutputData,
   validateDiabeticFlowData,
   submitDiabeticFlowDetails,
+  submitDosesDetails,
   submitOutputDetails,
 } from 'redux/patient'
 import { connect } from 'react-redux'
 import { getLocalStorageItem } from 'utils/helper'
 import axios from '../../../axios'
-import Loader from 'components/Loader'
 
 function PatientReportDetails({
   router,
@@ -46,11 +46,13 @@ function PatientReportDetails({
   submitOutputDetails,
   validateDiabeticFlowData,
   submitDiabeticFlowDetails,
-  isLoggedIn,
+  submitDosesDetails,
   currentReportTab,
   setReportTab,
+  disabled
 }: any) {
   const [data, setData]: any = useState();
+  const id = getLocalStorageItem("patient-id");
 
   useEffect(() => {
     const id = getLocalStorageItem("patient-id")
@@ -76,6 +78,13 @@ function PatientReportDetails({
       })
   }, [])
 
+  useEffect(() => {
+    const element: any = document.getElementById(currentReportTab);
+    if(element) {
+      element.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
+    }
+  }, [currentReportTab])
+
   const goBack = () => {
     router.back();
   }
@@ -91,7 +100,7 @@ function PatientReportDetails({
     }).then((result) => {
       if (result.isConfirmed) {
         localStorage.clear();
-        router.replace("/")
+        router.replace("/nurse/login")
         Swal.fire(
           'Signed Out!',
         )
@@ -128,8 +137,14 @@ function PatientReportDetails({
         break;
       case "ReportsDIABETICFLOW":
         if (validateDiabeticFlowData()) {
-          submitDiabeticFlowDetails(setPreLoader, () => setReportTab("ReportsDIABETICFLOW", 6));
+          submitDiabeticFlowDetails(setPreLoader, () => setReportTab("ReportsDOSES", 7));
         }
+        break;
+      case "ReportsDOSES":
+        submitDosesDetails(setPreLoader, () => {
+          setReportTab("ReportsVitals", 1);
+          router.replace(`/patient/patient-details/${id}`);
+        })
         break;
       default:
         break;
@@ -157,12 +172,14 @@ function PatientReportDetails({
             <div className={`${styles.Main} mt-2 d-flex hide-scroll `} >
               <a
                 href="#"
+                id="ReportsVitals"
                 className={currentReportTab === "ReportsVitals" ? styles.ActiveTab : ""}
                 onClick={() => setReportTab("ReportsVitals", 1)}
               > V I T A L S
               </a>
               <a
                 href="#"
+                id="ReportsVentilator"
                 className={currentReportTab === "ReportsVentilator" ? styles.ActiveTab : ""}
                 onClick={() => setReportTab("ReportsVentilator", 2)}
               >
@@ -170,6 +187,7 @@ function PatientReportDetails({
               </a>
               <a
                 href="#"
+                id="ReportsABG"
                 className={currentReportTab === "ReportsABG" ? styles.ActiveTab : ""}
                 onClick={() => setReportTab("ReportsABG", 3)}
               >
@@ -177,6 +195,7 @@ function PatientReportDetails({
               </a>
               <a
                 href="#"
+                id="ReportsINTAKE"
                 className={currentReportTab === "ReportsINTAKE" ? styles.ActiveTab : ""}
                 onClick={() => setReportTab("ReportsINTAKE", 4)}
               >
@@ -184,6 +203,7 @@ function PatientReportDetails({
               </a>
               <a
                 href="#"
+                id="ReportsOUTPUT"
                 className={currentReportTab === "ReportsOUTPUT" ? styles.ActiveTab : ""}
                 onClick={() => setReportTab("ReportsOUTPUT", 5)}
               >
@@ -191,6 +211,7 @@ function PatientReportDetails({
               </a>
               <a
                 href="#"
+                id="ReportsDIABETICFLOW"
                 className={currentReportTab === "ReportsDIABETICFLOW" ? styles.ActiveTab : ""}
                 onClick={() => setReportTab("ReportsDIABETICFLOW", 6)}
               >
@@ -198,14 +219,15 @@ function PatientReportDetails({
               </a>
               <a
                 href="#"
+                id="ReportsDOSES"
                 className={currentReportTab === "ReportsDOSES" ? styles.ActiveTab : ""}
-                onClick={() => setReportTab("ReportsDOSES", 6)}
+                onClick={() => setReportTab("ReportsDOSES", 7)}
               >
                 D O S E S 
               </a>
             </div>
           </div>
-          <div className={`${styles.nnnn}`} >
+          <div className={`${styles.nnnn}`}>
             {currentReportTab === "ReportsVitals" && <Vitals />}
             {currentReportTab === "ReportsVentilator" && <Ventilator />}
             {currentReportTab === "ReportsABG" && <ABG />}
@@ -218,7 +240,8 @@ function PatientReportDetails({
         <div className={`${styles.Submit} w-75 my-5   pb-4`}>
           <Button
             props={{
-              type: "submit"
+              type: "submit",
+              disabled: disabled
             }}
             onClick={handleClick}
           >
@@ -233,10 +256,11 @@ function PatientReportDetails({
 const mapStateToProps = (state: any, ownProps: any) => {
   const currentUserDetails = JSON.parse(getLocalStorageItem('user-details') || "{}");
   const isLoggedIn = Boolean(currentUserDetails && currentUserDetails.mobile)
-  const { currentReportTab } = state.patient
+  const { currentReportTab, patientReportDetails } = state.patient
   return {
     isLoggedIn,
-    currentReportTab
+    currentReportTab,
+    disabled: patientReportDetails.disabled
   }
 }
 
@@ -253,6 +277,7 @@ const mapDispatchToProps = {
   submitOutputDetails,
   validateDiabeticFlowData,
   submitDiabeticFlowDetails,
+  submitDosesDetails,
   setReportTab,
 }
 
