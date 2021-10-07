@@ -1,33 +1,8 @@
 import React from 'react'
 import { Button, Modal } from "react-bootstrap"
-import Swal from 'sweetalert2'
 import styles from './index.module.scss'
 
 class Index extends React.Component<any, any> {
-  state = {
-    show: false,
-    diagnostic: "",
-  }
-  handleChange = (e: any) => {
-    this.setState({
-      diagnostic: e.target.value
-    })
-  }
-  openDiagonosticModal = () => {
-    this.setState({
-      show: true
-    })
-  }
-  closeDiagonosticModal = () => {
-    this.setState({
-      show: false,
-      diagnostic: "",
-    });
-  }
-  saveDiagonosticModal = () => {
-    
-  }
-
   render() {
     return (
       <div>
@@ -35,40 +10,56 @@ class Index extends React.Component<any, any> {
           <button
             className={styles.inputContainer}
             type="button"
-            onClick={this.openDiagonosticModal}
-          ><h4 className={styles.name}>Average</h4>
+            onClick={this.props.openModal}
+          ><h4 className={styles.name}>Today's Average</h4>
           </button>
         </div>
-        <Modal className="mt-5" show={this.state.show} onHide={this.closeDiagonosticModal}>
+        <Modal className="mt-5" show={this.props.open} onHide={this.props.closeModal}>
           <Modal.Body>
-            <div >
-              <div className="container contact-form">
-                <form method="post" >
-                  <div className="row d-flex justify-content-center">
-                    <div className="col-md-12">
-                      <div className="form-group">
-                        <h6 className="ml-3">NAME OF DOCTOR</h6>
-                        <input className={`${styles.input} form-control`} type="text" name="txtName" placeholder="NAME OF DOCTOR *" />
-                      </div>
-                      
-                      <div className="form-group">
-                        <div>
-                          <h6 className="ml-3">Summary:</h6>
-                          <textarea className={styles.textarea} id="story" name="story" rows={5} cols={33} />
-                        </div>
-                      </div>
-
-                    </div>
+                  <div className={styles.main1}>
+                    <table className={`${styles.table} table mt-2`}  >
+                      <thead className={styles.thead} >
+                        <tr>
+                          <th scope="col" ><span className={styles.Idtag}>ID</span></th>
+                          <th scope="col" className={styles.name}>Name</th>
+                          <th scope="col" className={styles.name}>Average Value</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                          <tr key={`map-doses`}>
+                            <th scope="row" ><h6 className={styles.Id}>1</h6></th>
+                            <td ><h6 className={styles.td}>Average Input Total: </h6></td>
+                            <td ><h6 className={styles.td}>{this.props.data?.avgInputTotal}</h6></td>
+                          </tr>
+                          <tr key={`map-doses`}>
+                            <th scope="row" ><h6 className={styles.Id}>2</h6></th>
+                            <td ><h6 className={styles.td}>Average Output Total: </h6></td>
+                            <td ><h6 className={styles.td}>{this.props.data?.avgOutputTotal}</h6></td>
+                          </tr>
+                          <tr key={`map-doses`}>
+                            <th scope="row" ><h6 className={styles.Id}>3</h6></th>
+                            <td ><h6 className={styles.td}>Total Input: </h6></td>
+                            <td ><h6 className={styles.td}>{this.props.data?.inputTotal}</h6></td>
+                          </tr>
+                          <tr key={`map-doses`}>
+                            <th scope="row" ><h6 className={styles.Id}>4</h6></th>
+                            <td ><h6 className={styles.td}>Total Output: </h6></td>
+                            <td ><h6 className={styles.td}>{this.props.data?.outputTotal}</h6></td>
+                          </tr>
+                          <tr key={`map-doses`}>
+                            <th scope="row" ><h6 className={styles.Id}>5</h6></th>
+                            <td ><h6 className={styles.td}>Net Balance: </h6></td>
+                            <td ><h6 className={styles.td}>{this.props.data?.netBalance}</h6></td>
+                          </tr>
+                      </tbody>
+                    </table>
                   </div>
-                </form>
-              </div>
-            </div>
+            {/* <p>average input: {this.props.data?.avgInputTotal}</p>
+              <p>average output: {this.props.data?.avgOutputTotal}</p>
+              <p>average input total: {this.props.data?.inputTotal}</p>
+              <p>average net balance: {this.props.data?.netBalance}</p>
+              <p>average output total: {this.props.data?.outputTotal}</p> */}
           </Modal.Body>
-          <Modal.Footer className={styles.modal} >
-            <Button className={styles.button} onClick={this.saveDiagonosticModal}>
-              Save
-            </Button>
-          </Modal.Footer>
         </Modal>
       </div>
     );

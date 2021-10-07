@@ -689,7 +689,7 @@ export const submitVentilatorDetails = (loader = (loader: any) => { }, callback 
       inp_press_peak,
       inp_press_plat,
       trigger_sens,
-      i_e
+      i_e: isNaN(i_e) ? i_e : "01:0" + i_e
     };
     const res = await axios.post(
       "/ventilator/addVentilatorValues",
@@ -1130,8 +1130,38 @@ export const submitSummaryDetails = async (
         html: `<p>${error.response?.data?.message}</p>`,
       })
     }
+  }  
+}
+
+export const getAverge = async (
+  id: any,
+  currentDate: any,
+  setPreLoader = (loader: any) => { },
+  callback = (data: any) => { }
+) => {
+  try {
+    let date: any = new Date(currentDate)
+    var dd = String(date.getDate()).padStart(2, '0');
+    var mm = String(date.getMonth() + 1).padStart(2, '0');
+    var yyyy = date.getFullYear();
+    date = mm + '-' + dd + '-' + yyyy;
+    setPreLoader(true)
+    const token = getLocalStorageItem("token");
+    const res = await axios.get(`average/getFullDayAverage/${id}/${date}`,
+      { headers: { Authorization: token } }
+    );
+    if (res.data.success) callback(res.data.balance);
+    setPreLoader(false)
+  } catch (error: any) {
+    setPreLoader(false)
+    Swal.fire({
+      title: 'Error',
+      icon: 'error',
+      showCloseButton: true,
+      cancelButtonText: 'Ok',
+      html: `<p>${error.response?.data?.message || "Something Went Wrong"}</p>`,
+    })
   }
-  
 }
 
 const PatientReducer = (state = initialState, action: any) => {

@@ -15,7 +15,7 @@ function Ventilator() {
       <ReportInput type="number" head="Minute Ventilation" innervalues={[{ name: "SET", colSize: "6", "data-redux-key": "set_mv" }, { name: "EXP MV", colSize: "6", "data-redux-key": "exp_mv" }]} />
       <ReportInput type="number" head="Transvaginal ultrasound" innervalues={[{ name: "INSP ", colSize: "6", "data-redux-key": "insp" }, { name: "EXP", colSize: "6", "data-redux-key": "exp_tv" }]} />
       <ReportInput type="number" head="Fraction of Inspired Oxygen" innervalues={[{ name: "FIO2", colSize: "12", "data-redux-key": "fio2" }]} />
-      <ReportInput type="number" head="Infective endocarditis" innervalues={[{ name: "I:E", colSize: "12", "data-redux-key": "i_e" }]} />
+      <ReportInput type="text" head="Infective endocarditis" innervalues={[{ name: "I:E", colSize: "12", "data-redux-key": "i_e" }]} />
       <ReportInput type="number" head="PEEP/CPAP" innervalues={[{ name: "PEEP/CPAP", colSize: "12", "data-redux-key": "peep_cpap" }]} />
       <ReportInput type="number" head="PRESS SUPPORT" innervalues={[{ name: "PRESS SUPPORT", colSize: "12", "data-redux-key": "press_support" }]} />
       <ReportInput type="number" head="INP PRESS PEAK" innervalues={[{ name: "INP PRESS PEAK", colSize: "12", "data-redux-key": "inp_press_peak" }]} />

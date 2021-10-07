@@ -13,7 +13,9 @@
     "bootstrap": "^4.5.2",
     "next": "11.0.1",
     "next-redux-wrapper": "^7.0.2",
+    "node-cron": "^3.0.0",
     "node-sass": "^4.14.1",
+    "node-schedule": "^2.0.0",
     "react": "^17.0.2",
     "react-bootstrap": "^1.6.1",
     "react-dom": "^17.0.2",
@@ -25,6 +27,7 @@
     "sweetalert2": "^11.1.1"
   },
   "devDependencies": {
+    "@types/node-cron": "^3.0.0",
     "@types/react": "17.0.15",
     "eslint": "7.31.0",
     "eslint-config-next": "11.0.1",

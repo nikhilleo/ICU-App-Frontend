@@ -171,14 +171,12 @@ function PatientReportDetails({
           <div className={`${styles.scrollmenu} col-md-12`}>
             <div className={`${styles.Main} mt-2 d-flex hide-scroll `} >
               <a
-                href="#"
                 id="ReportsVitals"
                 className={currentReportTab === "ReportsVitals" ? styles.ActiveTab : ""}
                 onClick={() => setReportTab("ReportsVitals", 1)}
               > V I T A L S
               </a>
               <a
-                href="#"
                 id="ReportsVentilator"
                 className={currentReportTab === "ReportsVentilator" ? styles.ActiveTab : ""}
                 onClick={() => setReportTab("ReportsVentilator", 2)}
@@ -186,7 +184,6 @@ function PatientReportDetails({
                 V E N T I L A T O R
               </a>
               <a
-                href="#"
                 id="ReportsABG"
                 className={currentReportTab === "ReportsABG" ? styles.ActiveTab : ""}
                 onClick={() => setReportTab("ReportsABG", 3)}
@@ -194,7 +191,6 @@ function PatientReportDetails({
                 A B G
               </a>
               <a
-                href="#"
                 id="ReportsINTAKE"
                 className={currentReportTab === "ReportsINTAKE" ? styles.ActiveTab : ""}
                 onClick={() => setReportTab("ReportsINTAKE", 4)}
@@ -202,7 +198,6 @@ function PatientReportDetails({
                 I N T A K E
               </a>
               <a
-                href="#"
                 id="ReportsOUTPUT"
                 className={currentReportTab === "ReportsOUTPUT" ? styles.ActiveTab : ""}
                 onClick={() => setReportTab("ReportsOUTPUT", 5)}
@@ -210,7 +205,6 @@ function PatientReportDetails({
                 O U T P U T
               </a>
               <a
-                href="#"
                 id="ReportsDIABETICFLOW"
                 className={currentReportTab === "ReportsDIABETICFLOW" ? styles.ActiveTab : ""}
                 onClick={() => setReportTab("ReportsDIABETICFLOW", 6)}
@@ -218,7 +212,6 @@ function PatientReportDetails({
                 D I A B E T I C  F L O W
               </a>
               <a
-                href="#"
                 id="ReportsDOSES"
                 className={currentReportTab === "ReportsDOSES" ? styles.ActiveTab : ""}
                 onClick={() => setReportTab("ReportsDOSES", 7)}

@@ -1,16 +1,16 @@
 import Typography from 'components/Typography'
 import React, { useEffect, useState } from 'react'
-import Loader from 'components/Loader'
 import DashboardWrapper from 'components/DashboardWrapper'
 import MonthWiseDays, { DaysWiseTime } from 'components/MonthWiseDays'
 import Swal from 'sweetalert2'
 import Button from 'components/Button'
 import { connect } from 'react-redux'
 import { getLocalStorageItem } from 'utils/helper'
-import { GetPatientDetailsByTime, AddPatientDetailsByTime, submitSummaryDetails } from 'redux/patient'
+import { GetPatientDetailsByTime, AddPatientDetailsByTime, submitSummaryDetails, getAverge } from 'redux/patient'
 import axios from '../../../axios'
 import SUMMARY from 'components/SUMMARY'
 import Average from 'components/Average'
+const schedule = require('node-schedule');
 
 function PatientReportDetails({ router, setPreLoader, GetPatientDetailsByTime, AddPatientDetailsByTime, isLoggedIn }: any) {
   const [data, setData]: any = useState();
@@ -19,6 +19,8 @@ function PatientReportDetails({ router, setPreLoader, GetPatientDetailsByTime, A
   const [selectedTime, setSelectedTime] = useState("");
   const [summaryMorningModel, setMorningModel] = useState(false)
   const [summaryEveningModel, setEveningModel] = useState(false)
+  const [averageModel, setAverageModel] = useState(false)
+  const [averageData, setAverageData] = useState({})
   const currentDate = new Date()
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
@@ -26,9 +28,31 @@ function PatientReportDetails({ router, setPreLoader, GetPatientDetailsByTime, A
   const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   const eveningBatch = ["12:00 PM", "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM", "5:00 PM", "6:00 PM", "7:00 PM", "8:00 PM", "9:00 PM", "10:00 PM", "11:00 PM"]
   const morningBatch = ["12:00 AM", "1:00 AM", "2:00 AM", "3:00 AM", "4:00 AM", "5:00 AM", "6:00 AM", "7:00 AM", "8:00 AM", "9:00 AM", "10:00 AM", "11:00 AM"]
-  var currentTime = currentDate.getHours();
+  var [currentTime, setCurrentTime] = useState(currentDate.getHours());
   const id = getLocalStorageItem("patient-id");
-  const ref = React.createRef<HTMLDivElement>();
+
+  const updateDates = () => {
+    if (dateTest.getMonth() === month) {
+      let copy = [...days]
+      copy.push(String(new Date(dateTest)))
+      setDays(copy)
+      setDateTest(new Date(year, month, dateTest.getDate() + 1));
+      const a = String(new Date(dateTest)).split(" ")[2];
+      const b = String(currentDate.getDate());
+      if (parseInt(a) == parseInt(b)) {
+        setSelectedDate(String(new Date(dateTest)))
+      }
+    }
+  }
+
+  schedule.scheduleJob('0 0 * * * *', function () {
+    updateDates();
+    setCurrentTime(currentDate.getHours())
+  });
+
+  useEffect(() => {
+    updateDates();
+  }, [dateTest])
 
   useEffect(() => {
     if (!isLoggedIn) {
@@ -56,20 +80,6 @@ function PatientReportDetails({ router, setPreLoader, GetPatientDetailsByTime, A
         router.replace("/")
       })
   }, [])
-
-  useEffect(() => {
-    if (dateTest.getMonth() === month) {
-      let copy = [...days]
-      copy.push(String(new Date(dateTest)))
-      setDays(copy)
-      setDateTest(new Date(year, month, dateTest.getDate() + 1));
-      const a = String(new Date(dateTest)).split(" ")[2];
-      const b = String(currentDate.getDate());
-      if (parseInt(a) == parseInt(b)) {
-        setSelectedDate(String(new Date(dateTest)))
-      }
-    }
-  }, [dateTest])
 
   const goBack = () => {
     router.back();
@@ -156,6 +166,13 @@ function PatientReportDetails({ router, setPreLoader, GetPatientDetailsByTime, A
       setMorningModel(false);
     });
   }
+  
+  const onOpenAvgModal = () => {
+    getAverge(id, currentDate, setPreLoader, (data: object) => {
+      setAverageModel(true)
+      setAverageData({...data})
+    })
+   }
 
   return (
     <Typography>
@@ -174,8 +191,14 @@ function PatientReportDetails({ router, setPreLoader, GetPatientDetailsByTime, A
           </div>
         </DashboardWrapper>
         <div className="w-100 p-4">
-          <div className="d-flex py-1 small-text normal-black mb-3 ">
+          <div className="d-flex align-items-center justify-content-between py-1 small-text normal-black mb-3 ">
             <span>{`${months[month]} ${year}`}</span>
+            <Average
+              open={averageModel}
+              openModal={onOpenAvgModal}
+              closeModal={() => { setAverageModel(false) }}
+              data={averageData}
+            />
           </div>
           <div className="d-flex w-100 overflow-auto hide-scroll mt-3">
             {days?.length > 0 ? days.map(renderDayWiseMonth) : null}
@@ -189,7 +212,6 @@ function PatientReportDetails({ router, setPreLoader, GetPatientDetailsByTime, A
                 closeModal={() => { setMorningModel(false) }}
                 onSave={(data: any) => { proccessSummaryData(data, "morning") }}
               />
-              <Average />
             </div>
           </div>
           <div className="row mt-3 ">
@@ -234,7 +256,6 @@ function PatientReportDetails({ router, setPreLoader, GetPatientDetailsByTime, A
                 />
               </div>
             ))}
-
           </div>
         </div>
         <div className="w-75 my-5 pb-4">
