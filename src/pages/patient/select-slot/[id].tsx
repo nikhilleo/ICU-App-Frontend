@@ -6,7 +6,7 @@ import Swal from 'sweetalert2'
 import Button from 'components/Button'
 import { connect } from 'react-redux'
 import { getLocalStorageItem } from 'utils/helper'
-import { GetPatientDetailsByTime, AddPatientDetailsByTime, submitSummaryDetails, getAverge } from 'redux/patient'
+import { GetPatientDetailsByTime, AddPatientDetailsByTime, submitSummaryDetails, getAverge, getSummary } from 'redux/patient'
 import axios from '../../../axios'
 import SUMMARY from 'components/SUMMARY'
 import Average from 'components/Average'
@@ -21,6 +21,7 @@ function PatientReportDetails({ router, setPreLoader, GetPatientDetailsByTime, A
   const [summaryEveningModel, setEveningModel] = useState(false)
   const [averageModel, setAverageModel] = useState(false)
   const [averageData, setAverageData] = useState({})
+  const [MSData, setMSData] = useState()
   const currentDate = new Date()
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
@@ -43,9 +44,20 @@ function PatientReportDetails({ router, setPreLoader, GetPatientDetailsByTime, A
         setSelectedDate(String(new Date(dateTest)))
       }
     }
+    morningBatch.forEach((item) => {
+      if(parseInt(convertTime12to24(item).split(":")[0]) == currentDate.getHours()) {
+        setSelectedTime(item)
+      }
+    })
+    eveningBatch.forEach((item) => {
+      if(parseInt(convertTime12to24(item).split(":")[0]) == currentDate.getHours()) {
+        setSelectedTime(item)
+      }
+    })
   }
 
-  schedule.scheduleJob('0 0 * * * *', function () {
+  schedule.scheduleJob('0 * * * *', function () {
+    console.log("coming into schedular")
     updateDates();
     setCurrentTime(currentDate.getHours())
   });
@@ -174,6 +186,14 @@ function PatientReportDetails({ router, setPreLoader, GetPatientDetailsByTime, A
     })
    }
 
+   const onMorningModalOpen = () => {
+    getSummary(id, currentDate,"morning", setPreLoader, (res: any) => {
+      setMorningModel(true)
+      if (res.success) setMSData({ ...res.data[0] })
+    })
+    setMorningModel(true) 
+   }
+
   return (
     <Typography>
       <div className="default-container">
@@ -208,14 +228,18 @@ function PatientReportDetails({ router, setPreLoader, GetPatientDetailsByTime, A
             <div className="d-flex ">
               <SUMMARY
                 open={summaryMorningModel}
-                openModal={() => { setMorningModel(true) }}
+                openModal={onMorningModalOpen}
                 closeModal={() => { setMorningModel(false) }}
                 onSave={(data: any) => { proccessSummaryData(data, "morning") }}
+                data={MSData}
               />
             </div>
           </div>
           <div className="row mt-3 ">
             {morningBatch.map((item: any, index: any) => {
+              if(parseInt(convertTime12to24(item).split(":")[0]) == currentTime) {
+                setSelectedDate(item)
+              }
               return (
                 <div key={`select-slot-morning ${index}`} className="col-md-3">
                   <DaysWiseTime
@@ -243,7 +267,8 @@ function PatientReportDetails({ router, setPreLoader, GetPatientDetailsByTime, A
             </div>
           </div>
           <div className="row mt-3">
-            {eveningBatch.map((item: any, index: any) => (
+            {eveningBatch.map((item: any, index: any) => {
+              return(
               <div key={`select-slot-evening ${index}`} className="col-md-3 ">
                 <DaysWiseTime
                   onClick={() => { setSelectedTime(item) }}
@@ -255,7 +280,7 @@ function PatientReportDetails({ router, setPreLoader, GetPatientDetailsByTime, A
                   isSelected={selectedTime == item}
                 />
               </div>
-            ))}
+            )})}
           </div>
         </div>
         <div className="w-75 my-5 pb-4">

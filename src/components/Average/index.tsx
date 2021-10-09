@@ -20,7 +20,7 @@ class Index extends React.Component<any, any> {
                     <table className={`${styles.table} table mt-2`}  >
                       <thead className={styles.thead} >
                         <tr>
-                          <th scope="col" ><span className={styles.Idtag}>ID</span></th>
+                          <th scope="col" ><span className={styles.Idtag}>No</span></th>
                           <th scope="col" className={styles.name}>Name</th>
                           <th scope="col" className={styles.name}>Average Value</th>
                         </tr>

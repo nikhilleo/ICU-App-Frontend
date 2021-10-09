@@ -1164,6 +1164,31 @@ export const getAverge = async (
   }
 }
 
+export const getSummary = async (
+  id: any,
+  currentDate: any,
+  batch: string,
+  setPreLoader = (loader: any) => { },
+  callback = (data: any) => { }
+) => {
+  try {
+    let date: any = new Date(currentDate)
+    var dd = String(date.getDate()).padStart(2, '0');
+    var mm = String(date.getMonth() + 1).padStart(2, '0');
+    var yyyy = date.getFullYear();
+    date = mm + '-' + dd + '-' + yyyy;
+    setPreLoader(true)
+    const token = getLocalStorageItem("token");
+    const res = await axios.get(`summary/getSummary/${id}/${date}/${batch}`,
+      { headers: { Authorization: token } }
+    );
+    callback(res.data);
+    setPreLoader(false)
+  } catch (error: any) {
+    setPreLoader(false)
+  }
+}
+
 const PatientReducer = (state = initialState, action: any) => {
   switch (action.type) {
     case actions.SET_PATIENT: {

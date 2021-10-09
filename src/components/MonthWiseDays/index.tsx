@@ -21,7 +21,7 @@ interface DayWiseTimeProps {
 export const DaysWiseTime = ({ time, onClick, disabled, isSelected }: DayWiseTimeProps) => {
   return (
     <div
-      className={`${styles.time_container} ${isSelected ? styles.active : null} ${disabled ? styles.disabled : ""}`}
+      className={`${styles.time_container} ${isSelected ? styles.active : null} ${disabled ? styles.disabledTime : styles.enabled}`}
       onClick={!disabled ? onClick : () => { }}
     >
       {isSelected ? <WhiteClockIcon /> : <BlackClockIcon />} <span className="ml-3">{time}</span>

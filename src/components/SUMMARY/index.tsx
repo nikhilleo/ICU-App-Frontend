@@ -12,6 +12,30 @@ class Index extends React.Component<any, any> {
     error: {}
   }
 
+  componentDidMount() {
+    const { data } = this.props;
+    if(data) {
+      this.setState({
+        summaryDetails: {
+          doctor_name: data.doctor_name,
+          summary: data.summary
+        }
+      })
+    }
+  }
+
+  componentDidUpdate(prevProps: any) {
+    const { data } = this.props;
+    if(prevProps.data !== data) {
+    this.setState({
+        summaryDetails: {
+          doctor_name: data.doctor_name,
+          summary: data.summary
+        }
+      })
+    }
+  } 
+
   handleChange = (e: any) => {
     let key = e.target.attributes.getNamedItem("data-state-key").value;
     let value = e.target.value;
@@ -65,6 +89,7 @@ class Index extends React.Component<any, any> {
   }
 
   render() {
+    console.log(this.state)
     return (
       <div>
         <div className={styles.inputContainer1}>
@@ -92,6 +117,7 @@ class Index extends React.Component<any, any> {
                           placeholder="NAME OF DOCTOR *"
                           data-state-key="doctor_name"
                           onChange={this.handleChange}
+                          value={this.state.summaryDetails.doctor_name}
                         />
                       </ErrorWrap>
                     </div>
@@ -107,6 +133,7 @@ class Index extends React.Component<any, any> {
                             cols={33}
                             data-state-key="summary"
                             onChange={this.handleChange}
+                            value={this.state.summaryDetails.summary}
                           />
                         </ErrorWrap>
                       </div>
