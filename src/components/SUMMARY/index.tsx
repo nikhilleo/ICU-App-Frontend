@@ -9,32 +9,46 @@ class Index extends React.Component<any, any> {
       doctor_name: "",
       summary: "",
     },
+    isDisabled: false,
     error: {}
   }
 
   componentDidMount() {
     const { data } = this.props;
-    if(data) {
+    if (data) {
       this.setState({
         summaryDetails: {
           doctor_name: data.doctor_name,
           summary: data.summary
-        }
+        },
+        isDisabled: true
       })
     }
   }
 
   componentDidUpdate(prevProps: any) {
     const { data } = this.props;
-    if(prevProps.data !== data) {
-    this.setState({
+    if (prevProps.data !== data) {
+      this.setState({
         summaryDetails: {
           doctor_name: data.doctor_name,
           summary: data.summary
-        }
+        },
+        isDisabled: true
       })
     }
-  } 
+  }
+
+  componentWillUnmount() {
+    this.setState({
+      summaryDetails: {
+        doctor_name: "",
+        summary: "",
+      },
+      isDisabled: false,
+      error: {}
+    })
+  }
 
   handleChange = (e: any) => {
     let key = e.target.attributes.getNamedItem("data-state-key").value;
@@ -89,7 +103,6 @@ class Index extends React.Component<any, any> {
   }
 
   render() {
-    console.log(this.state)
     return (
       <div>
         <div className={styles.inputContainer1}>
@@ -97,6 +110,7 @@ class Index extends React.Component<any, any> {
             className={styles.inputContainer}
             type="button"
             onClick={this.props.openModal}
+            disabled={this.props.disabled}
           >
             <h4 className={styles.name}>Summary</h4>
           </button>
@@ -117,6 +131,7 @@ class Index extends React.Component<any, any> {
                           placeholder="NAME OF DOCTOR *"
                           data-state-key="doctor_name"
                           onChange={this.handleChange}
+                          disabled={this.state.isDisabled}
                           value={this.state.summaryDetails.doctor_name}
                         />
                       </ErrorWrap>
@@ -131,6 +146,7 @@ class Index extends React.Component<any, any> {
                             name="story"
                             rows={5}
                             cols={33}
+                            disabled={this.state.isDisabled}
                             data-state-key="summary"
                             onChange={this.handleChange}
                             value={this.state.summaryDetails.summary}
@@ -143,11 +159,14 @@ class Index extends React.Component<any, any> {
               </div>
             </div>
           </Modal.Body>
-          <Modal.Footer className={styles.modal} >
-            <Button className={styles.button} onClick={this.saveDiagonosticModal}>
-              Save
-            </Button>
-          </Modal.Footer>
+          {
+            this.state.isDisabled ? null
+              : (<Modal.Footer className={styles.modal} >
+                <Button disabled={this.state.isDisabled} className={styles.button} onClick={this.saveDiagonosticModal}>
+                  Save
+                </Button>
+              </Modal.Footer>)
+          }
         </Modal>
       </div>
     );

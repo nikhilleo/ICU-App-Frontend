@@ -43,15 +43,6 @@ class Dashboard extends Component<DashboardProps, DashboardState> {
         })
         .catch((err: any) => {
           this.props.setPreLoader(false);
-          Swal.fire({
-            title: 'Error',
-            icon: 'error',
-            showCloseButton: true,
-            cancelButtonText: 'Ok',
-            html: `<p>Please Login again and Retry</p>`,
-          })
-          localStorage.clear();
-          this.props.router.replace("/");
         })
     }
   }

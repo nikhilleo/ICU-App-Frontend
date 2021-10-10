@@ -6,6 +6,7 @@ import FormWrapper from "components/FormWrapper";
 import { connect } from "react-redux";
 import { validateLoginUserData, loginProcess, setLoginError, setLoginUserData } from "redux/login"
 import { getLocalStorageItem } from "utils/helper";
+import Swal from "sweetalert2";
 
 interface LoginProps {
   router: any;
@@ -26,7 +27,16 @@ class Login extends Component<LoginProps, LoginState> {
   state = {};
 
   componentDidMount() {
-    if(this.props.isLoggedIn) this.props.router.replace(`/${this.props.role}/dashboard`)
+    if (this.props.isLoggedIn) {
+      Swal.fire({
+        title: 'Success',
+        icon: 'success',
+        showCloseButton: true,
+        cancelButtonText: 'Ok',
+        html: `You are already Logged In.`,
+      })
+      this.props.router.replace(`/${this.props.role}/dashboard`)
+    }
   }
 
   onSubmit = async (e: any) => {

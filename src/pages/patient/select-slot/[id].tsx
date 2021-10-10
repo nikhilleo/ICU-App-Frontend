@@ -22,6 +22,7 @@ function PatientReportDetails({ router, setPreLoader, GetPatientDetailsByTime, A
   const [averageModel, setAverageModel] = useState(false)
   const [averageData, setAverageData] = useState({})
   const [MSData, setMSData] = useState()
+  const [ESData, setESData] = useState()
   const currentDate = new Date()
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
@@ -45,12 +46,12 @@ function PatientReportDetails({ router, setPreLoader, GetPatientDetailsByTime, A
       }
     }
     morningBatch.forEach((item) => {
-      if(parseInt(convertTime12to24(item).split(":")[0]) == currentDate.getHours()) {
+      if (parseInt(convertTime12to24(item).split(":")[0]) == currentDate.getHours()) {
         setSelectedTime(item)
       }
     })
     eveningBatch.forEach((item) => {
-      if(parseInt(convertTime12to24(item).split(":")[0]) == currentDate.getHours()) {
+      if (parseInt(convertTime12to24(item).split(":")[0]) == currentDate.getHours()) {
         setSelectedTime(item)
       }
     })
@@ -178,22 +179,29 @@ function PatientReportDetails({ router, setPreLoader, GetPatientDetailsByTime, A
       setMorningModel(false);
     });
   }
-  
+
   const onOpenAvgModal = () => {
     getAverge(id, currentDate, setPreLoader, (data: object) => {
       setAverageModel(true)
-      setAverageData({...data})
+      setAverageData({ ...data })
     })
-   }
+  }
 
-   const onMorningModalOpen = () => {
-    getSummary(id, currentDate,"morning", setPreLoader, (res: any) => {
+  const onMorningModalOpen = () => {
+    getSummary(id, selectedDate, "morning", setPreLoader, (res: any) => {
       setMorningModel(true)
       if (res.success) setMSData({ ...res.data[0] })
     })
-    setMorningModel(true) 
-   }
+    setMorningModel(true)
+  }
 
+  const onEveningModalOpen = () => {
+    getSummary(id, selectedDate, "evening", setPreLoader, (res: any) => {
+      setEveningModel(true)
+      if (res.success) setESData({ ...res.data[0] })
+    })
+    setEveningModel(true)
+  }
   return (
     <Typography>
       <div className="default-container">
@@ -232,12 +240,13 @@ function PatientReportDetails({ router, setPreLoader, GetPatientDetailsByTime, A
                 closeModal={() => { setMorningModel(false) }}
                 onSave={(data: any) => { proccessSummaryData(data, "morning") }}
                 data={MSData}
+                disabled={selectedDate.split(" ")[2] !== currentDate.toString().split(" ")[2]}
               />
             </div>
           </div>
           <div className="row mt-3 ">
             {morningBatch.map((item: any, index: any) => {
-              if(parseInt(convertTime12to24(item).split(":")[0]) == currentTime) {
+              if (parseInt(convertTime12to24(item).split(":")[0]) == currentTime) {
                 setSelectedDate(item)
               }
               return (
@@ -260,27 +269,30 @@ function PatientReportDetails({ router, setPreLoader, GetPatientDetailsByTime, A
             <div className="d-flex ">
               <SUMMARY
                 open={summaryEveningModel}
-                openModal={() => { setEveningModel(true) }}
+                openModal={onEveningModalOpen}
                 closeModal={() => { setEveningModel(false) }}
                 onSave={(data: any) => { proccessSummaryData(data, "evening") }}
+                data={ESData}
+                disabled={selectedDate.split(" ")[2] !== currentDate.toString().split(" ")[2]}
               />
             </div>
           </div>
           <div className="row mt-3">
             {eveningBatch.map((item: any, index: any) => {
-              return(
-              <div key={`select-slot-evening ${index}`} className="col-md-3 ">
-                <DaysWiseTime
-                  onClick={() => { setSelectedTime(item) }}
-                  disabled={
-                    selectedDate.split(" ")[2] == String(currentDate).split(" ")[2] &&
-                    parseInt(convertTime12to24(item).split(":")[0]) > currentTime
-                  }
-                  time={item}
-                  isSelected={selectedTime == item}
-                />
-              </div>
-            )})}
+              return (
+                <div key={`select-slot-evening ${index}`} className="col-md-3 ">
+                  <DaysWiseTime
+                    onClick={() => { setSelectedTime(item) }}
+                    disabled={
+                      selectedDate.split(" ")[2] == String(currentDate).split(" ")[2] &&
+                      parseInt(convertTime12to24(item).split(":")[0]) > currentTime
+                    }
+                    time={item}
+                    isSelected={selectedTime == item}
+                  />
+                </div>
+              )
+            })}
           </div>
         </div>
         <div className="w-75 my-5 pb-4">

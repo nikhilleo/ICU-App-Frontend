@@ -59,10 +59,6 @@ export const loginProcess = (url: any, setPreLoader: any, callback: any) => asyn
       });
       localStorage.setItem("user-details", JSON.stringify(user));
       localStorage.setItem("token", response.data.token);
-      dispatch({
-        type: actions.SET_USER,
-        userData: response.data.user
-      })
       if (response?.data?.message) {
         Swal.fire({
           title: 'Success',

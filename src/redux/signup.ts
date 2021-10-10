@@ -65,7 +65,15 @@ export const signUpProcess = (url: any, setPreLoader: any, callback: any) => asy
       dispatch({
         type: actions.CLEAR_USER
       })
-      if (response.data.message) {
+      if (response.data?.token) {
+        let user = Object.assign({}, response.data.user, {
+          role: response.data.role,
+        });
+        localStorage.setItem("user-details", JSON.stringify(user));
+        localStorage.setItem("token", response.data.token);
+      }
+      callback();
+      if (response.data?.message) {
         Swal.fire({
           title: 'Success',
           icon: 'success',
@@ -73,7 +81,6 @@ export const signUpProcess = (url: any, setPreLoader: any, callback: any) => asy
           cancelButtonText: 'Ok',
           html: `<p>${response.data.message}</p>`,
         })
-        callback();
       }
     }
   } catch (error: any) {
