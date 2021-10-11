@@ -159,8 +159,8 @@ function PatientReportDetails({
             <div style={{ maxWidth: "110px" }}>
               <img className="card-img " src={data?.patinet_image ? data.patinet_image : "/Images/doctor.png"} alt="Patient Image" />
             </div>
-            <div className="mt-3 ml-5">
-              <p className="ml-4 d-flex   fs-20 lh-20">Patient Id :- {data?._id || ""}</p>
+            <div className="mt-3 ml-5 overflow-hidden">
+              <p className="ml-4 d-flex  fs-20 lh-20">Patient Id :- {data?._id || ""}</p>
               <p className="ml-4 d-flex  fs-20 lh-20">Patient Name :- {`${data?.fName || ""} ${data?.lName || ""}`}</p>
               <p className="ml-4 d-flex  fs-20 lh-20">Age :- {data?.age || ""}</p>
               <p className="ml-4 d-flex  fs-20 lh-20">Sex :- {data?.gender || ""}</p>
