@@ -58,7 +58,6 @@ function PatientReportDetails({ router, setPreLoader, GetPatientDetailsByTime, A
   }
 
   schedule.scheduleJob('0 * * * *', function () {
-    console.log("coming into schedular")
     updateDates();
     setCurrentTime(currentDate.getHours())
   });

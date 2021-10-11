@@ -6,6 +6,7 @@
   align-items: center;
   position: relative;
   min-width: 498px;
+  height: 100px;
 }
 
 .btn {
@@ -27,4 +28,6 @@
 .patient_profile {
   margin-right: 24px;
   width: 69px;
+  max-height: 100%;
+  object-fit: contain;
 }
