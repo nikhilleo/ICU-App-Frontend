@@ -245,9 +245,6 @@ function PatientReportDetails({ router, setPreLoader, GetPatientDetailsByTime, A
           </div>
           <div className="row mt-3 ">
             {morningBatch.map((item: any, index: any) => {
-              if (parseInt(convertTime12to24(item).split(":")[0]) == currentTime) {
-                setSelectedDate(item)
-              }
               return (
                 <div key={`select-slot-morning ${index}`} className="col-md-3">
                   <DaysWiseTime
