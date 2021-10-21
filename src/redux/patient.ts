@@ -842,12 +842,12 @@ export const submitIntakeDetails = (loader = (loader: any) => { }, callback = ()
     const time_id = getLocalStorageItem("time_id");
     const token = getLocalStorageItem("token");
     const payload = {
-      time_id,
-      IV_fluids,
-      rt,
-      drug_blouses,
-      infusion,
-      miscellaneous,
+       time_id,
+      IV_fluids: parseInt(IV_fluids),
+      rt: parseInt(rt),
+      drug_blouses: parseInt(drug_blouses),
+      infusion: parseInt(infusion),
+      miscellaneous: parseInt(miscellaneous),
     };
     const res = await axios.post(
       "/input/addInput",
@@ -910,9 +910,9 @@ export const submitOutputDetails = (loader = (loader: any) => { }, callback = ()
     const token = getLocalStorageItem("token");
     const payload = {
       time_id,
-      ng_rt,
-      uop,
-      drain,
+      ng_rt: parseInt(ng_rt),
+      uop: parseInt(uop),
+      drain: parseInt(drain),
     };
     const res = await axios.post(
       "/output/addOutput",
