@@ -11,6 +11,7 @@ import INTAKE from 'components/INTAKE'
 import OUTPUT from 'components/OUTPUT'
 import DIABETICFLOW from 'components/DIABETICFLOW'
 import DOSES from 'components/DOSES'
+import HUMANBODY from 'components/HUMANBODY'
 import {
   submitVitalsDetails,
   validateVitalsData,
@@ -23,6 +24,8 @@ import {
   submitIntakeDetails,
   validateOutputData,
   validateDiabeticFlowData,
+  validateReportsHUMANBODY,
+  submitReportsHUMANBODY,
   submitDiabeticFlowDetails,
   submitDosesDetails,
   submitOutputDetails,
@@ -46,6 +49,8 @@ function PatientReportDetails({
   submitOutputDetails,
   validateDiabeticFlowData,
   submitDiabeticFlowDetails,
+  validateReportsHUMANBODY,
+  submitReportsHUMANBODY,
   submitDosesDetails,
   currentReportTab,
   setReportTab,
@@ -107,7 +112,6 @@ function PatientReportDetails({
       }
     })
   }
-
   const handleClick = () => {
     switch (currentReportTab) {
       case "ReportsVitals":
@@ -140,6 +144,11 @@ function PatientReportDetails({
           submitDiabeticFlowDetails(setPreLoader, () => setReportTab("ReportsDOSES", 7));
         }
         break;
+        case "ReportsHUMANBODY":
+          if (validateReportsHUMANBODY()) {
+            submitReportsHUMANBODY(setPreLoader, () => setReportTab("ReportsHUMANBODY", 8));
+          }
+          break;
       case "ReportsDOSES":
         submitDosesDetails(setPreLoader, () => {
           setReportTab("ReportsVitals", 1);
@@ -218,6 +227,13 @@ function PatientReportDetails({
               >
                 D O S E S 
               </a>
+              <a
+                id="ReportsHUMANBODY"
+                className={currentReportTab === "ReportsHUMANBODY" ? styles.ActiveTab : ""}
+                onClick={() => setReportTab("ReportsHUMANBODY", 8)}
+              >
+                 H U M A N B O D Y
+              </a>
             </div>
           </div>
           <div className={`${styles.nnnn}`}>
@@ -228,6 +244,7 @@ function PatientReportDetails({
             {currentReportTab === "ReportsOUTPUT" && <OUTPUT />}
             {currentReportTab === "ReportsDIABETICFLOW" && <DIABETICFLOW />}
             {currentReportTab === "ReportsDOSES" && <DOSES />}
+            {currentReportTab === "ReportsHUMANBODY" && <HUMANBODY />}
           </div>
         </div>
         <div className={`${styles.Submit} w-75 my-5   pb-4`}>
@@ -269,7 +286,9 @@ const mapDispatchToProps = {
   validateOutputData,
   submitOutputDetails,
   validateDiabeticFlowData,
+  validateReportsHUMANBODY,
   submitDiabeticFlowDetails,
+  submitReportsHUMANBODY,
   submitDosesDetails,
   setReportTab,
 }
