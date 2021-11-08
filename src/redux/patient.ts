@@ -957,6 +957,66 @@ export const validateDiabeticFlowData = () => (dispatch: any, getState: any) => 
   dispatch(setPRDError('', ''));
   return true;
 }
+export const validateReportsHUMANBODY = () => (dispatch: any, getState: any) => {
+  const {
+    insuline,
+    value
+  } = getState().patient.patientReportDetails;
+  if (!insuline) {
+    dispatch(setPRDError('insuline', 'This is a required * field'));
+    return false;
+  }
+  if (!value) {
+    dispatch(setPRDError('value', 'This is a required * field'));
+    return false;
+  }
+  dispatch(setPRDError('', ''));
+  return true;
+}
+
+export const submitReportsHUMANBODY = (loader = (loader: any) => { }, callback = () => { }) => async (dispatch: any, getState: any) => {
+  try {
+    loader(true);
+    const {
+      insuline,
+      value
+    } = getState().patient.patientReportDetails;
+    const time_id = getLocalStorageItem("time_id");
+    const token = getLocalStorageItem("token");
+    const payload = {
+      time_id,
+      insuline,
+      value
+    };
+    const res = await axios.post(
+      "/diabeticFlow/addDiabeticFlow",
+      payload,
+      { headers: { Authorization: token } }
+    );
+    if (res.data.success) {
+      dispatch({
+        type: actions.SET_REPORT_SUCCESSED_TAB,
+        value: 6,
+      })
+      callback();
+    }
+    loader(false)
+  } catch (error: any) {
+    loader(false);
+    if (error.response?.data?.message) {
+      Swal.fire({
+        title: 'Error',
+        icon: 'error',
+        showCloseButton: true,
+        cancelButtonText: 'Ok',
+        html: `<p>${error.response.data.message}</p>`,
+      })
+    }
+  }
+}
+
+
+
 
 export const submitDiabeticFlowDetails = (loader = (loader: any) => { }, callback = () => { }) => async (dispatch: any, getState: any) => {
   try {
