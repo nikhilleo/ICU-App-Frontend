@@ -77,6 +77,7 @@ const actions = {
   DELETEADOSE: "patient/DELETEADOSE",
   UPDATE_PRD_DATA: "patient/UPDATE_PRD_DATA",
   UPDATE_DOSE: "patient/UPDATE_DOSE",
+  SET_PATIENT_INTUBED_DATA: "patient/SET_PATIENT_INTUBED_DATA",
 }
 
 export const setPatientFormError = (key: any, message: any) => ({
@@ -957,66 +958,6 @@ export const validateDiabeticFlowData = () => (dispatch: any, getState: any) => 
   dispatch(setPRDError('', ''));
   return true;
 }
-export const validateReportsHUMANBODY = () => (dispatch: any, getState: any) => {
-  const {
-    insuline,
-    value
-  } = getState().patient.patientReportDetails;
-  if (!insuline) {
-    dispatch(setPRDError('insuline', 'This is a required * field'));
-    return false;
-  }
-  if (!value) {
-    dispatch(setPRDError('value', 'This is a required * field'));
-    return false;
-  }
-  dispatch(setPRDError('', ''));
-  return true;
-}
-
-export const submitReportsHUMANBODY = (loader = (loader: any) => { }, callback = () => { }) => async (dispatch: any, getState: any) => {
-  try {
-    loader(true);
-    const {
-      insuline,
-      value
-    } = getState().patient.patientReportDetails;
-    const time_id = getLocalStorageItem("time_id");
-    const token = getLocalStorageItem("token");
-    const payload = {
-      time_id,
-      insuline,
-      value
-    };
-    const res = await axios.post(
-      "/diabeticFlow/addDiabeticFlow",
-      payload,
-      { headers: { Authorization: token } }
-    );
-    if (res.data.success) {
-      dispatch({
-        type: actions.SET_REPORT_SUCCESSED_TAB,
-        value: 6,
-      })
-      callback();
-    }
-    loader(false)
-  } catch (error: any) {
-    loader(false);
-    if (error.response?.data?.message) {
-      Swal.fire({
-        title: 'Error',
-        icon: 'error',
-        showCloseButton: true,
-        cancelButtonText: 'Ok',
-        html: `<p>${error.response.data.message}</p>`,
-      })
-    }
-  }
-}
-
-
-
 
 export const submitDiabeticFlowDetails = (loader = (loader: any) => { }, callback = () => { }) => async (dispatch: any, getState: any) => {
   try {
@@ -1210,8 +1151,8 @@ export const getAverge = async (
     const res = await axios.get(`average/getFullDayAverage/${id}/${date}`,
       { headers: { Authorization: token } }
     );
-    if (res.data.success) callback(res.data.balance);
     setPreLoader(false)
+    if (res.data.success) callback(res.data.balance);
   } catch (error: any) {
     setPreLoader(false)
     Swal.fire({
@@ -1229,7 +1170,8 @@ export const getSummary = async (
   currentDate: any,
   batch: string,
   setPreLoader = (loader: any) => { },
-  callback = (data: any) => { }
+  callback = (data: any) => { },
+  errorCallBack = () => {}
 ) => {
   try {
     let date: any = new Date(currentDate)
@@ -1242,8 +1184,49 @@ export const getSummary = async (
     const res = await axios.get(`summary/getSummary/${id}/${date}/${batch}`,
       { headers: { Authorization: token } }
     );
-    callback(res.data);
     setPreLoader(false)
+    callback(res.data);
+  } catch (error: any) {
+    setPreLoader(false)
+    errorCallBack();
+  }
+}
+
+export const setPatientIntubedData = (data: object[]) => (dispatch: any, getState: any) => {
+  dispatch({
+    type: actions.SET_PATIENT_INTUBED_DATA,
+    value: data
+  })
+}
+
+export const submitIntubedData = async (
+  id: any,
+  currentDate: any,
+  currentTime: any,
+  data: object[],
+  setPreLoader = (loader: any) => { },
+  callback = (data: any) => { },
+) => {
+  try {
+    let date: any = new Date(currentDate)
+    var dd = String(date.getDate()).padStart(2, '0');
+    var mm = String(date.getMonth() + 1).padStart(2, '0');
+    var yyyy = date.getFullYear();
+    date = mm + '-' + dd + '-' + yyyy;
+    const payload = {
+      "patient_id": id,
+      "todays_date": currentDate,
+      "intubed_time": currentTime,
+      "tubes": data
+    }
+    setPreLoader(true)
+    const token = getLocalStorageItem("token");
+    const res = await axios.post(`intube/addIntubes`,
+    payload,
+      { headers: { Authorization: token } }
+    );
+    setPreLoader(false)
+    callback(res.data);
   } catch (error: any) {
     setPreLoader(false)
   }
@@ -1416,6 +1399,12 @@ const PatientReducer = (state = initialState, action: any) => {
       return {
         ...state,
         patientDosesData: [...arr]
+      }
+    }
+    case actions.SET_PATIENT_INTUBED_DATA: {
+      return {
+        ...state,
+        intubedData: action.value
       }
     }
     default: return state;

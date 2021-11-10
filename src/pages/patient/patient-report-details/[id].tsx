@@ -11,7 +11,6 @@ import INTAKE from 'components/INTAKE'
 import OUTPUT from 'components/OUTPUT'
 import DIABETICFLOW from 'components/DIABETICFLOW'
 import DOSES from 'components/DOSES'
-import HUMANBODY from 'components/HUMANBODY'
 import {
   submitVitalsDetails,
   validateVitalsData,
@@ -24,8 +23,6 @@ import {
   submitIntakeDetails,
   validateOutputData,
   validateDiabeticFlowData,
-  validateReportsHUMANBODY,
-  submitReportsHUMANBODY,
   submitDiabeticFlowDetails,
   submitDosesDetails,
   submitOutputDetails,
@@ -49,8 +46,6 @@ function PatientReportDetails({
   submitOutputDetails,
   validateDiabeticFlowData,
   submitDiabeticFlowDetails,
-  validateReportsHUMANBODY,
-  submitReportsHUMANBODY,
   submitDosesDetails,
   currentReportTab,
   setReportTab,
@@ -144,11 +139,6 @@ function PatientReportDetails({
           submitDiabeticFlowDetails(setPreLoader, () => setReportTab("ReportsDOSES", 7));
         }
         break;
-        case "ReportsHUMANBODY":
-          if (validateReportsHUMANBODY()) {
-            submitReportsHUMANBODY(setPreLoader, () => setReportTab("ReportsHUMANBODY", 8));
-          }
-          break;
       case "ReportsDOSES":
         submitDosesDetails(setPreLoader, () => {
           setReportTab("ReportsVitals", 1);
@@ -169,7 +159,6 @@ function PatientReportDetails({
               <img className="card-img " src={data?.patinet_image ? data.patinet_image : "/Images/doctor.png"} alt="Patient Image" />
             </div>
             <div className="mt-3 ml-5 overflow-hidden">
-              <p className="ml-4 d-flex  fs-20 lh-20">Patient Id :- {data?._id || ""}</p>
               <p className="ml-4 d-flex  fs-20 lh-20">Patient Name :- {`${data?.fName || ""} ${data?.lName || ""}`}</p>
               <p className="ml-4 d-flex  fs-20 lh-20">Age :- {data?.age || ""}</p>
               <p className="ml-4 d-flex  fs-20 lh-20">Sex :- {data?.gender || ""}</p>
@@ -227,13 +216,6 @@ function PatientReportDetails({
               >
                 D O S E S 
               </a>
-              <a
-                id="ReportsHUMANBODY"
-                className={currentReportTab === "ReportsHUMANBODY" ? styles.ActiveTab : ""}
-                onClick={() => setReportTab("ReportsHUMANBODY", 8)}
-              >
-                 H U M A N B O D Y
-              </a>
             </div>
           </div>
           <div className={`${styles.nnnn}`}>
@@ -244,7 +226,6 @@ function PatientReportDetails({
             {currentReportTab === "ReportsOUTPUT" && <OUTPUT />}
             {currentReportTab === "ReportsDIABETICFLOW" && <DIABETICFLOW />}
             {currentReportTab === "ReportsDOSES" && <DOSES />}
-            {currentReportTab === "ReportsHUMANBODY" && <HUMANBODY />}
           </div>
         </div>
         <div className={`${styles.Submit} w-75 my-5   pb-4`}>
@@ -254,8 +235,9 @@ function PatientReportDetails({
               disabled: disabled
             }}
             onClick={handleClick}
+            buttonStyle={disabled ? { backgroundColor: "#6d6d97" } : { backgroundColor: "#2A2AC0" }}
           >
-            Next
+          {currentReportTab == "ReportsDOSES" ? "Submit" : "Next"}
           </Button>
         </div>
       </div>
@@ -286,9 +268,7 @@ const mapDispatchToProps = {
   validateOutputData,
   submitOutputDetails,
   validateDiabeticFlowData,
-  validateReportsHUMANBODY,
   submitDiabeticFlowDetails,
-  submitReportsHUMANBODY,
   submitDosesDetails,
   setReportTab,
 }

@@ -1315,14 +1315,14 @@ export const AddColorIcon = () => (
     <path
       d="M30.8662 34.313L53.5922 34.412"
       stroke="#F7EEEE"
-      stroke-width="6"
+      strokeWidth="6"
       stroke-miterlimit="10"
       strokeLinecap="square"
     />
     <path
       d="M42.2782 23L42.1792 45.726"
       stroke="#F7EEEE"
-      stroke-width="6"
+      strokeWidth="6"
       stroke-miterlimit="10"
       strokeLinecap="square"
     />
@@ -1336,7 +1336,7 @@ export const AddColorIcon = () => (
         filterUnits="userSpaceOnUse"
         color-interpolation-filters="sRGB"
       >
-        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+        <feFlood floodOpacity="0" result="BackgroundImageFix" />
         <feColorMatrix
           in="SourceAlpha"
           type="matrix"
@@ -1393,7 +1393,7 @@ export const DeleteIcon = () => (
     <path
       d="M16.0352 10.1143C16.0352 10.1143 15.7032 14.2385 15.5102 15.9761C15.5052 16.1591 15.4637 16.3393 15.3879 16.5061C15.3122 16.6728 15.2038 16.8226 15.0692 16.9467C14.9346 17.0709 14.7765 17.1667 14.6042 17.2287C14.4319 17.2906 14.249 17.3174 14.0662 17.3075C12.4662 17.3365 10.8662 17.3385 9.27317 17.3075C9.09406 17.3135 8.91553 17.2839 8.74794 17.2204C8.58034 17.1569 8.427 17.0608 8.2968 16.9376C8.16659 16.8144 8.0621 16.6666 7.98939 16.5028C7.91667 16.3389 7.87717 16.1623 7.87317 15.9831C7.67817 14.2275 7.34717 10.1143 7.34717 10.1143"
       stroke="#F0EEF2"
-      stroke-width="1.5"
+      strokeWidth="1.5"
       stroke-miterlimit="10"
       strokeLinecap="round"
       stroke-linejoin="round"
@@ -1401,7 +1401,7 @@ export const DeleteIcon = () => (
     <path
       d="M16.882 8.13666H6.5"
       stroke="#F0EEF2"
-      stroke-width="1.5"
+      strokeWidth="1.5"
       stroke-miterlimit="10"
       strokeLinecap="round"
       stroke-linejoin="round"
@@ -1409,7 +1409,7 @@ export const DeleteIcon = () => (
     <path
       d="M14.881 8.13666C14.6478 8.13657 14.4219 8.0557 14.2416 7.90781C14.0613 7.75991 13.9378 7.55412 13.892 7.32541L13.744 6.58118C13.6994 6.41424 13.6009 6.26672 13.4638 6.1616C13.3267 6.05649 13.1587 5.99967 12.986 6H10.395C10.2224 5.99989 10.0547 6.05681 9.91777 6.16191C9.78087 6.26701 9.68252 6.4144 9.638 6.58118L9.489 7.32541C9.44324 7.55412 9.31971 7.75991 9.13941 7.90781C8.95911 8.0557 8.73317 8.13657 8.5 8.13666"
       stroke="#F0EEF2"
-      stroke-width="1.5"
+      strokeWidth="1.5"
       stroke-miterlimit="10"
       strokeLinecap="round"
       stroke-linejoin="round"
@@ -1474,7 +1474,7 @@ export const HUMANBODY = () => (
       >
         <feOffset dx="9" dy="6" input="SourceAlpha" />
         <feGaussianBlur stdDeviation="3.5" result="blur" />
-        <feFlood flood-color="#494545" flood-opacity="0.161" />
+        <feFlood floodColor="#494545" floodOpacity="0.161" />
         <feComposite operator="in" in2="blur" />
         <feComposite in="SourceGraphic" />
       </filter>
@@ -1486,7 +1486,7 @@ export const HUMANBODY = () => (
           transform="translate(-7880.638 35.557)"
           fill="none"
           stroke="#707070"
-          stroke-width="1"
+          strokeWidth="1"
         />
       </clipPath>
       <pattern
@@ -1510,7 +1510,7 @@ export const HUMANBODY = () => (
           transform="matrix(-1, 0, 0, 1, 164.021, 0)"
           fill="none"
           stroke="#707070"
-          stroke-width="1"
+          strokeWidth="1"
         />
       </clipPath>
       <pattern
@@ -1536,7 +1536,7 @@ export const HUMANBODY = () => (
       >
         <feOffset dx="3" dy="4" input="SourceAlpha" />
         <feGaussianBlur stdDeviation="5.5" result="blur-2" />
-        <feFlood flood-opacity="0.161" />
+        <feFlood floodOpacity="0.161" />
         <feComposite operator="in" in2="blur-2" />
         <feComposite in="SourceGraphic" />
       </filter>
