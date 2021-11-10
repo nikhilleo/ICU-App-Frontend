@@ -140,6 +140,16 @@ function PatientReportDetails({ router, setPreLoader, GetPatientDetailsByTime, A
       })
       return
     }
+    else if(month > currentDate.getMonth()) {
+      Swal.fire({
+        title: 'Error',
+        icon: 'error',
+        showCloseButton: true,
+        cancelButtonText: 'Ok',
+        html: `<p>Please select current month to fill data</p>`,
+      })
+      return
+    }
     let date: any = new Date(selectedDate)
     var dd = String(date.getDate()).padStart(2, '0');
     var mm = String(date.getMonth() + 1).padStart(2, '0');
@@ -148,7 +158,9 @@ function PatientReportDetails({ router, setPreLoader, GetPatientDetailsByTime, A
     const [time, modifier] = selectedTime.split(" ");
     let [hours, minutes] = time.split(":");
     let formattedTime = `${hours}${modifier.toLowerCase()}`
-    if (parseInt(convertTime12to24(selectedTime).split(":")[0]) == currentTime && currentDate.getDate() == parseInt(selectedDate.split(" ")[2])) {
+    if (parseInt(convertTime12to24(selectedTime).split(":")[0]) == currentTime &&
+      currentDate.getDate() == parseInt(selectedDate.split(" ")[2]) &&
+      month == currentDate.getMonth()) {
       AddPatientDetailsByTime(id, date, formattedTime, setPreLoader, () => {
         router.push(`/patient/patient-report-details/${id}`);
       })
@@ -184,6 +196,16 @@ function PatientReportDetails({ router, setPreLoader, GetPatientDetailsByTime, A
   }
 
   const onOpenAvgModal = () => {
+    if(month > currentDate.getMonth()) {
+      Swal.fire({
+        title: 'Error',
+        icon: 'error',
+        showCloseButton: true,
+        cancelButtonText: 'Ok',
+        html: `<p>Please select month properly to get average</p>`,
+      })
+      return
+    }
     getAverge(id, selectedDate, setPreLoader, (data: object) => {
       setAverageModel(true)
       setAverageData({ ...data })
@@ -219,7 +241,7 @@ function PatientReportDetails({ router, setPreLoader, GetPatientDetailsByTime, A
       setEveningModel(true)
     }, () => {
       if (selectedDate.split(" ")[2] == currentDate.toString().split(" ")[2] && month == currentDate.getMonth()) {
-        if (parseInt(String(currentDate).split(" ")[2]) > 11) setEveningModel(true);
+        if (currentDate.getHours() > 11) setEveningModel(true);
         else Swal.fire({
           title: 'Error',
           icon: 'error',
