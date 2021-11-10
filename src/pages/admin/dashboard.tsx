@@ -48,11 +48,12 @@ class Dashboard extends Component<DashboardProps, DashboardState> {
   }
 
   render() {
+    console.log(this.state.data)
     return (
     <Typography>
       <div className="default-container">
         <div className="mb-3 w-100">
-          <PatientDashboard router={this.props.router} />
+          <PatientDashboard patientLength={this.state.data.length} router={this.props.router} />
         </div>
         <div className="d-flex justify-content-between mt-4 w-100">
           <Link href="/admin/add-nurse">

@@ -6,7 +6,7 @@ import { HeartIcon1 } from 'components/Icons'
 import DashboardWrapper from 'components/DashboardWrapper'
 import Swal from 'sweetalert2'
 
-const PatientDashboard = ({ router }: any) => {
+const PatientDashboard = ({ router, patientLength }: any) => {
   const goBack = () => {
     router.back();
   }
@@ -33,38 +33,10 @@ const PatientDashboard = ({ router }: any) => {
   return (
     <Typography>
       <DashboardWrapper goBack={goBack} logout={logout}>
-        <div className="col d-flex hide-scroll overflow-auto">
+        <div className="col d-flex hide-scroll overflow-auto justify-content-center">
           <img className={`${styles.Img}`} src="../Images/Doctor1.svg" alt="" />
           <div>
             <div className={`${styles.container}  `}>
-              <div className={`${styles.Doctor} `}>
-                <div>
-                  <p
-                    className="d-flex  fs-20 lh-9 Roboto"
-                    style={{
-                      color: "#8288AC",
-                      fontSize: "25px",
-                      marginTop: "5px",
-                      marginLeft: "30px",
-                    }}
-                  >
-                    Doctor
-                  </p>
-                  <p
-                    className="  d-flex fs-20 lh-9 Roboto"
-                    style={{
-                      color: "#BCBDC3",
-                      marginLeft: "47px",
-                      marginTop: "-26px",
-                    }}
-                  >
-                    64
-                  </p>
-                </div>
-                <div style={{ marginTop: "9px", marginLeft: "14px" }}>
-                  <TelescopeIcon />
-                </div>
-              </div>
               <div className={`${styles.Nurse} `}>
                 <div>
                   <p
@@ -114,7 +86,7 @@ const PatientDashboard = ({ router }: any) => {
                       marginTop: "-26px",
                     }}
                   >
-                    64
+                    {patientLength}
                   </p>
                 </div>
                 <div style={{ marginTop: "15px", marginLeft: "14px" }}>
