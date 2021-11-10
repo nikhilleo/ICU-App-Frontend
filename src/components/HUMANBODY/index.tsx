@@ -3,15 +3,17 @@ import { MultiSelect } from "react-multi-select-component";
 import styles from './index.module.scss'
 import { HUMANBODY } from "components/Icons";
 
-export default function App() {
+export default function App({data, setData}: any) {
   const options = [
-    { label: "Fluid Pipe", value: "Fluid Pipe" },
-    { label: "Mango 🥭", value: "mango" },
-    { label: "Strawberry 🍓", value: "strawberry" },
-    { label: "Watermelon 🍉", value: "watermelon" },
+    { label: "Ryles tube", value: "Ryles tube" },
+    { label: "Endotracheal tube", value: "Endotracheal tube" },
+    { label: "Tracheostomy tube", value: "Tracheostomy tube" },
+    { label: "Foley catheter", value: "Foley catheter" },
+    { label: "Drain", value: "Drain" },
+    { label: "Dialysis lumen", value: "Dialysis lumen" },
+    { label: "Central line", value: "Central line" },
+    { label: "Intravenous catheter", value: "Intravenous catheter" },
   ];
-
-  const [selected, setSelected] = useState([]);
 
   return (
     <div className={`${styles.main}  `}>
@@ -21,8 +23,8 @@ export default function App() {
       <div className={`${styles.SelectDropdown}  `}>
         <MultiSelect
           options={options}
-          value={selected}
-          onChange={setSelected}
+          value={data}
+          onChange={setData}
           labelledBy={"Select"}
         />
       </div>

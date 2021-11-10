@@ -9,6 +9,7 @@ import { getLocalStorageItem } from 'utils/helper'
 import Loader from 'components/Loader'
 import DashboardWrapper from 'components/DashboardWrapper'
 import Swal from 'sweetalert2'
+import { setPatientIntubedData } from 'redux/patient'
 
 function Index({ router }: any) {
   const [data, setData]: any = useState();
@@ -66,6 +67,28 @@ function Index({ router }: any) {
     <Loader />
   )
 
+  const goToIntubedPage = () => {
+    // getIntubedData(id, selectedDate, currentTime, data, setPreLoader, () => {
+    //   setEveningModel(false);
+    //   setMorningModel(false);
+    // });
+    const currentDate = new Date();
+    if (data?.intube_id) {
+      setPatientIntubedData(data.intube_id)
+    }
+    var hour: any = currentDate.getHours();
+    var ampm = hour >= 12 ? 'pm' : 'am';
+    hour = hour % 12;
+    hour = hour ? hour : 12;
+    let formattedTime = `${hour}${ampm.toLowerCase()}`;
+    router.push({
+      pathname: `/patient/Intubed-data/${id}`,
+      query: {
+        formattedTime,
+      }
+    })
+  }
+
   return (
     <Typography>
       <div className="default-container  ">
@@ -76,7 +99,6 @@ function Index({ router }: any) {
                 <img className="card-img " src={data.patinet_image ? data.patinet_image : "/Images/doctor.png"} alt="Patient Image" />
               </div>
               <div className="mt-3 ml-5 overflow-hidden">
-                <p className="ml-4 d-flex  fs-20 lh-20">Patient Id :- {data._id || ""}</p>
                 <p className="ml-4 d-flex  fs-20 lh-20">Patient Name :- {`${data.fName || ""} ${data.lName || ""}`}</p>
                 <p className="ml-4 d-flex  fs-20 lh-20">Age :- {data.age || ""}</p>
                 <p className="ml-4 d-flex  fs-20 lh-20">Sex :- {data.gender || ""}</p>
@@ -116,7 +138,7 @@ function Index({ router }: any) {
           </div>
         </div>
         <div style={{ width: "87%" }}>
-          <div className={`${styles.main}  hide-scroll`}>
+          <div className={`${styles.main} hide-scroll`}>
             <div className="col d-flex justify-content-md-center hide-scroll overflow-auto">
               <div className="mr-5">
                 <div className={`${styles.info}`}>
@@ -149,7 +171,7 @@ function Index({ router }: any) {
             </div>
           </div>
         </div>
-        <div className="w-75 my-5 pb-4">
+        <div className="w-75 mt-5 pb-4">
           <Button
             props={{
               type: "submit"
@@ -157,6 +179,16 @@ function Index({ router }: any) {
             onClick={handleClick}
           >
             Open Report Details
+          </Button>
+        </div>
+        <div className="w-75 my-5 pb-4">
+          <Button
+            props={{
+              type: "submit"
+            }}
+            onClick={goToIntubedPage}
+          >
+            Intubed Data
           </Button>
         </div>
       </div>

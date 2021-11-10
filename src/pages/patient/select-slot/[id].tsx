@@ -6,13 +6,15 @@ import Swal from 'sweetalert2'
 import Button from 'components/Button'
 import { connect } from 'react-redux'
 import { getLocalStorageItem } from 'utils/helper'
-import { GetPatientDetailsByTime, AddPatientDetailsByTime, submitSummaryDetails, getAverge, getSummary } from 'redux/patient'
+import { GetPatientDetailsByTime, AddPatientDetailsByTime, submitSummaryDetails, getAverge, getSummary, setPatientIntubedData } from 'redux/patient'
 import axios from '../../../axios'
 import SUMMARY from 'components/SUMMARY'
 import Average from 'components/Average'
+import styles from './index.module.scss'
+import { MultiSelect } from 'react-multi-select-component'
 const schedule = require('node-schedule');
 
-function PatientReportDetails({ router, setPreLoader, GetPatientDetailsByTime, AddPatientDetailsByTime, isLoggedIn }: any) {
+function PatientReportDetails({ router, setPreLoader, GetPatientDetailsByTime, AddPatientDetailsByTime, isLoggedIn, setPatientIntubedData }: any) {
   const [data, setData]: any = useState();
   const [days, setDays]: any[] = useState([]);
   const [selectedDate, setSelectedDate] = useState("");
@@ -25,9 +27,8 @@ function PatientReportDetails({ router, setPreLoader, GetPatientDetailsByTime, A
   const [ESData, setESData] = useState()
   const currentDate = new Date()
   const year = currentDate.getFullYear();
-  const month = currentDate.getMonth();
+  const [month, setMonth] = useState(currentDate.getMonth());
   const [dateTest, setDateTest]: any = useState(new Date(year, month, 1));
-  const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   const eveningBatch = ["12:00 PM", "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM", "5:00 PM", "6:00 PM", "7:00 PM", "8:00 PM", "9:00 PM", "10:00 PM", "11:00 PM"]
   const morningBatch = ["12:00 AM", "1:00 AM", "2:00 AM", "3:00 AM", "4:00 AM", "5:00 AM", "6:00 AM", "7:00 AM", "8:00 AM", "9:00 AM", "10:00 AM", "11:00 AM"]
   var [currentTime, setCurrentTime] = useState(currentDate.getHours());
@@ -162,11 +163,14 @@ function PatientReportDetails({ router, setPreLoader, GetPatientDetailsByTime, A
   const renderDayWiseMonth = (item: any, index: any) => {
     return (
       <MonthWiseDays
-        onClick={() => setSelectedDate(item)}
-        isSelected={selectedDate.split(" ")[2] == item.split(" ")[2]}
+        onClick={() => {
+          setSelectedTime("")
+          setSelectedDate(item)
+        }}
+        isSelected={selectedDate.split(" ")[2] == item.split(" ")[2] && month <= currentDate.getMonth()}
         day={item.split(" ")[0]}
         date={item.split(" ")[2]}
-        disabled={currentDate.getDate() < item.split(" ")[2]}
+        disabled={month > currentDate.getMonth() || (currentDate.getDate() < item.split(" ")[2] && month == currentDate.getMonth())}
         key={`select-slot-month ${index}`}
       />
     )
@@ -180,7 +184,7 @@ function PatientReportDetails({ router, setPreLoader, GetPatientDetailsByTime, A
   }
 
   const onOpenAvgModal = () => {
-    getAverge(id, currentDate, setPreLoader, (data: object) => {
+    getAverge(id, selectedDate, setPreLoader, (data: object) => {
       setAverageModel(true)
       setAverageData({ ...data })
     })
@@ -188,19 +192,60 @@ function PatientReportDetails({ router, setPreLoader, GetPatientDetailsByTime, A
 
   const onMorningModalOpen = () => {
     getSummary(id, selectedDate, "morning", setPreLoader, (res: any) => {
+      if (res.success) {
+        setMSData({ ...res.data[0] })
+      }
       setMorningModel(true)
-      if (res.success) setMSData({ ...res.data[0] })
+    }, () => {
+      if (selectedDate.split(" ")[2] == currentDate.toString().split(" ")[2] && month == currentDate.getMonth()) {
+        setMorningModel(true)
+        return
+      }
+      Swal.fire({
+        title: 'Error',
+        icon: 'error',
+        showCloseButton: true,
+        cancelButtonText: 'Ok',
+        html: `<p>No data found</p>`,
+      })
     })
-    setMorningModel(true)
   }
 
   const onEveningModalOpen = () => {
     getSummary(id, selectedDate, "evening", setPreLoader, (res: any) => {
+      if (res.success) {
+        setESData({ ...res.data[0] })
+      }
       setEveningModel(true)
-      if (res.success) setESData({ ...res.data[0] })
+    }, () => {
+      if (selectedDate.split(" ")[2] == currentDate.toString().split(" ")[2] && month == currentDate.getMonth()) {
+        if (parseInt(String(currentDate).split(" ")[2]) > 11) setEveningModel(true);
+        else Swal.fire({
+          title: 'Error',
+          icon: 'error',
+          showCloseButton: true,
+          cancelButtonText: 'Ok',
+          html: `<p>Cannot fill second batch data until it's 12 PM</p>`,
+        })
+        return
+      }
+      Swal.fire({
+        title: 'Error',
+        icon: 'error',
+        showCloseButton: true,
+        cancelButtonText: 'Ok',
+        html: `<p>No data found</p>`,
+      })
     })
-    setEveningModel(true)
   }
+
+  const handleMonthChange = (e: any) => {
+    setDays([])
+    setDateTest(new Date(year, e.target.value, dateTest.getDate()))
+    setMonth(parseInt(e.target.value))
+    updateDates();
+  }
+
   return (
     <Typography>
       <div className="default-container">
@@ -210,7 +255,6 @@ function PatientReportDetails({ router, setPreLoader, GetPatientDetailsByTime, A
               <img className="card-img " src={data?.patinet_image ? data.patinet_image : "/Images/doctor.png"} alt="Patient Image" />
             </div>
             <div className="mt-3 ml-5 overflow-hidden">
-              <p className="ml-4 d-flex  fs-20 lh-20">Patient Id :- {data?._id || ""}</p>
               <p className="ml-4 d-flex  fs-20 lh-20">Patient Name :- {`${data?.fName || ""} ${data?.lName || ""}`}</p>
               <p className="ml-4 d-flex  fs-20 lh-20">Age :- {data?.age || ""}</p>
               <p className="ml-4 d-flex  fs-20 lh-20">Sex :- {data?.gender || ""}</p>
@@ -219,7 +263,23 @@ function PatientReportDetails({ router, setPreLoader, GetPatientDetailsByTime, A
         </DashboardWrapper>
         <div className="w-100 p-4">
           <div className="d-flex align-items-center justify-content-between py-1 small-text normal-black mb-3 ">
-            <span>{`${months[month]} ${year}`}</span>
+            {/* <span>{`${months[month]} ${year}`}</span> */}
+            <div className="input-group w-50">
+              <select onChange={handleMonthChange} className="custom-select" id="inputGroupSelect01">
+                <option selected={month == 0} value='0'>Janaury</option>
+                <option selected={month == 1} value='1'>February</option>
+                <option selected={month == 2} value='2'>March</option>
+                <option selected={month == 3} value='3'>April</option>
+                <option selected={month == 4} value='4'>May</option>
+                <option selected={month == 5} value='5'>June</option>
+                <option selected={month == 6} value='6'>July</option>
+                <option selected={month == 7} value='7'>August</option>
+                <option selected={month == 8} value='8'>September</option>
+                <option selected={month == 9} value='9'>October</option>
+                <option selected={month == 10} value='10'>November</option>
+                <option selected={month == 11} value='11'>December</option>
+              </select>
+            </div>
             <Average
               open={averageModel}
               openModal={onOpenAvgModal}
@@ -239,7 +299,6 @@ function PatientReportDetails({ router, setPreLoader, GetPatientDetailsByTime, A
                 closeModal={() => { setMorningModel(false) }}
                 onSave={(data: any) => { proccessSummaryData(data, "morning") }}
                 data={MSData}
-                disabled={selectedDate.split(" ")[2] !== currentDate.toString().split(" ")[2]}
               />
             </div>
           </div>
@@ -249,12 +308,13 @@ function PatientReportDetails({ router, setPreLoader, GetPatientDetailsByTime, A
                 <div key={`select-slot-morning ${index}`} className="col-md-3">
                   <DaysWiseTime
                     disabled={
-                      selectedDate.split(" ")[2] == String(currentDate).split(" ")[2] &&
-                      parseInt(convertTime12to24(item).split(":")[0]) > currentTime
+                      (selectedDate.split(" ")[2] == String(currentDate).split(" ")[2] &&
+                      parseInt(convertTime12to24(item).split(":")[0]) > currentTime && 
+                      month == currentDate.getMonth()) || month > currentDate.getMonth()
                     }
                     onClick={() => { setSelectedTime(item) }}
                     time={item}
-                    isSelected={selectedTime == item}
+                    isSelected={selectedTime == item && month <= currentDate.getMonth()}
                   />
                 </div>
               )
@@ -280,11 +340,12 @@ function PatientReportDetails({ router, setPreLoader, GetPatientDetailsByTime, A
                   <DaysWiseTime
                     onClick={() => { setSelectedTime(item) }}
                     disabled={
-                      selectedDate.split(" ")[2] == String(currentDate).split(" ")[2] &&
-                      parseInt(convertTime12to24(item).split(":")[0]) > currentTime
+                      (selectedDate.split(" ")[2] == String(currentDate).split(" ")[2] &&
+                      parseInt(convertTime12to24(item).split(":")[0]) > currentTime && 
+                      month == currentDate.getMonth()) || month > currentDate.getMonth()
                     }
                     time={item}
-                    isSelected={selectedTime == item}
+                    isSelected={selectedTime == item && month <= currentDate.getMonth()}
                   />
                 </div>
               )
@@ -316,7 +377,8 @@ const mapStateToProps = (state: any, ownProps: any) => {
 
 const mapDispatchToProps = {
   GetPatientDetailsByTime,
-  AddPatientDetailsByTime
+  AddPatientDetailsByTime,
+  setPatientIntubedData
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PatientReportDetails);

@@ -110,7 +110,6 @@ class Index extends React.Component<any, any> {
             className={styles.inputContainer}
             type="button"
             onClick={this.props.openModal}
-            disabled={this.props.disabled}
           >
             <h4 className={styles.name}>Summary</h4>
           </button>

@@ -1,9 +1,11 @@
+import { CSSProperties } from 'react'
 import styles from './index.module.scss'
 
 interface ButtonProps {
   children: any;
   onClick?: any;
   props?: any;
+  buttonStyle?: CSSProperties;
 }
 
 interface RoundedButtonProps {
@@ -16,11 +18,12 @@ export const RoundedButton = ({active}: RoundedButtonProps) => {
   )
 }
 
-const Button = ({ children, onClick, props }: ButtonProps) => {
+const Button = ({ children, buttonStyle, onClick, props }: ButtonProps) => {
   return (
     <button
       {...props}
       onClick={onClick}
+      style={buttonStyle}
       className={`${styles.btnContainer} normal-text`}
     >
       {children}
