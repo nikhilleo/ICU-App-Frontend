@@ -187,9 +187,15 @@ export const PatientAddProcess = (url: any, setPreLoader: any, callback: any) =>
           cancelButtonText: 'Ok',
           html: `<p>${response.data.message}</p>`,
         })
-        callback();
       }
+      callback();
+      return
     }
+    setPreLoader(false)
+    dispatch({
+      type: actions.CLEAR_PATIENT_DATA,
+    })
+    callback();
   } catch (error: any) {
     setPreLoader(false)
     if (error.response?.data?.message) {
