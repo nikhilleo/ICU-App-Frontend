@@ -8,10 +8,10 @@ interface Iprops {
 
 function index({ data = [], router }: Iprops) {
 
-  const handleClick = (e: any, item: any) => {
-    e.preventDefault();
-    router.push(`/patient/patient-details/${item._id}`)
-  }
+  // const handleClick = (e: any, item: any) => {
+  //   e.preventDefault();
+  //   router.push(`/patient/patient-details/${item._id}`)
+  // }
 
   return (
     <Typography>
@@ -29,8 +29,8 @@ function index({ data = [], router }: Iprops) {
                   </tr></thead>
                 <tbody>
                   {data.map((item: any, index: any) => (
-                    <tr key={`patient-dashboard ${index}`} className="cursor-pointer" onClick={(e: any) => handleClick(e, item)}>
-                      <td>1</td>
+                    <tr key={`patient-dashboard ${index}`} className="cursor-pointer">
+                      <td>{index + 1}</td>
                       <td>{`${item.fName} ${item.lName}`}</td>
                       <td>{item.dayIn}</td>
                       <td>{item.dayOut || `-`}</td>

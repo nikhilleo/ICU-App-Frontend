@@ -36,10 +36,10 @@ export const validateSignUpUserData = () => (dispatch: any, getState: any) => {
     return false;
   }
   if (!password) {
-    dispatch(setSignUpError('password', 'This is a required * field'));
+    dispatch(setSignUpError('signup-password', 'This is a required * field'));
     return false;
   } else if (password.length < 7) {
-    dispatch(setSignUpError('password', 'password length must be at least 7 characters long'));
+    dispatch(setSignUpError('signup-password', 'password length must be at least 7 characters long'));
     return false;
   }
   dispatch(setSignUpError('', ''));
