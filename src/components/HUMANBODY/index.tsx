@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { MultiSelect } from "react-multi-select-component";
-import styles from './index.module.scss'
+import styles from "./index.module.scss";
 import { HUMANBODY } from "components/Icons";
 
-export default function App({data, setData}: any) {
+export default function App({ data, setData }: any) {
   const options = [
     { label: "Ryles tube", value: "Ryles tube" },
     { label: "Endotracheal tube", value: "Endotracheal tube" },
@@ -16,7 +16,7 @@ export default function App({data, setData}: any) {
   ];
 
   return (
-    <div className={`${styles.main}  `}>
+    <div className={`${styles.main} hide-scroll `}>
       {/* <div className={`${styles.Select}  `}>
         <h1>Select  </h1>
       </div> */}
@@ -25,9 +25,18 @@ export default function App({data, setData}: any) {
           options={options}
           value={data}
           onChange={setData}
-          labelledBy={"Select"}
+          labelledBy={"Select"}  
         />
-      </div>
+        <div className={`${styles.Selectdata}  `}>
+          <ul className={`${styles.ul}`}>
+          
+            {data.map((item) => {
+              return<li >{item.label}</li>
+              
+            })}
+          </ul>
+        </div>
+      </div> 
       <div className={`${styles.HumanBody}  `}>
         <HUMANBODY />
       </div>
