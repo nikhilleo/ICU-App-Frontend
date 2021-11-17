@@ -171,21 +171,23 @@ function Index({ router }: any) {
             </div>
           </div>
         </div>
-        <div className="w-75 mt-5 pb-4">
+        <div className="w-50 mt-5 pb-4">
           <Button
             props={{
               type: "submit"
             }}
+            buttonStyle={{fontSize:"24px"}}
             onClick={goToIntubedPage}
           >
             Intubed Data
           </Button>
         </div>
-        <div className="w-75 my-5 pb-4">
+        <div className="w-50 my-4 pb-4">
           <Button
             props={{
               type: "submit"
             }}
+            buttonStyle={{fontSize:"24px"}}
             onClick={handleClick}
           >
             Open Report Details

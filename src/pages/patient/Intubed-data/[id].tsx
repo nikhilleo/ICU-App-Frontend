@@ -113,7 +113,7 @@ function PatientReportDetails({ isLoggedIn, router, setPreLoader, intubed_data }
       />
       <Button
         onClick={processIntubedData}
-        buttonStyle={{ width: "80%" }}
+        buttonStyle={{ width: "80%", marginTop:"48px" }}
       >
         <h4>Submit</h4>
       </Button>

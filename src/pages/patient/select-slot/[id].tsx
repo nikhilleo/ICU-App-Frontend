@@ -379,6 +379,7 @@ function PatientReportDetails({ router, setPreLoader, GetPatientDetailsByTime, A
             props={{
               type: "submit",
             }}
+            buttonStyle={{ fontSize: "24px" }}
             onClick={handleClick}
           >
             Open Report Details

@@ -24,7 +24,7 @@ const Button = ({ children, buttonStyle, onClick, props }: ButtonProps) => {
       {...props}
       onClick={onClick}
       style={buttonStyle}
-      className={`${styles.btnContainer} normal-text`}
+      className={`${styles.btnContainer} small-text`}
     >
       {children}
     </button>
