@@ -276,10 +276,10 @@ function PatientReportDetails({ router, setPreLoader, GetPatientDetailsByTime, A
             <div style={{ maxWidth: "110px" }}>
               <img className="card-img " src={data?.patinet_image ? data.patinet_image : "/Images/doctor.png"} alt="Patient Image" />
             </div>
-            <div className="mt-3 ml-5 overflow-hidden">
-              <p className="ml-4 d-flex fs-20 lh-20">Patient Name :- {`${data?.fName || ""} ${data?.lName || ""}`}</p>
-              <p className="ml-4 d-flex fs-20 lh-20">Age :- {data?.age || ""}</p>
-              <p className="ml-4 d-flex fs-20 lh-20">Sex :- {data?.gender || ""}</p>
+            <div className="small-text-sm mt-3 ml-5 overflow-hidden">
+              <p className="ml-4 d-flex lh-20">Patient Name :- {`${data?.fName || ""} ${data?.lName || ""}`}</p>
+              <p className="ml-4 d-flex lh-20">Age :- {data?.age || ""}</p>
+              <p className="ml-4 d-flex lh-20">Sex :- {data?.gender || ""}</p>
             </div>
           </div>
         </DashboardWrapper>

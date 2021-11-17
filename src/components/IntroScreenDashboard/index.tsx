@@ -33,7 +33,7 @@ function Index({title, src, introScreen, router, imgStyles} : DashboardProps) {
           <div className="mb-4">
             <HeartBlueIcon />
           </div>
-          <p className="normal-text blue lh-40 mb-4 pb-2">LIFELINE APP</p>
+          <p className="medium-text blue lh-40 mb-4 pb-2">LIFELINE APP</p>
           <p className="text-center normal-text dark-blue lh-40">{title}</p>
         </div>
         <div className={styles.img_container}>

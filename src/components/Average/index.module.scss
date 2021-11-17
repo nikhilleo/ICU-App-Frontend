@@ -100,3 +100,11 @@
 .disabledActionBtn {
   cursor: no-drop;
 }
+
+.modalContainer {
+  margin-top: 48px !important;
+  overflow: auto !important;
+  :global(.modal-dialog) {
+    min-width: 513px !important;
+  }
+}
