@@ -98,10 +98,10 @@ function Index({ router }: any) {
               <div style={{ maxWidth: "110px" }}>
                 <img className="card-img " src={data.patinet_image ? data.patinet_image : "/Images/doctor.png"} alt="Patient Image" />
               </div>
-              <div className="mt-3 ml-5 overflow-hidden">
-                <p className="ml-4 d-flex  fs-20 lh-20">Patient Name :- {`${data.fName || ""} ${data.lName || ""}`}</p>
-                <p className="ml-4 d-flex  fs-20 lh-20">Age :- {data.age || ""}</p>
-                <p className="ml-4 d-flex  fs-20 lh-20">Sex :- {data.gender || ""}</p>
+              <div className="small-text-sm mt-3 ml-5 overflow-hidden">
+                <p className="ml-4 d-flex lh-20">Patient Name :- {`${data.fName || ""} ${data.lName || ""}`}</p>
+                <p className="ml-4 d-flex lh-20">Age :- {data.age || ""}</p>
+                <p className="ml-4 d-flex lh-20">Sex :- {data.gender || ""}</p>
               </div>
             </div>
           </DashboardWrapper>
@@ -176,9 +176,9 @@ function Index({ router }: any) {
             props={{
               type: "submit"
             }}
-            onClick={handleClick}
+            onClick={goToIntubedPage}
           >
-            Open Report Details
+            Intubed Data
           </Button>
         </div>
         <div className="w-75 my-5 pb-4">
@@ -186,9 +186,9 @@ function Index({ router }: any) {
             props={{
               type: "submit"
             }}
-            onClick={goToIntubedPage}
+            onClick={handleClick}
           >
-            Intubed Data
+            Open Report Details
           </Button>
         </div>
       </div>

@@ -7,12 +7,14 @@
   position: relative;
   min-width: 498px;
   height: 100px;
+  p {
+    max-width: 30%;
+  }
 }
 
 .btn {
   position: absolute;
   right: 3%;
-  width: 221px;
   max-width: 221px;
   border: none;
   background-color: #232EAF;

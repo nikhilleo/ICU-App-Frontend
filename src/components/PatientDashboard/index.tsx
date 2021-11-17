@@ -95,8 +95,8 @@ const PatientDashboard = ({ router, patientLength }: any) => {
               </div>
             </div>
             <div className={`${styles.info}`}>
-              <h1>Admin</h1>
-              <h1>Dashboard</h1>
+              <h1 className="medium-text">Admin</h1>
+              <h1 className="medium-text">Dashboard</h1>
             </div>
           </div>
           <img className={`${styles.Img}`} src="../Images/Doctor2.svg" alt="" />

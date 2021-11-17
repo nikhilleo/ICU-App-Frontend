@@ -41,6 +41,10 @@
   line-height: 20px;
 }
 
+.default_styles :global(.lh-24) {
+  line-height: 24px;
+}
+
 .default_styles :global(.lh-30) {
   line-height: 30px;
 }
@@ -71,18 +75,55 @@
 }
 
 //Font OverAll Styles
-.default_styles :global(.head-text) {
-  @include addFont('Roboto Regular', 60px, null);
+.default_styles :global(.head-text),
+.default_styles :global(.head-text-sm) {
+  @include addFont('Roboto Regular', 35px, null);
 }
 
-.default_styles :global(.small-text) {
+.default_styles :global(.small-text),
+.default_styles :global(.small-text-sm) {
   @include addFont('Roboto Regular', 24px, null);
 }
 
-.default_styles :global(.extra-small-text) {
+.default_styles :global(.extra-small-text)
+.default_styles :global(.extra-small-text-sm) {
   @include addFont('Roboto Regular', 18px, null);
 }
 
-.default_styles :global(.normal-text) {
+.default_styles :global(.normal-text),
+.default_styles :global(.normal-text-sm) {
+  @include addFont('Roboto Regular', 27px, null);
+}
+
+.default_styles :global(.medium-text),
+.default_styles :global(.medium-text-sm) {
   @include addFont('Roboto Regular', 35px, null);
+}
+
+@media (min-width: 576px) {
+  .default_styles :global(.head-text),
+  .default_styles :global(.head-text-md) {
+    @include addFont('Roboto Regular', 55px, null);
+  }
+  
+  .default_styles :global(.small-text),
+  .default_styles :global(.small-text-md) {
+    @include addFont('Roboto Regular', 24px, null);
+  }
+  
+  .default_styles :global(.extra-small-text),
+  .default_styles :global(.extra-small-text-md) {
+    @include addFont('Roboto Regular', 18px, null);
+  }
+  
+  .default_styles :global(.normal-text),
+  .default_styles :global(.normal-text-md) {
+    @include addFont('Roboto Regular', 35px, null);
+  }
+
+  .default_styles :global(.medium-text),
+  .default_styles :global(.medium-text-md) {
+    @include addFont('Roboto Regular', 45px, null);
+  }
+  
 }

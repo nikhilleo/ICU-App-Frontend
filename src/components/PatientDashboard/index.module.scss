@@ -4,6 +4,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-wrap: wrap;
 }
 .Img {
   width: 80.93px;
@@ -22,17 +23,18 @@
 }
 .Nurse {
   margin-left: 26px;
-  width: 170.69px;
-  height: 67.88px;
+  width: 230.69px;
+  height: 75.88px;
   background: #ffffff;
   border-radius: 5px;
   display: flex;
   justify-content: center;
+  margin-bottom: 20px;
 }
 .Patient {
   margin-left: 26px;
-  width: 170.69px;
-  height: 67.88px;
+  width: 230.69px;
+  height: 75.88px;
   background: #ffffff;
   border-radius: 5px;
   display: flex;
@@ -46,10 +48,18 @@
   flex-wrap: wrap;
   align-content: center;
   flex-direction: column;
-  margin-top: 30px;
+  margin-top: 130px;
   color: #dfdfe4;
 }
 .button {
   width: 277px;
 }
 
+@media (min-width: 576px) {
+  .Nurse {
+    margin-bottom: 0px;
+  }
+  .info {
+    margin-top: 30px;
+  }
+}

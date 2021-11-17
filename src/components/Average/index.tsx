@@ -14,7 +14,7 @@ class Index extends React.Component<any, any> {
           ><h4 className={styles.name}>Today's Average</h4>
           </button>
         </div>
-        <Modal className="mt-5" show={this.props.open} onHide={this.props.closeModal}>
+        <Modal className={styles.modalContainer} show={this.props.open} onHide={this.props.closeModal}>
           <Modal.Body>
                   <div className={styles.main1}>
                     <table className={`${styles.table} table mt-2`}  >

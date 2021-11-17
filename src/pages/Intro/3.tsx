@@ -38,7 +38,7 @@ class Intro extends Component<IntroProps, IntroState> {
   render() {
     return (
       <IntroScreenDashboard
-        title="Hospital Patient Details"
+        title="Patient Details"
         src="/Images/Intro3.png"
         introScreen={3}
         router={this.props.router}
